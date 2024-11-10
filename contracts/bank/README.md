@@ -20,3 +20,7 @@ The contract has the following methods:
 - **withdraw-revert**: a `withdraw(amount)` call reverts if `amount` is zero or greater than the credit of `msg.sender`.
 - **withdraw-sender-rcv**: after a successful `withdraw(amount)`, the balance of the transaction sender is increased by `amount` ETH.
 - **withdraw-user-balance**: after a successful `withdraw(amount)`, the balance entry of `msg.sender` is decreased by `amount`.
+
+## Contract versions
+- **v1**: conformant to specification
+- **v2**: no `amount <= balances[msg.sender]` check and `balances[msg.sender]` is decremented by `amount - 1` in `withdraw()`

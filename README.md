@@ -1,1 +1,1 @@
-# solidity-vs-move-verification
+# Contract verification: Solidity vs Move

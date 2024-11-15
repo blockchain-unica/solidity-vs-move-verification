@@ -1,0 +1,11 @@
+# move on aptos: build directory
+build
+# tags file, editor generated
+tags
+# move on aptos: prover intermediate steps
+*.trace
+# move on aptos: test coverage files
+*.mvcov
+# move on aptos:boogie intermediate intermediate file
+*.bpl
+*.txt

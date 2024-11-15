@@ -1,0 +1,17 @@
+[package]
+name = "bank_apt"
+version = "1.0.0"
+authors = []
+
+[addresses]
+bank_apt = "_"
+
+[dev-addresses]
+bank_apt="0xBA"
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "mainnet"
+subdir = "aptos-move/framework/aptos-framework"
+
+[dev-dependencies]

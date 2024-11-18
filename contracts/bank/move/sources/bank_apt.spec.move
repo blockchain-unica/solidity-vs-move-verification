@@ -1,7 +1,7 @@
 spec bank_apt::bank {
     
     spec withdraw {
-        pragma intrinsic; // makes a difference when proving stuff 
+        // pragma intrinsic; // makes a difference when proving stuff 
         // apparently it does use implementation defined skipping the 
         // move implementation
         aborts_if amount <= 0;
@@ -19,10 +19,10 @@ spec bank_apt::bank {
     }
 
     spec deposit {
-        pragma intrinsic; // makes a difference when proving stuff 
+        // pragma intrinsic; // makes a difference when proving stuff 
         // apparently it does use implementation defined skipping the 
         // move implementation
-        aborts_if amount <= 0;
+        aborts_if amount >= 0;
         aborts_if !exists<Bank>(bank);
         let to_coin_value = global<coin::CoinStore<AptosCoin>>(signer::address_of(to)).coin.value;
         let post to_coin_value_post =  global<coin::CoinStore<AptosCoin>>(signer::address_of(to)).coin.value;

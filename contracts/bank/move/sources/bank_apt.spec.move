@@ -3,10 +3,29 @@ spec bank_apt::bank {
     spec withdraw {
         aborts_if amount == 0;
         aborts_if !exists<Bank>(bank);
-        aborts_if !exists<coin::CoinStore<AptosCoin>>(signer::address_of(sender));
-        aborts_if !global<coin::CoinStore<AptosCoin>>(signer::address_of(sender)).frozen;
+        // aborts_if !exists<coin::CoinStore<AptosCoin>>(signer::address_of(sender));
+        // aborts_if !global<coin::CoinStore<AptosCoin>>(signer::address_of(sender)).frozen;
 
-        aborts_if !coin::spec_is_account_registered<coin::CoinInfo<AptosCoin>>(signer::address_of(sender));
+        aborts_if !coin::spec_is_account_registered<coin::CoinInfo<AptosCoin>>(signer::address_of(sender)); // if removed, prover complains about error 0x6 
+        // caused by primary deposit aborts
+        // if kept, complains about error 0x5 in coin deposit
+        // but error 0x5 is  
+        
+        // Account hasn't registered `CoinStore` for `CoinType`
+        // const ECOIN_STORE_NOT_PUBLISHED: u64 = 5;
+        // which should be checked by spec_is_account_registered???
+
+        // body of spec_is_account_registered which 
+        // does checks if store exists???
+        // spec fun spec_is_account_registered<CoinType>(account_addr: address): bool {
+        // let paired_metadata_opt = spec_paired_metadata<CoinType>();
+        // exists<CoinStore<CoinType>>(account_addr) || (option::spec_is_some(
+            // paired_metadata_opt
+        // ) && primary_fungible_store::spec_primary_store_exists(account_addr, option::spec_borrow(paired_metadata_opt)))
+    // }
+
+
+
 
         modifies global<Bank>(bank);
         

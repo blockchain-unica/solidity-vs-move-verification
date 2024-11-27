@@ -3,532 +3,66 @@
 [INFO] generating verification conditions
 [INFO] 3 verification conditions
 [INFO] running solver
-[INFO] 3.613s build, 1.040s trafo, 0.064s gen, 5.439s verify, total 10.156s
+[INFO] 3.521s build, 0.996s trafo, 0.062s gen, 4.183s verify, total 8.763s
 [0m[1m[38;5;9merror[0m[1m: function does not abort under this condition[0m
-  [0m[34m┌─[0m /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:6:9
+  [0m[34m┌─[0m /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:9:9
   [0m[34m│[0m
-[0m[34m6[0m [0m[34m│[0m         [0m[31maborts_if !exists<coin::CoinStore<AptosCoin>>(signer::address_of(sender));[0m
-  [0m[34m│[0m         [0m[31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[0m[34m9[0m [0m[34m│[0m         [0m[31maborts_if !coin::spec_is_account_registered<coin::CoinInfo<AptosCoin>>(signer::address_of(sender));[0m // if removed, prover complains about error 0x6 
+  [0m[34m│[0m         [0m[31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
   [0m[34m│[0m
   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:50: withdraw
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:13
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:16
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:20
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:11
+  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:32
+  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:35
+  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:39
+  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:30
   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:50: withdraw
-  [0m[34m=[0m         sender = signer{0x390c}
-  [0m[34m=[0m         bank = 0xf3e
+  [0m[34m=[0m         sender = signer{0x5991}
+  [0m[34m=[0m         bank = 0x409d
   [0m[34m=[0m         amount = 1
   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:52: withdraw
   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:53: withdraw
   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:54: withdraw
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:12: address_of
-  [0m[34m=[0m         s = signer{0x390c}
+  [0m[34m=[0m         s = signer{0x5991}
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:13: address_of
-  [0m[34m=[0m         result = 0x390c
+  [0m[34m=[0m         result = 0x5991
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:14: address_of
-  [0m[34m=[0m         $t10 = 0x390c
+  [0m[34m=[0m         $t10 = 0x5991
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:873: extract
   [0m[34m=[0m         coin =
-  [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("1")])>
+  [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("19670")])>
   [0m[34m=[0m         amount = 1
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:874: extract
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:876: extract
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:878: extract
   [0m[34m=[0m         coin =
-  [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("0")])>
+  [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("19669")])>
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:880: extract
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:882: extract
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:873: extract
   [0m[34m=[0m         result =
   [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("1")])>
   [0m[34m=[0m         coin =
-  [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("0")])>
+  [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("19669")])>
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:883: extract
   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:55: withdraw
   [0m[34m=[0m         withdrawn = coin.Coin{value = 1}
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:12: address_of
-  [0m[34m=[0m         s = signer{0x390c}
+  [0m[34m=[0m         s = signer{0x5991}
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:13: address_of
-  [0m[34m=[0m         result = 0x390c
+  [0m[34m=[0m         result = 0x5991
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:14: address_of
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:321
   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:57: withdraw
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:321
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:791: deposit
-  [0m[34m=[0m         account_addr = 0x390c
-  [0m[34m=[0m         coin =
-  [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("1")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:795: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:799: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:274: paired_metadata
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/configs/features.move:496: coin_to_fungible_asset_migration_feature_enabled
-  [0m[34m=[0m         result = true
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/configs/features.move:497: coin_to_fungible_asset_migration_feature_enabled
-  [0m[34m=[0m         $t2 = true
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:274: paired_metadata
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:276: name
-  [0m[34m=[0m         map =
-  [0m[34m=[0m           Table{
-  [0m[34m=[0m             type_info.TypeInfo{
-  [0m[34m=[0m               account_address = 0x1,
-  [0m[34m=[0m               module_name = vector{(size): 4, 3: 110u8, default: 0u8},
-  [0m[34m=[0m               struct_name =
-  [0m[34m=[0m                 vector{(size): 8, 7: 111u8, default: 0u8}}: object.Object{
-  [0m[34m=[0m               inner = 0x852},
-  [0m[34m=[0m             type_info.TypeInfo{
-  [0m[34m=[0m               account_address = 0x1,
-  [0m[34m=[0m               module_name = vector{(size): 10, 9: 110u8, default: 0u8},
-  [0m[34m=[0m               struct_name =
-  [0m[34m=[0m                 vector{(size): 9, 8: 110u8, default: 0u8}}: object.Object{
-  [0m[34m=[0m               inner = 0x853},
-  [0m[34m=[0m             ..}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:277: symbol
-  [0m[34m=[0m         type =
-  [0m[34m=[0m           type_info.TypeInfo{
-  [0m[34m=[0m             account_address = 0x1,
-  [0m[34m=[0m             module_name = vector{(size): 10, 9: 110u8, default: 0u8},
-  [0m[34m=[0m             struct_name = vector{(size): 9, 8: 110u8, default: 0u8}}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:278: symbol
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:279: decimals
-  [0m[34m=[0m         result = option.Option{vec = vector{<? Literal("2131")>}}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:283: decimals
-  [0m[34m=[0m         metadata = option.Option{vec = vector{<? Literal("2131")>}}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:813: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:814: deposit
-  [0m[34m=[0m         $t12 = 0x390c
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:825: migrated_primary_fungible_store_exists
-  [0m[34m=[0m         $t28 = object.Object{inner = 0x853}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:829: migrated_primary_fungible_store_exists
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:89: primary_store_address
-  [0m[34m=[0m         owner = 0x390c
-  [0m[34m=[0m         metadata =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_Metadata'|"), Literal("2131")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:90: primary_store_address
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:243: create_object_from_object
-  [0m[34m=[0m         object =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_Metadata'|"), Literal("2131")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:244: create_object_from_object
-  [0m[34m=[0m         result = 0x853
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:245: create_object_from_object
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:91: primary_store_address
-  [0m[34m=[0m         metadata_addr = 0x853
-  [0m[34m=[0m         result = 0x0
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:92: primary_store_address
-  [0m[34m=[0m         $t12 = 0x0
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:547: store_exists
-  [0m[34m=[0m         store = 0x0
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:553: store_exists_inline
-  [0m[34m=[0m         result = true
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:549: store_exists
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:830: migrated_primary_fungible_store_exists
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/configs/features.move:544: new_accounts_default_to_fa_apt_store_enabled
-  [0m[34m=[0m         result = false
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/configs/features.move:545: new_accounts_default_to_fa_apt_store_enabled
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:820: deposit
-  [0m[34m=[0m         $t2 = true
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:832: migrated_primary_fungible_store_exists
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:830: migrated_primary_fungible_store_exists
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:814: deposit
-  [0m[34m=[0m         $t32 = 0x390c
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:303
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:818: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:303
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:379: coin_to_fungible_asset
-  [0m[34m=[0m         coin =
-  [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("1")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:382: coin_to_fungible_asset
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:308: burn
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/configs/features.move:496: coin_to_fungible_asset_migration_feature_enabled
-  [0m[34m=[0m         result = true
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/configs/features.move:497: coin_to_fungible_asset_migration_feature_enabled
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:307: burn
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:311: burn
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:312: burn_internal
-  [0m[34m=[0m         map =
-  [0m[34m=[0m           &coin.CoinConversionMap{
-  [0m[34m=[0m             coin_to_fungible_asset_map =
-  [0m[34m=[0m               Table{
-  [0m[34m=[0m                 type_info.TypeInfo{
-  [0m[34m=[0m                   account_address = 0x1,
-  [0m[34m=[0m                   module_name = vector{(size): 4, 3: 110u8, default: 0u8},
-  [0m[34m=[0m                   struct_name =
-  [0m[34m=[0m                     vector{(size): 8, 7: 111u8, default: 0u8}}: object.Object{
-  [0m[34m=[0m                   inner = 0x852},
-  [0m[34m=[0m                 type_info.TypeInfo{
-  [0m[34m=[0m                   account_address = 0x1,
-  [0m[34m=[0m                   module_name = vector{(size): 10, 9: 110u8, default: 0u8},
-  [0m[34m=[0m                   struct_name =
-  [0m[34m=[0m                     vector{(size): 9, 8: 110u8, default: 0u8}}: object.Object{
-  [0m[34m=[0m                   inner = 0x853},
-  [0m[34m=[0m                 ..}}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:313: burn_internal
-  [0m[34m=[0m         type =
-  [0m[34m=[0m           type_info.TypeInfo{
-  [0m[34m=[0m             account_address = 0x1,
-  [0m[34m=[0m             module_name = vector{(size): 10, 9: 110u8, default: 0u8},
-  [0m[34m=[0m             struct_name = vector{(size): 9, 8: 110u8, default: 0u8}}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:314: burn_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:314: create_and_return_paired_metadata_if_not_exist
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:351: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:359: deposit
-  [0m[34m=[0m         result = object.Object{inner = 0x853}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:365: coin_to_fungible_asset
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:245
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:383: force_deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:245
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1142: burn_internal
-  [0m[34m=[0m         coin =
-  [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("1")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1144: burn_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1146: burn_internal
-  [0m[34m=[0m         amount = 1
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1147: burn_internal
-  [0m[34m=[0m         $t4 = 0
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1148: burn_internal
-  [0m[34m=[0m         maybe_supply =
-  [0m[34m=[0m           &option.Option{
-  [0m[34m=[0m             vec =
-  [0m[34m=[0m               vector{
-  [0m[34m=[0m                 optional_aggregator.OptionalAggregator{
-  [0m[34m=[0m                   aggregator =
-  [0m[34m=[0m                     option.Option{
-  [0m[34m=[0m                       vec =
-  [0m[34m=[0m                         vector{
-  [0m[34m=[0m                           <? List([Literal("$1_aggregator_Aggregator"), Literal("24355"), Literal("4313"), Literal("1"), Literal("1")])>}},
-  [0m[34m=[0m                   integer = option.Option{vec = vector{}}}}}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1149: burn_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1150: burn_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/option.move:173: borrow_mut
-  [0m[34m=[0m         self =
-  [0m[34m=[0m           <? List([Literal("|$1_option_Option'$1_optional_aggregator_OptionalAggregator'|"), List([Literal("Vec_130398"), Literal("|T@[Int]$1_optional_aggregator_OptionalAggregator!val!1|"), Literal("1")])])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/option.move:174: borrow_mut
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/option.move:175: borrow_mut
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/option.move:173: borrow_mut
-  [0m[34m=[0m         result = &<generic>
-  [0m[34m=[0m         self =
-  [0m[34m=[0m           <? List([Literal("|$1_option_Option'$1_optional_aggregator_OptionalAggregator'|"), List([Literal("Vec_130398"), Literal("|T@[Int]$1_optional_aggregator_OptionalAggregator!val!1|"), Literal("1")])])>
-  [0m[34m=[0m         self =
-  [0m[34m=[0m           <? List([Literal("|$1_option_Option'$1_optional_aggregator_OptionalAggregator'|"), List([Literal("Vec_130398"), Literal("|T@[Int]$1_optional_aggregator_OptionalAggregator!val!1|"), Literal("1")])])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/option.move:176: borrow_mut
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1151: burn_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/aggregator/optional_aggregator.move:135: sub
-  [0m[34m=[0m         optional_aggregator =
-  [0m[34m=[0m           &optional_aggregator.OptionalAggregator{
-  [0m[34m=[0m             aggregator =
-  [0m[34m=[0m               option.Option{
-  [0m[34m=[0m                 vec =
-  [0m[34m=[0m                   vector{
-  [0m[34m=[0m                     <? List([Literal("$1_aggregator_Aggregator"), Literal("24355"), Literal("4313"), Literal("1"), Literal("1")])>}},
-  [0m[34m=[0m             integer = option.Option{vec = vector{}}}
-  [0m[34m=[0m         value = 1u128
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/aggregator/optional_aggregator.move:136: sub
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/aggregator/optional_aggregator.move:137: sub
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/option.move:173: borrow_mut
-  [0m[34m=[0m         self =
-  [0m[34m=[0m           <? List([Literal("|$1_option_Option'$1_aggregator_Aggregator'|"), List([Literal("Vec_130245"), Literal("|T@[Int]$1_aggregator_Aggregator!val!1|"), Literal("1")])])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/option.move:174: borrow_mut
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/option.move:175: borrow_mut
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/option.move:173: borrow_mut
-  [0m[34m=[0m         result = &<generic>
-  [0m[34m=[0m         self =
-  [0m[34m=[0m           <? List([Literal("|$1_option_Option'$1_aggregator_Aggregator'|"), List([Literal("Vec_130245"), Literal("|T@[Int]$1_aggregator_Aggregator!val!1|"), Literal("1")])])>
-  [0m[34m=[0m         self =
-  [0m[34m=[0m           <? List([Literal("|$1_option_Option'$1_aggregator_Aggregator'|"), List([Literal("Vec_130245"), Literal("|T@[Int]$1_aggregator_Aggregator!val!1|"), Literal("1")])])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/option.move:176: borrow_mut
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/aggregator/optional_aggregator.move:138: sub
-  [0m[34m=[0m         optional_aggregator =
-  [0m[34m=[0m           &optional_aggregator.OptionalAggregator{
-  [0m[34m=[0m             aggregator =
-  [0m[34m=[0m               option.Option{
-  [0m[34m=[0m                 vec =
-  [0m[34m=[0m                   vector{
-  [0m[34m=[0m                     <? List([Literal("$1_aggregator_Aggregator"), Literal("24355"), Literal("4313"), Literal("1"), Literal("0")])>}},
-  [0m[34m=[0m             integer = option.Option{vec = vector{}}}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/aggregator/optional_aggregator.move:136: sub
-  [0m[34m=[0m         optional_aggregator =
-  [0m[34m=[0m           &optional_aggregator.OptionalAggregator{
-  [0m[34m=[0m             aggregator =
-  [0m[34m=[0m               option.Option{
-  [0m[34m=[0m                 vec =
-  [0m[34m=[0m                   vector{
-  [0m[34m=[0m                     <? List([Literal("$1_aggregator_Aggregator"), Literal("24355"), Literal("4313"), Literal("1"), Literal("0")])>}},
-  [0m[34m=[0m             integer = option.Option{vec = vector{}}}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/aggregator/optional_aggregator.move:143: new
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1154: burn_internal
-  [0m[34m=[0m         $t4 = 1
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1142: burn_internal
-  [0m[34m=[0m         result = 1
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1155: burn_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:384: force_deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:832: mint_internal
-  [0m[34m=[0m         metadata = object.Object{inner = 0x853}
-  [0m[34m=[0m         amount = 1
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:836: mint_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1067: increase_supply
-  [0m[34m=[0m         metadata =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_Metadata'|"), Literal("2131")])>
-  [0m[34m=[0m         amount = 1
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1068: increase_supply
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1069: increase_supply
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:243: create_object_from_object
-  [0m[34m=[0m         object =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_Metadata'|"), Literal("2131")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:244: create_object_from_object
-  [0m[34m=[0m         result = 0x853
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:245: create_object_from_object
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1071: increase_supply
-  [0m[34m=[0m         metadata_address = 0x853
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1073: increase_supply
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1074: increase_supply
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1076: increase_supply
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1075: increase_supply
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1092: increase_supply
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:837: mint_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:835: mint_internal
-  [0m[34m=[0m         result =
-  [0m[34m=[0m           fungible_asset.FungibleAsset{
-  [0m[34m=[0m             metadata = object.Object{inner = 0x853},
-  [0m[34m=[0m             amount = 1}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:841: mint_internal
-  [0m[34m=[0m         result =
-  [0m[34m=[0m           fungible_asset.FungibleAsset{
-  [0m[34m=[0m             metadata = object.Object{inner = 0x853},
-  [0m[34m=[0m             amount = 1}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:385: force_deposit
-  [0m[34m=[0m         $t33 =
-  [0m[34m=[0m           fungible_asset.FungibleAsset{
-  [0m[34m=[0m             metadata = object.Object{inner = 0x853},
-  [0m[34m=[0m             amount = 1}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:165: deposit
-  [0m[34m=[0m         owner = 0x390c
-  [0m[34m=[0m         fa =
-  [0m[34m=[0m           fungible_asset.FungibleAsset{
-  [0m[34m=[0m             metadata = object.Object{inner = 0x853},
-  [0m[34m=[0m             amount = 1}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:166: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:693: asset_metadata
-  [0m[34m=[0m         fa =
-  [0m[34m=[0m           fungible_asset.FungibleAsset{
-  [0m[34m=[0m             metadata = object.Object{inner = 0x853},
-  [0m[34m=[0m             amount = 1}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:694: asset_metadata
-  [0m[34m=[0m         result = object.Object{inner = 0x853}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:695: asset_metadata
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:167: deposit
-  [0m[34m=[0m         metadata = object.Object{inner = 0x853}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:59: ensure_primary_store_exists
-  [0m[34m=[0m         owner = 0x390c
-  [0m[34m=[0m         metadata =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_Metadata'|"), Literal("2131")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:63: ensure_primary_store_exists
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:89: primary_store_address
-  [0m[34m=[0m         owner = 0x390c
-  [0m[34m=[0m         metadata =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_Metadata'|"), Literal("2131")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:90: primary_store_address
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:243: create_object_from_object
-  [0m[34m=[0m         object =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_Metadata'|"), Literal("2131")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:244: create_object_from_object
-  [0m[34m=[0m         result = 0x853
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:245: create_object_from_object
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:91: primary_store_address
-  [0m[34m=[0m         metadata_addr = 0x853
-  [0m[34m=[0m         result = 0x0
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:92: primary_store_address
-  [0m[34m=[0m         store_addr = 0x0
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:64: ensure_primary_store_exists
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:547: store_exists
-  [0m[34m=[0m         store = 0x0
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:553: store_exists_inline
-  [0m[34m=[0m         result = true
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:549: store_exists
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:65: ensure_primary_store_exists
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:194: address_to_object
-  [0m[34m=[0m         object = 0x0
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:195: address_to_object
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:196: address_to_object
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:197: address_to_object
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:194: address_to_object
-  [0m[34m=[0m         result =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_FungibleStore'|"), Literal("0")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:198: address_to_object
-  [0m[34m=[0m         return = object.Object{inner = 0x0}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:64: ensure_primary_store_exists
-  [0m[34m=[0m         result = object.Object{inner = 0x0}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:69: ensure_primary_store_exists
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:168: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/dispatchable_fungible_asset.move:106: deposit
-  [0m[34m=[0m         store =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_FungibleStore'|"), Literal("0")])>
-  [0m[34m=[0m         fa =
-  [0m[34m=[0m           fungible_asset.FungibleAsset{
-  [0m[34m=[0m             metadata = object.Object{inner = 0x853},
-  [0m[34m=[0m             amount = 1}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/dispatchable_fungible_asset.move:107: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:807: deposit_sanity_check
-  [0m[34m=[0m         store =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_FungibleStore'|"), Literal("0")])>
-  [0m[34m=[0m         abort_on_dispatch = false
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1136: borrow_store_resource
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:243: create_object_from_object
-  [0m[34m=[0m         object =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_FungibleStore'|"), Literal("0")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:244: create_object_from_object
-  [0m[34m=[0m         result = 0x0
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:245: create_object_from_object
-  [0m[34m=[0m         store_addr = 0x0
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1137: borrow_store_resource
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1138: borrow_store_resource
-  [0m[34m=[0m         fa_store =
-  [0m[34m=[0m           fungible_asset.FungibleStore{
-  [0m[34m=[0m             metadata = object.Object{inner = 0x853},
-  [0m[34m=[0m             balance = 0,
-  [0m[34m=[0m             frozen = false}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:813: deposit_sanity_check
-  [0m[34m=[0m         $t6 = true
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:812: deposit_sanity_check
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:816: deposit_sanity_check
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:817: deposit_sanity_check
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:634: deposit_dispatch_function
-  [0m[34m=[0m         store =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_FungibleStore'|"), Literal("0")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1136: borrow_store_resource
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:243: create_object_from_object
-  [0m[34m=[0m         object =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_FungibleStore'|"), Literal("0")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:244: create_object_from_object
-  [0m[34m=[0m         result = 0x0
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:245: create_object_from_object
-  [0m[34m=[0m         store_addr = 0x0
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1137: borrow_store_resource
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1138: borrow_store_resource
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:636: deposit_dispatch_function
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:243: create_object_from_object
-  [0m[34m=[0m         object =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_Metadata'|"), Literal("2131")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:244: create_object_from_object
-  [0m[34m=[0m         result = 0x853
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:245: create_object_from_object
-  [0m[34m=[0m         metadata_addr = 0x853
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:637: deposit_dispatch_function
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:638: deposit_dispatch_function
-  [0m[34m=[0m         return = option.Option{vec = vector{}}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:637: deposit_dispatch_function
-  [0m[34m=[0m         result = option.Option{vec = vector{}}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:642: deposit_dispatch_function
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/dispatchable_fungible_asset.move:108: deposit
-  [0m[34m=[0m         func_opt = option.Option{vec = vector{}}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/dispatchable_fungible_asset.move:109: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/dispatchable_fungible_asset.move:112: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:243: create_object_from_object
-  [0m[34m=[0m         object =
-  [0m[34m=[0m           <? List([Literal("|$1_object_Object'$1_fungible_asset_FungibleStore'|"), Literal("0")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:244: create_object_from_object
-  [0m[34m=[0m         result = 0x0
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/object.move:245: create_object_from_object
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/dispatchable_fungible_asset.move:110: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1022: deposit_internal
-  [0m[34m=[0m         store_addr = 0x0
-  [0m[34m=[0m         fa =
-  [0m[34m=[0m           fungible_asset.FungibleAsset{
-  [0m[34m=[0m             metadata = object.Object{inner = 0x853},
-  [0m[34m=[0m             amount = 1}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1023: deposit_internal
-  [0m[34m=[0m         amount = 1
-  [0m[34m=[0m         metadata = object.Object{inner = 0x853}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1024: deposit_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1025: deposit_internal
-  [0m[34m=[0m         store =
-  [0m[34m=[0m           &fungible_asset.FungibleStore{
-  [0m[34m=[0m             metadata = object.Object{inner = 0x853},
-  [0m[34m=[0m             balance = 0,
-  [0m[34m=[0m             frozen = false}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1026: deposit_internal
-  [0m[34m=[0m         $t9 = object.Object{inner = 0x853}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1028: deposit_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1030: deposit_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:558: concurrent_fungible_balance_exists_inline
-  [0m[34m=[0m         $t4 = true
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:559: concurrent_fungible_balance_exists_inline
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1030: deposit_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1031: deposit_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1032: deposit_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1037: deposit_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/fungible_asset.move:1038: deposit_internal
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/dispatchable_fungible_asset.move:123: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/dispatchable_fungible_asset.move:116: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/dispatchable_fungible_asset.move:125: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/primary_fungible_store.move:169: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:811: deposit
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:823: deposit
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:15
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:17
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:21
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:4
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:5
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:6
-
-[0m[1m[38;5;9merror[0m[1m: function does not abort under this condition[0m
-  [0m[34m┌─[0m /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:7:9
-  [0m[34m│[0m
-[0m[34m7[0m [0m[34m│[0m         [0m[31maborts_if !global<coin::CoinStore<AptosCoin>>(signer::address_of(sender)).frozen;[0m
-  [0m[34m│[0m         [0m[31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
-  [0m[34m│[0m
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:50: withdraw
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:13
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:16
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:20
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:11
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:50: withdraw
-  [0m[34m=[0m         sender = signer{0x390c}
-  [0m[34m=[0m         bank = 0xf3e
-  [0m[34m=[0m         amount = 1
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:52: withdraw
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:53: withdraw
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:54: withdraw
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:12: address_of
-  [0m[34m=[0m         s = signer{0x390c}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:13: address_of
-  [0m[34m=[0m         result = 0x390c
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:14: address_of
-  [0m[34m=[0m         $t10 = 0x390c
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:873: extract
-  [0m[34m=[0m         coin =
-  [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("1")])>
-  [0m[34m=[0m         amount = 1
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:874: extract
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:876: extract
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:878: extract
-  [0m[34m=[0m         coin =
-  [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("0")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:880: extract
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:882: extract
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:873: extract
-  [0m[34m=[0m         result =
-  [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("1")])>
-  [0m[34m=[0m         coin =
-  [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("0")])>
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:883: extract
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:55: withdraw
-  [0m[34m=[0m         withdrawn = coin.Coin{value = 1}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:12: address_of
-  [0m[34m=[0m         s = signer{0x390c}
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:13: address_of
-  [0m[34m=[0m         result = 0x390c
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:14: address_of
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:321
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:57: withdraw
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:321
-  [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:791: deposit
-  [0m[34m=[0m         account_addr = 0x390c
+  [0m[34m=[0m         account_addr = 0x5991
   [0m[34m=[0m         coin =
   [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("1")])>
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:795: deposit
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:796: deposit
   [0m[34m=[0m         coin_store =
-  [0m[34m=[0m           <? List([Literal("|$1_coin_CoinStore'$1_aptos_coin_AptosCoin'|"), List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("0")]), Literal("false"), List([Literal("|$1_event_EventHandle'$1_coin_DepositEvent'|"), Literal("0"), List([Literal("$1_guid_GUID"), List([Literal("$1_guid_ID"), Literal("0"), Literal("0")])])]), List([Literal("|$1_event_EventHandle'$1_coin_WithdrawEvent'|"), Literal("0"), List([Literal("$1_guid_GUID"), List([Literal("$1_guid_ID"), Literal("0"), Literal("0")])])])])>
+  [0m[34m=[0m           <? List([Literal("|$1_coin_CoinStore'$1_aptos_coin_AptosCoin'|"), List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("0")]), Literal("false"), List([Literal("|$1_event_EventHandle'$1_coin_DepositEvent'|"), Literal("0"), List([Literal("$1_guid_GUID"), List([Literal("$1_guid_ID"), Literal("0"), Literal("0")])])]), List([Literal("|$1_event_EventHandle'$1_coin_WithdrawEvent'|"), Literal("0"), List([Literal("$1_guid_GUID"), List([Literal("$1_guid_ID"), Literal("18446744073709551615"), Literal("0")])])])])>
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:798: deposit
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:797: deposit
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/configs/features.move:473: module_event_migration_enabled
@@ -559,13 +93,12 @@
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1001: merge
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:811: deposit
   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:823: deposit
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:15
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:17
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:21
+  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:34
+  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:36
+  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:40
   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:4
   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:5
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:6
-  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:7
+  [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:9
 
 [0m[1m[38;5;9merror[0m[1m: abort not covered by any of the `aborts_if` clauses[0m
     [0m[34m┌─[0m /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:3:5
@@ -573,80 +106,88 @@
 [0m[34m  3[0m [0m[34m│[0m [0m[31m╭[0m     [0m[31mspec withdraw {[0m
 [0m[34m  4[0m [0m[34m│[0m [0m[31m│[0m [0m[31m        aborts_if amount == 0;[0m
 [0m[34m  5[0m [0m[34m│[0m [0m[31m│[0m [0m[31m        aborts_if !exists<Bank>(bank);[0m
-[0m[34m  6[0m [0m[34m│[0m [0m[31m│[0m [0m[31m        aborts_if !exists<coin::CoinStore<AptosCoin>>(signer::address_of(sender));[0m
+[0m[34m  6[0m [0m[34m│[0m [0m[31m│[0m [0m[31m        // aborts_if !exists<coin::CoinStore<AptosCoin>>(signer::address_of(sender));[0m
     [0m[34m·[0m [0m[31m│[0m
-[0m[34m 30[0m [0m[34m│[0m [0m[31m│[0m 
-[0m[34m 31[0m [0m[34m│[0m [0m[31m│[0m [0m[31m    }[0m
+[0m[34m 49[0m [0m[34m│[0m [0m[31m│[0m 
+[0m[34m 50[0m [0m[34m│[0m [0m[31m│[0m [0m[31m    }[0m
     [0m[34m│[0m [0m[31m╰[0m[0m[31m─────^[0m
     [0m[34m│[0m  
-    [0m[34m┌─[0m /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:797:13
+    [0m[34m┌─[0m /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:818:17
     [0m[34m│[0m
-[0m[34m797[0m [0m[34m│[0m             assert!(
-    [0m[34m│[0m             [0m[34m------[0m [0m[34mabort happened here with code 0x5[0m
+[0m[34m818[0m [0m[34m│[0m                 primary_fungible_store::deposit(account_addr, coin_to_fungible_asset(coin));
+    [0m[34m│[0m                 [0m[34m---------------------------------------------------------------------------[0m [0m[34mabort happened here with code 0x6[0m
     [0m[34m│[0m
     [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:50: withdraw
-    [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:13
-    [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:16
-    [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:20
-    [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:11
+    [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:32
+    [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:35
+    [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:39
+    [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.spec.move:30
     [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:50: withdraw
-    [0m[34m=[0m         sender = signer{0x31d8}
-    [0m[34m=[0m         bank = 0x4b9d
+    [0m[34m=[0m         sender = signer{0x5991}
+    [0m[34m=[0m         bank = 0x409d
     [0m[34m=[0m         amount = 1
     [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:52: withdraw
     [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:53: withdraw
     [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:54: withdraw
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:12: address_of
-    [0m[34m=[0m         s = signer{0x31d8}
+    [0m[34m=[0m         s = signer{0x5991}
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:13: address_of
-    [0m[34m=[0m         result = 0x31d8
+    [0m[34m=[0m         result = 0x5991
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:14: address_of
-    [0m[34m=[0m         $t10 = 0x31d8
+    [0m[34m=[0m         $t10 = 0x5991
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:873: extract
     [0m[34m=[0m         coin =
-    [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("1")])>
+    [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("19670")])>
     [0m[34m=[0m         amount = 1
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:874: extract
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:876: extract
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:878: extract
     [0m[34m=[0m         coin =
-    [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("0")])>
+    [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("19669")])>
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:880: extract
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:882: extract
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:873: extract
     [0m[34m=[0m         result =
     [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("1")])>
     [0m[34m=[0m         coin =
-    [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("0")])>
+    [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("19669")])>
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:883: extract
     [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:55: withdraw
     [0m[34m=[0m         withdrawn = coin.Coin{value = 1}
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:12: address_of
-    [0m[34m=[0m         s = signer{0x31d8}
+    [0m[34m=[0m         s = signer{0x5991}
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:13: address_of
-    [0m[34m=[0m         result = 0x31d8
+    [0m[34m=[0m         result = 0x5991
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:14: address_of
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:321
     [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:57: withdraw
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:321
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:791: deposit
-    [0m[34m=[0m         account_addr = 0x31d8
+    [0m[34m=[0m         account_addr = 0x5991
     [0m[34m=[0m         coin =
     [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("1")])>
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:795: deposit
-    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:796: deposit
-    [0m[34m=[0m         coin_store =
-    [0m[34m=[0m           <? List([Literal("|$1_coin_CoinStore'$1_aptos_coin_AptosCoin'|"), List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("0")]), Literal("true"), List([Literal("|$1_event_EventHandle'$1_coin_DepositEvent'|"), Literal("0"), List([Literal("$1_guid_GUID"), List([Literal("$1_guid_ID"), Literal("0"), Literal("0")])])]), List([Literal("|$1_event_EventHandle'$1_coin_WithdrawEvent'|"), Literal("0"), List([Literal("$1_guid_GUID"), List([Literal("$1_guid_ID"), Literal("0"), Literal("0")])])])])>
-    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:798: deposit
-    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:806: deposit
-    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:797: deposit
-    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/error.move:80: permission_denied
-    [0m[34m=[0m         r = 10
+    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:799: deposit
+    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:274: paired_metadata
+    [0m[34m=[0m         $t2 = false
+    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:274: paired_metadata
+    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:282: decimals
+    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:273: paired_metadata
+    [0m[34m=[0m         result = option.Option{vec = vector{}}
+    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:283: decimals
+    [0m[34m=[0m         metadata = option.Option{vec = vector{}}
+    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:813: deposit
+    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:830: migrated_primary_fungible_store_exists
+    [0m[34m=[0m         $t2 = false
+    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:830: migrated_primary_fungible_store_exists
+    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:818: deposit
+    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/error.move:81: not_found
+    [0m[34m=[0m         r = 5
     [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/error.move:69: canonical (spec)
-    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/error.move:80: permission_denied
-    [0m[34m=[0m         result = 5
-    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/error.move:80: permission_denied
-    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:797: deposit
+    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/error.move:81: not_found
+    [0m[34m=[0m         result = 6
+    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/error.move:81: not_found
+    [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:818: deposit
     [0m[34m=[0m         ABORTED
 
 {

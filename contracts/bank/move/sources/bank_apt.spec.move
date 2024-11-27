@@ -40,6 +40,11 @@ spec bank_apt::bank {
     // }
         // --> very confused by this
 
+
+        // regarding the answer online: seems weird since from docs: 
+        // In the requires case, the Move Prover will not allow the function to be called in the first place. Nevertheless, the function can still be called at runtime if verification is skipped. 
+        // too weak??
+
         modifies global<Bank>(bank);
         
         let bank_credits = global<Bank>(bank).credits;

@@ -1,8 +1,23 @@
 spec bank_apt::bank {
     
+    // WARNING:
+    // prover sometimes seems to hide properties that does not hold 
+    // and report only one that fails/not satisfied -> with 
+    // ensure clauses
+    // try to not add to much aborts conditions, otherwise it will 
+    // clutter the error messages
     spec withdraw {
         aborts_if amount == 0;
         aborts_if !exists<Bank>(bank);
+
+        let sender_coinstore = global<coin::CoinStore<AptosCoin>>(signer::address_of(sender)).coin.value;
+
+        aborts_if sender_coinstore + amount > MAX_U64;
+        // why does not fail?
+        // since if I have an amount of money in my personal account 
+        // that, if summed with the amount withdraw, is above MAX_U64 
+        // should overflow?? (see test test_overflow_account under)
+
         // aborts_if !exists<coin::CoinStore<AptosCoin>>(signer::address_of(sender));
         // aborts_if !global<coin::CoinStore<AptosCoin>>(signer::address_of(sender)).frozen;
 
@@ -23,9 +38,7 @@ spec bank_apt::bank {
             // paired_metadata_opt
         // ) && primary_fungible_store::spec_primary_store_exists(account_addr, option::spec_borrow(paired_metadata_opt)))
     // }
-
-
-
+        // --> very confused by this
 
         modifies global<Bank>(bank);
         

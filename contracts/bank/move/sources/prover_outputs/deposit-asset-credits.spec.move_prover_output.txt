@@ -1,0 +1,117 @@
+[INFO] preparing module 0xba::bank
+[INFO] transforming bytecode
+[INFO] generating verification conditions
+[INFO] 3 verification conditions
+[INFO] running solver
+[INFO] 3.439s build, 1.023s trafo, 0.063s gen, 3.739s verify, total 8.264s
+[0m[1m[38;5;9merror[0m[1m: post-condition does not hold[0m
+   [0m[34m┌─[0m /home/user/solidity-vs-move-verification/contracts/bank/move/sources/deposit-asset-credits.spec.move:13:9
+   [0m[34m│[0m
+[0m[34m13[0m [0m[34m│[0m         [0m[31mensures (bank_credits_sender_coin_value_post == (bank_credits_sender_coin_value + amount));[0m
+   [0m[34m│[0m         [0m[31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+   [0m[34m│[0m
+   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:29: deposit
+   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/deposit-asset-credits.spec.move:8
+   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/deposit-asset-credits.spec.move:10
+   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:29: deposit
+   [0m[34m=[0m         sender = signer{0x4ae1}
+   [0m[34m=[0m         bank = 0x3d6c
+   [0m[34m=[0m         amount = 2
+   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:30: deposit
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:523
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:524
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:525
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:533
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:534
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:535
+   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:31: deposit
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:523
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:524
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:525
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:533
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:534
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.spec.move:535
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1046: withdraw
+   [0m[34m=[0m         account = signer{0x4ae1}
+   [0m[34m=[0m         amount = 2
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1050: withdraw
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:12: address_of
+   [0m[34m=[0m         s = signer{0x4ae1}
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:13: address_of
+   [0m[34m=[0m         result = 0x4ae1
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:14: address_of
+   [0m[34m=[0m         account_addr = 0x4ae1
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:548: calculate_amount_to_withdraw
+   [0m[34m=[0m         account_addr = 0x4ae1
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:658: coin_balance
+   [0m[34m=[0m         owner = 0x4ae1
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:659: coin_balance
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:660: coin_balance
+   [0m[34m=[0m         coin_balance = 18446744073709545282
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:553: calculate_amount_to_withdraw
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:554: calculate_amount_to_withdraw
+   [0m[34m=[0m         coin_amount_to_withdraw = 2
+   [0m[34m=[0m         fa_amount_to_withdraw = 0
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1056: withdraw
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1057: withdraw
+   [0m[34m=[0m         coin_store =
+   [0m[34m=[0m           <? List([Literal("|$1_coin_CoinStore'$1_aptos_coin_AptosCoin'|"), List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("18446744073709545282")]), Literal("false"), List([Literal("|$1_event_EventHandle'$1_coin_DepositEvent'|"), Literal("16827"), List([Literal("$1_guid_GUID"), List([Literal("$1_guid_ID"), Literal("5436"), Literal("11942")])])]), List([Literal("|$1_event_EventHandle'$1_coin_WithdrawEvent'|"), Literal("23281"), List([Literal("$1_guid_GUID"), List([Literal("$1_guid_ID"), Literal("4827"), Literal("2995")])])])])>
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1059: withdraw
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1062: withdraw
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/configs/features.move:473: module_event_migration_enabled
+   [0m[34m=[0m         result = true
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/configs/features.move:474: module_event_migration_enabled
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1065: withdraw
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1064: withdraw
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1063: withdraw
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1074: withdraw
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:873: extract
+   [0m[34m=[0m         coin =
+   [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("18446744073709545282")])>
+   [0m[34m=[0m         amount = 2
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:874: extract
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:876: extract
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:878: extract
+   [0m[34m=[0m         coin =
+   [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("18446744073709545280")])>
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:880: extract
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:882: extract
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:873: extract
+   [0m[34m=[0m         result =
+   [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("2")])>
+   [0m[34m=[0m         coin =
+   [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("18446744073709545280")])>
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:883: extract
+   [0m[34m=[0m         withdrawn_coin =
+   [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("2")])>
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1078: withdraw
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1086: withdraw
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1049: withdraw
+   [0m[34m=[0m         result =
+   [0m[34m=[0m           <? List([Literal("|$1_coin_Coin'$1_aptos_coin_AptosCoin'|"), Literal("2")])>
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/sources/coin.move:1087: withdraw
+   [0m[34m=[0m         deposit = coin.Coin{value = 2}
+   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:32: deposit
+   [0m[34m=[0m         bank =
+   [0m[34m=[0m           &bank.Bank{credits = Table{0x4ae1: coin.Coin{value = 18468}, ..}}
+   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:33: deposit
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:12: address_of
+   [0m[34m=[0m         s = signer{0x4ae1}
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:13: address_of
+   [0m[34m=[0m         result = 0x4ae1
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:14: address_of
+   [0m[34m=[0m         $t11 = 0x4ae1
+   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:44: deposit
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:12: address_of
+   [0m[34m=[0m         s = signer{0x4ae1}
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:13: address_of
+   [0m[34m=[0m         result = 0x4ae1
+   [0m[34m=[0m     at /home/user/.move/https___github_com_aptos-labs_aptos-core_git_mainnet/aptos-move/framework/aptos-framework/../aptos-stdlib/../move-stdlib/sources/signer.move:14: address_of
+   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/bank_apt.move:29: deposit
+   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/deposit-asset-credits.spec.move:9
+   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/deposit-asset-credits.spec.move:11
+   [0m[34m=[0m     at /home/user/solidity-vs-move-verification/contracts/bank/move/sources/deposit-asset-credits.spec.move:13
+
+{
+  "Error": "Move Prover failed: exiting with verification errors"
+}

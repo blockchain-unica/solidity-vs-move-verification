@@ -34,6 +34,7 @@ module bank_apt::bank_apt_tests {
     // #[test] still required since
     // even if module is declared 
     // for test only
+
     // client and bank will have the address 0x1 and 0x2
     // for this test, observe that they match the name of 
     // function parameters
@@ -50,6 +51,8 @@ module bank_apt::bank_apt_tests {
     
     #[test(client = @0x1,bank = @0xB)]
     // no amount of money provided
+    // note that there is no need to mint/burn money like in the following 
+    // tests
     #[expected_failure(abort_code = 0,location=bank)]
     fun amount_is_zero_fail(client : &signer, bank : address){
         bank::withdraw(client,bank,0);

@@ -352,8 +352,9 @@ module bank_apt::bank_apt_tests {
     // adding the spec function that _should_ catch this error 
     // !coin::spec_is_account_registered (...) does not work and 
     // the prover says that the function does not abort under 
-    // that condition (i.e. !coin::spec_is_account_registered(...))
-    // such function contains a check for the existence of a 
+    // that condition.
+    // coin::spec_is_account_registered(...)
+    // contains a check for the existence of a 
     // (primary) store so I don't understand what is going on here
 
 }

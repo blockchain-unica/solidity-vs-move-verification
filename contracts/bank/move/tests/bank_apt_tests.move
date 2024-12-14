@@ -81,7 +81,7 @@ module bank_apt::bank_apt_tests {
         // after the deposit two things: 
         // * the amount of money into the balance of the Bank client account is 500 
         // * the amount of money into the client personal account is 500 since 
-        // we give him 1000 AptosCoin
+        // we gave him 1000 AptosCoin
 
         // only for testing purposes, 
         // mint_capability and burn_capability are resources 
@@ -223,4 +223,125 @@ module bank_apt::bank_apt_tests {
         coin::destroy_mint_cap(mint_capability);
         coin::destroy_burn_cap(burn_capability);
     }
+
+
+    #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    // this test represent the counterexample that the move prover 
+    // found while proving the properties 
+    // ensures (bank_credits_sender_coin_value_post == 
+    //    (bank_credits_sender_coin_value + amount));
+    // unfortunately, this test passes since I do not understand 
+    // why the prover tells me that the property is not satisfied 
+    // maybe something related to the status of the account?
+    // genuinly confused by the prover output
+    fun test_deposit_assets_credits_ensure_failure(client : &signer, bank : &signer, aptos_framework:&signer){
+        bank::test_init_module(bank);
+        let (burn_capability, mint_capability) = aptos_coin::initialize_for_test(aptos_framework); // only for testing purposes, allow to burn and mint  aptos coin
+        give_coins(&mint_capability,client,18446744073709545282);
+
+        bank::deposit(client,signer::address_of(bank),2);
+        assert!(bank::account_balance(client,signer::address_of(bank)) == 2,1);
+        assert!(coin::balance<AptosCoin>(signer::address_of(client)) == 18446744073709545280,2);
+        // after the deposit two things: 
+        // * the amount of money into the balance of the Bank client 
+        // account is 2 
+        // * the amount of money into the client personal account is 
+        // 18446744073709545280 since 
+        // we gave him 18446744073709545282 AptosCoin
+
+        // only for testing purposes, 
+        // mint_capability and burn_capability are resources 
+        // they need to be destroyed explicitly at the end of the testing function
+        coin::destroy_mint_cap(mint_capability);
+        coin::destroy_burn_cap(burn_capability);
+    }
+
+    #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    // this test represent the counterexample that the move prover 
+    // found while proving the properties 
+    // ensures (bank_credits_sender_coin_value_post == 
+    //  (bank_credits_sender_coin_value + amount)) && (sender_coins_value_post == (sender_coins_value - amount));
+    // unfortunately, this test passes since I do not understand 
+    // why the prover tells me that the property is not satisfied 
+    // maybe something related to the status of the account?
+    // genuinly confused by the prover output
+    fun test_deposit_assets_transfer_ensure_failure(client : &signer, bank : &signer, aptos_framework:&signer){
+        bank::test_init_module(bank);
+        let (burn_capability, mint_capability) = aptos_coin::initialize_for_test(aptos_framework); // only for testing purposes, allow to burn and mint  aptos coin
+        give_coins(&mint_capability,client,2);
+
+        bank::deposit(client,signer::address_of(bank),1);
+        assert!(bank::account_balance(client,signer::address_of(bank)) == 1,1);
+        assert!(coin::balance<AptosCoin>(signer::address_of(client)) == 1,2);
+        // after the deposit two things: 
+        // * the amount of money into the balance of the Bank client 
+        // account is 1 
+        // * the amount of money into the client personal account is 
+        // 1 since 
+        // we gave him 2 AptosCoin
+
+        // only for testing purposes, 
+        // mint_capability and burn_capability are resources 
+        // they need to be destroyed explicitly at the end of the testing function
+        coin::destroy_mint_cap(mint_capability);
+        coin::destroy_burn_cap(burn_capability);
+    }
+
+
+    #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    #[expected_failure]
+    // deposit an amount of money which the user does not has 
+    // this test fails correctly while the prover seems to state 
+    // that the deposit function cannot abort in similar condition
+    // the condition: aborts_if sender_coins_value < amount
+    // sender_coins_value is the amount of money in the personal 
+    // account of the user
+    // I don't really understand the counterexample provided by the 
+    // prover: seems unrelated to what I want to state 
+    // in any case the following test fails correctly
+    // showing what i want
+    fun test_deposit_revert_abort_failure(client : &signer, bank : &signer, aptos_framework:&signer){
+        bank::test_init_module(bank);
+        let (burn_capability, mint_capability) = aptos_coin::initialize_for_test(aptos_framework);
+        give_coins(&mint_capability,client,1000);
+
+        // fails at the next instructions since 
+        // the user does not own 1001 AptosCoin
+        bank::deposit(client,signer::address_of(bank),1001); 
+        coin::destroy_mint_cap(mint_capability);
+        coin::destroy_burn_cap(burn_capability);
+    }
+
+ #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    // this test represent the counterexample that the move prover 
+    // found while proving the properties 
+    // ensures (bank_credits_sender_coin_value_post == 
+    //  (bank_credits_sender_coin_value - amount)) 
+    //  && (sender_coins_value_post == (sender_coins_value + amount));
+    // unfortunately, this test passes since I do not understand 
+    // why the prover tells me that the property is not satisfied 
+    // maybe something related to the status of the account?
+    // genuinly confused by the prover output
+    fun test_withdraw_assets_transfer_ensures_failure(client : &signer, bank : &signer, aptos_framework:&signer){
+        bank::test_init_module(bank);
+        let (burn_capability, mint_capability) = aptos_coin::initialize_for_test(aptos_framework); // only for testing purposes, allow to burn and mint  aptos coin
+        give_coins(&mint_capability,client,5706);
+        bank::deposit(client,signer::address_of(bank),5706); 
+        bank::withdraw(client,signer::address_of(bank),1);
+        assert!(bank::account_balance(client,signer::address_of(bank)) == 5705 ,1);
+        assert!(coin::balance<AptosCoin>(signer::address_of(client)) == 1,2);
+        // after the withdraw two things: 
+        // * the amount of money into the balance of the Bank client 
+        // account is 5705 
+        // * the amount of money into the client personal account is 
+        // 1 since 
+        // we gave him 5706 AptosCoin
+
+        // only for testing purposes, 
+        // mint_capability and burn_capability are resources 
+        // they need to be destroyed explicitly at the end of the testing function
+        coin::destroy_mint_cap(mint_capability);
+        coin::destroy_burn_cap(burn_capability);
+    }
+
 }

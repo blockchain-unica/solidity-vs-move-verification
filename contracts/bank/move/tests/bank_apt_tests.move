@@ -344,4 +344,16 @@ module bank_apt::bank_apt_tests {
         coin::destroy_burn_cap(burn_capability);
     }
 
+    // regarding the last: withdraw-revert 
+    // the prover tells me that the function aborts if 
+    // Coin is not published error (ECOIN_STORE_NOT_PUBLISHED)
+    // which requires, according 
+    // to the documentation on errors to register the coin for the address.
+    // adding the spec function that _should_ catch this error 
+    // !coin::spec_is_account_registered (...) does not work and 
+    // the prover says that the function does not abort under 
+    // that condition (i.e. !coin::spec_is_account_registered(...))
+    // such function contains a check for the existence of a 
+    // (primary) store so I don't understand what is going on here
+
 }

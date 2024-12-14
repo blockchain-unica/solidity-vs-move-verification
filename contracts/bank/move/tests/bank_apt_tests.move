@@ -350,7 +350,7 @@ module bank_apt::bank_apt_tests {
     // which requires, according 
     // to the documentation on errors to register the coin for the address.
     // adding the spec function that _should_ catch this error 
-    // !coin::spec_is_account_registered (...) does not work and 
+    // aborts_if !coin::spec_is_account_registered (...) does not work and 
     // the prover says that the function does not abort under 
     // that condition.
     // coin::spec_is_account_registered(...)

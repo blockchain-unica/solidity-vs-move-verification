@@ -41,7 +41,7 @@ module bank_apt::bank_apt_tests {
    #[test(client = @0x1,bank = @0xB)]
     // no amount of money provided
     // expected_failure <-> the test is successful if it fails with the
-    // abort with code 0, location is where the error will be raised
+    // abort with code 0, location is the module name where the error will be raised
     #[expected_failure(abort_code = 0,location=bank)]
     fun deposit_amount_is_zero_fail(client : &signer, bank : &signer){
         bank::test_init_module(bank); // initialize the Bank resource
@@ -68,6 +68,8 @@ module bank_apt::bank_apt_tests {
     // aptos_framework required for allowing to get the mint and burn 
     // capability for AptosCoin 
     #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    // simple test, just to check if the deposit work 
+    // in a simple case
     fun test_bank_deposit(client : &signer, bank : &signer, aptos_framework:&signer){
         bank::test_init_module(bank);
         let (burn_capability, mint_capability) = aptos_coin::initialize_for_test(aptos_framework); // only for testing purposes, allow to burn and mint  aptos coin
@@ -89,6 +91,7 @@ module bank_apt::bank_apt_tests {
     }
 
 #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    // test if the deposit updates the amount of money
     fun test_bank_update_deposit(client : &signer, bank : &signer, aptos_framework:&signer){
         bank::test_init_module(bank);
         let (burn_capability, mint_capability) = aptos_coin::initialize_for_test(aptos_framework);
@@ -107,11 +110,16 @@ module bank_apt::bank_apt_tests {
 
 #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
     #[expected_failure(abort_code=0, location=bank)]
+    // test that withdraw 0 is not allowed
     fun test_bank_withdraw_zero(client : &signer, bank : &signer, aptos_framework:&signer){
         bank::test_init_module(bank);
         let (burn_capability, mint_capability) = aptos_coin::initialize_for_test(aptos_framework);
         give_coins(&mint_capability,client,1000);
 
+        // deposit (and create an account in the process) some money 
+        // if no deposit were made, the withdraw would fail 
+        // due to the nonexisting account in the bank
+        // instead of the 0 AptosCoin withdrawn
         bank::deposit(client,signer::address_of(bank),500);
         bank::withdraw(client,signer::address_of(bank),0);
         // fails at withdraw since withdraw 0 is prohibited
@@ -123,16 +131,22 @@ module bank_apt::bank_apt_tests {
 
 
 #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    // simple test to check that the withdraw does indeed what it 
+    // is supposed to do
     fun test_bank_withdraw(client : &signer, bank : &signer, aptos_framework:&signer){
         bank::test_init_module(bank);
         let (burn_capability, mint_capability) = aptos_coin::initialize_for_test(aptos_framework);
         give_coins(&mint_capability,client,1000);
 
+        // like in the test_bank_withdraw_zero deposit first 
+        // to create an account and withdraw immediately after
         bank::deposit(client,signer::address_of(bank),500);
         bank::withdraw(client,signer::address_of(bank),200);
         // check if after a deposit 500 and withdraw 200 of deposit,
         // 300 AptosCoin are inside the bank 
         assert!(bank::account_balance(client,signer::address_of(bank)) == 300,1);
+        // and the user account owns 500 (remaining after deposit) 
+        // + 200 (what has been withdrawn) 
         assert!(coin::balance<AptosCoin>(signer::address_of(client)) == 700,2);
 
         coin::destroy_mint_cap(mint_capability);
@@ -142,6 +156,8 @@ module bank_apt::bank_apt_tests {
 
     #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
     #[expected_failure]
+    // it should not be possible to deposit more money than what a 
+    // user personally owns (in its aptos account)
     fun test_bank_deposit_too_much(client : &signer, bank : &signer, aptos_framework:&signer){
         bank::test_init_module(bank);
         let (burn_capability, mint_capability) = aptos_coin::initialize_for_test(aptos_framework);
@@ -156,14 +172,15 @@ module bank_apt::bank_apt_tests {
 
     #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
     #[expected_failure]
+    // withdraw more money than what the client has in the bank account
     fun test_bank_withdraw_too_much(client : &signer, bank : &signer, aptos_framework:&signer){
         bank::test_init_module(bank);
         let (burn_capability, mint_capability) = aptos_coin::initialize_for_test(aptos_framework);
         give_coins(&mint_capability,client,1000);
 
-        // fails here since the amount to deposit is too big 
-        // (not enough money in the account )
-        bank::deposit(client,signer::address_of(bank),500);
+        bank::deposit(client,signer::address_of(bank),500); 
+        // fails (correctly) here since the amount to deposit is too big 
+        // (not enough money in the bank account)
         bank::withdraw(client,signer::address_of(bank),600);
         coin::destroy_mint_cap(mint_capability);
         coin::destroy_burn_cap(burn_capability);
@@ -173,8 +190,17 @@ module bank_apt::bank_apt_tests {
 
     #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
     #[expected_failure]
+    // 
     fun test_overflow_account(client : &signer, bank : &signer, aptos_framework:&signer){
         //counterexample to the prover claim that code does not fail on overflow?
+        // the idea of this test is the following:
+        // 1 -> give the user the max amount of AptosCo possible in his/her  
+        // personal account 
+        // 2 -> deposit some money in the client bank account
+        // 3 -> restore the max amount of AptosCoin in their account
+        // 4 -> withdraw some AptosCoin -> this make the personal account 
+        // overflow
+
         bank::test_init_module(bank);
         let (burn_capability, mint_capability) = aptos_coin::initialize_for_test(aptos_framework);
         let max_u64 = ((1u128 << 64) - 1) as u64;
@@ -182,22 +208,16 @@ module bank_apt::bank_apt_tests {
         // I did not see a library function which gives 
         // the u64 max value, that's why it is done manually 
         give_coins(&mint_capability,client,max_u64);
-
+        // just give some money to withdraw from the 
+        // client personal account
         bank::deposit(client,signer::address_of(bank),200);
 
         give_coins(&mint_capability, client, 200);
+        // the amount of money inside the personal account 
+        // of the user is now again the max_u64
         // the 200 AptosCoin are just a random amount
         // the previous instructions are needed to 
         // make the next one fail 
-        // the idea of this test is the following:
-        // 1 -> give the user the max amount of AptosCo possible in his/her  
-        // personal account 
-        // 2 -> deposit some money in the client bank account
-        // 3 -> restore the max amount of AptosCoin in their account
-        // (any amount between 1 and 200 is ok btw)
-        // 4 -> make this test fail due to withdrawing 
-        // an amount of money which will make the personal 
-        // account balance overflow
         bank::withdraw(client,signer::address_of(bank),200);
 
         coin::destroy_mint_cap(mint_capability);

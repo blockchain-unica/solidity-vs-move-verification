@@ -3,12 +3,15 @@
 ## Contracts
 
 - [Bank](contracts/bank/README.md)
+- [Vault](contracts/vault/README.md)
 
-## Verification tools
+## References
 
+### Certora
 - [Certora](https://www.certora.com/)
-- [Move prover](https://aptos.dev/en/build/smart-contracts/prover)
+- [Certora specification language](https://docs.certora.com/en/latest/docs/cvl/index.html)
 
-## Resources Move Prover
-- [Move_prover_user_guide](https://aptos.dev/en/build/smart-contracts/prover/prover-guide)
-- [Move_prover_specification_language](https://aptos.dev/en/build/smart-contracts/prover/spec-lang)
+### Move prover
+- [Move prover](https://aptos.dev/en/build/smart-contracts/prover)
+- [User guide](https://aptos.dev/en/build/smart-contracts/prover/prover-guide)
+- [Move specification language](https://aptos.dev/en/build/smart-contracts/prover/spec-lang)

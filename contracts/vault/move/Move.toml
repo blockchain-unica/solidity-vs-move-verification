@@ -1,0 +1,17 @@
+[package]
+name = "vault_apt"
+version = "1.0.0"
+authors = []
+
+[addresses]
+vault_apt = "_"
+
+[dev-addresses]
+vault_apt="0xBA"
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "mainnet"
+subdir = "aptos-move/framework/aptos-framework"
+
+[dev-dependencies]

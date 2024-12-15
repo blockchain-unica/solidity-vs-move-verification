@@ -1,14 +1,11 @@
-[prover]
-auto_trace_level = "VerifiedFunction"
-
 # Verbosity level
 # Possible values: "ERROR", "WARN", "INFO", "DEBUG". Each level subsumes the output of the previous one.
-verbosity_level = "INFO"
+verbosity_level = "DEBUG"
  
 [prover]
 # Set auto-tracing level, which enhances the diagnosis the Move Prover produces on verification errors.
 # Possible values: "Off", "VerifiedFunction", "AllFunctions"
-auto_trace_level = "Off"
+auto_trace_level = "VerifiedFunction"
  
 # Minimal severity level for diagnosis to be reported.
 # Possible values: "Error", "Warning", "Note"

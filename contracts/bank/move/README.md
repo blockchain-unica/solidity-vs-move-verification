@@ -1,10 +1,22 @@
 # Move on Aptos Implementation and Verification of Bank
 
-How to run
+the split_properties/representable directory contains the properties to be proven, splitted by file 
+(i.e. one property -> one file).
+To check these properties with the move prover it is necessary to copy one of these files (.spec) inside the 
+directory sources (which contains bank_apt.move) and from there run the command
 
-Inside this directory run:
+> aptos move prove --dev
 
-> $ aptos move prove --dev
+Which will run the prover against the spec file
+The output may be long
+Note that on unix OS (tested on Arch) it is possible to redirect the output of the prover to 
+a file with the following commands
+
+append to output_file
+> aptos move prove --dev >> output_file 2>&1
+
+(over) write output_file
+> aptos move prove --dev > output_file 2>&1
 
 ## Directort Content
  

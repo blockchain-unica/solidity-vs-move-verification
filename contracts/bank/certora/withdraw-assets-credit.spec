@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// certoraRun Bank_v1.sol:Bank --verify Bank:withdraw-assets-transfer.spec
-// https://prover.certora.com/output/454304/c9a388b3b7524a6f9101410e025e53a0?anonymousKey=b9a316643232b527efdf87750e18ec97c2102ad2
+// certoraRun Bank_v1.sol:Bank --verify Bank:withdraw-assets-credit.spec
+// https://prover.certora.com/output/454304/55264a9ca0e44e2dbfa751188c45d4c7?anonymousKey=0120e30fd56ddcb2e161ef7b87919ae9bae91024
 
 // after a successful withdraw(amount), exactly amount units of T pass from the control of the contract to that of the sender.
 

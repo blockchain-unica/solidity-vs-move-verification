@@ -1,4 +1,4 @@
-spec bank_apt::bank {
+spec bank_addr::bank {
     spec deposit {
         // deposit-revert: a transaction deposit(amount) aborts if amount is more than the T balance of the transaction sender
         // Representable

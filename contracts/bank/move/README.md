@@ -3,7 +3,7 @@
 the split_properties/representable directory contains the properties to be proven, splitted by file 
 (i.e. one property -> one file).
 To check these properties with the move prover it is necessary to copy one of these files (.spec) inside the 
-directory sources (which contains bank_apt.move) and from there run the command
+directory sources (which contains bank.move) and from there run the command
 
 > aptos move prove --dev
 

@@ -1,4 +1,4 @@
-spec bank_apt::bank {
+spec bank_addr::bank {
     spec withdraw {
 // withdraw-assets-credit-others: after a successful withdraw(amount), the credits of any user but the sender are preserved.
 

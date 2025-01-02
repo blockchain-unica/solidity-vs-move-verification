@@ -1,13 +1,13 @@
 [package]
-name = "bank_apt"
+name = "bank"
 version = "1.0.0"
 authors = []
 
 [addresses]
-bank_apt = "_"
+bank_addr = "_"
 
 [dev-addresses]
-bank_apt="0xBA"
+bank_addr="0xCAFE"
 
 [dependencies.AptosFramework]
 git = "https://github.com/aptos-labs/aptos-core.git"

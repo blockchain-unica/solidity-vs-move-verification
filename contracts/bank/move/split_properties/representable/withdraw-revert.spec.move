@@ -1,4 +1,4 @@
-spec bank_apt::bank {
+spec bank_addr::bank {
     spec withdraw {
         // withdraw-revert: a transaction withdraw(amount) aborts if amount is more than the credit of the transaction sender.
 	pragma aborts_if_is_partial;

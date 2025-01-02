@@ -1,4 +1,4 @@
-spec bank_apt::bank {
+spec bank_addr::bank {
     spec deposit {
 
         // deposit-assets-transfer: (if sender is not the contract) after a successful deposit(amount), exactly amount units of T pass from the control of the sender to that of the contract.

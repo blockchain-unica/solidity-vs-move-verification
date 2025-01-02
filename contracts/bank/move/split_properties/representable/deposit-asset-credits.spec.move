@@ -1,5 +1,4 @@
-spec bank_apt::bank {
-
+spec bank_addr:bank {
 
     spec deposit {
        

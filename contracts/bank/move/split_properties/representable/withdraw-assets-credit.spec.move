@@ -1,9 +1,8 @@
-spec bank_apt::bank {
+spec bank_addr::bank {
 
     spec withdraw {
 
     // withdraw-assets-credit: after a successful withdraw(amount), the users credit is decreased by exactly amount units of T.
-    // Representable
 
        let bank_credits = global<Bank>(bank).credits;
         let post bank_credits_post = global<Bank>(bank).credits;

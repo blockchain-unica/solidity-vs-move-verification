@@ -3,10 +3,12 @@
 
 # ERROR_LOG_FILE="prover_error.txt"
 
-for spec in ../split_properties/representable/*; do 
-    echo "current spec: $spec"
-    cp "$spec" ../sources
+for spec in properties/*; do 
+    echo "checking spec: $spec"
+    cp "$spec" sources/
     aptos move prove --dev
+    # echo "removing file: ${spec##*/}"
+    rm sources/"${spec##*/}"   
 done
 
 # if [ -f "$ERROR_LOG_FILE" ]; then

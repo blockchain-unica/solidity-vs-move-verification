@@ -1,4 +1,5 @@
 spec bank_addr::bank {
+    use std::features;
 
     spec withdraw {
 
@@ -17,7 +18,10 @@ spec bank_addr::bank {
         let bank_credits_sender_coin_value = simple_map::spec_get(bank_credits,signer::address_of(sender)).value;
         let post bank_credits_sender_coin_value_post =  simple_map::spec_get(bank_credits_post,signer::address_of(sender)).value;
 
-        ensures (bank_credits_sender_coin_value_post == (bank_credits_sender_coin_value - amount)) && (sender_coins_value_post == (sender_coins_value + amount));
+        ensures (bank_credits_sender_coin_value_post == (bank_credits_sender_coin_value - amount));
+
+        requires !features::spec_is_enabled(features::COIN_TO_FUNGIBLE_ASSET_MIGRATION);
+	    ensures (sender_coins_value_post == (sender_coins_value + amount));
 
     }
 }

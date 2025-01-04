@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// certoraRun Bank_v1.sol:Bank --verify Bank:deposit-not-revert.spec
+// certoraRun Bank.sol:Bank --verify Bank:deposit-not-revert.spec
 // https://prover.certora.com/output/454304/c8f746671bd142839abc640bb7bd24dc?anonymousKey=5a55558cff1354490349e34dcb8ada01a397f16d
 
 // (up-to overflows) a transaction deposit(amount) does not abort if amount is less or equal to the T balance of the transaction sender

@@ -6,7 +6,7 @@ spec=$1
 echo "checking spec: $spec"
 
 if [ -f $spec ]; then
-    echo "file $spec exists"
+    # echo "file $spec exists"
     cp "$spec" sources/
     aptos move prove --dev
     # echo "removing file: ${spec##*/}"

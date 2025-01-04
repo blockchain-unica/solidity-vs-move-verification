@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: UNLICENSED
 pragma solidity >= 0.8.2;
 
-/// @custom:version conformant to specification
 contract Bank {
     mapping (address => uint) credits;
 

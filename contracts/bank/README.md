@@ -43,3 +43,5 @@ The contract has the following methods:
 - **withdraw-assets-credit**: after a successful `withdraw(amount)`, the users' credit is decreased by exactly amount units of T.
 
 - **withdraw-assets-credit-others**: after a successful `withdraw(amount)`, the credits of any user but the sender are preserved.
+
+- **withdraw-additivity**: two (successful) `withdraw` of n1 and n2 units of T (performed by the same sender) are equivalent to a single `withdraw` of n1+n2 units of T.

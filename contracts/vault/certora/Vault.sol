@@ -24,13 +24,13 @@ contract Vault {
     receive() external payable { }
 
     //  IDLE -> REQ
-    function withdraw(address receiver_, uint amount_) public {
+    function withdraw(address rcv, uint amt) public {
         require(state == States.IDLE);
-        require(amount <= address(this).balance);
+        require(amt <= address(this).balance);
         require(msg.sender == owner);
         request_time = block.number;
-        amount = amount_;
-        receiver = receiver_;
+        amount = amt;
+        receiver = rcv;
         state = States.REQ;
     }
 

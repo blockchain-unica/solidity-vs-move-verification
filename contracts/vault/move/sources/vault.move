@@ -1,4 +1,4 @@
-module vault_apt::vault {
+module vault_addr::vault {
     use aptos_framework::coin::{Self, Coin};
     use aptos_framework::signer;
     use aptos_framework::timestamp;
@@ -40,6 +40,8 @@ module vault_apt::vault {
     // while Solidity does not
     public fun init<CoinType>(owner: &signer, recovery: address, wait_time: u64) {
         let vault = Vault {
+            // TODO: must require that owner key and recovery key are distinct
+            
             owner: signer::address_of(owner),
             recovery: recovery,
             wait_time: wait_time,

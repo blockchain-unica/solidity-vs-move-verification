@@ -14,6 +14,7 @@ contract Vault {
     States state;
 
     constructor (address payable recovery_, uint wait_time_) payable {
+       	require(msg.sender != recovery_);
         owner = msg.sender;
         recovery = recovery_;
         wait_time = wait_time_;

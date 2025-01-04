@@ -1,13 +1,13 @@
 [package]
-name = "vault_apt"
+name = "vault"
 version = "1.0.0"
 authors = []
 
 [addresses]
-vault_apt = "_"
+vault_addr = "_"
 
 [dev-addresses]
-vault_apt="0xBA"
+vault_ddr = "0xCAFE"
 
 [dependencies.AptosFramework]
 git = "https://github.com/aptos-labs/aptos-core.git"

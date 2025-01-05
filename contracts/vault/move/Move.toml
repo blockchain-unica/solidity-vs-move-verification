@@ -7,7 +7,7 @@ authors = []
 vault_addr = "_"
 
 [dev-addresses]
-vault_ddr = "0xCAFE"
+vault_addr = "0xCAFE"
 
 [dependencies.AptosFramework]
 git = "https://github.com/aptos-labs/aptos-core.git"

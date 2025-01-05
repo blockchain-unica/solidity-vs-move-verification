@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// certoraRun Bank_v1.sol:Bank --verify Bank:withdraw-additivity.spec
+// certoraRun Bank.sol:Bank --verify Bank:withdraw-additivity.spec
 // https://prover.certora.com/output/454304/fdb73f4ad24547e6bdb1c26f3d4f9bb6?anonymousKey=a188ce4461d8477936a671f62f437f658be0df9e
 
 // two (successful) withdraw of n1 and n2 units of T (performed by the same sender) are equivalent to a single withdraw of n1+n2 units of T

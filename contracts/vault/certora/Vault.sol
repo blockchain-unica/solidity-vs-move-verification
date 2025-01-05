@@ -15,6 +15,7 @@ contract Vault {
 
     constructor (address payable recovery_, uint wait_time_) payable {
        	require(msg.sender != recovery_);
+        require(wait_time_ > 0);
         owner = msg.sender;
         recovery = recovery_;
         wait_time = wait_time_;

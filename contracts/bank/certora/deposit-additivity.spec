@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// certoraRun Bank_v1.sol:Bank --verify Bank:deposit-additivity.spec
+// certoraRun Bank.sol:Bank --verify Bank:deposit-additivity.spec
 // https://prover.certora.com/output/454304/e5a556bd2240469a8e147849a742e201?anonymousKey=b575018567387bf92a9db0e3abbd0068dca74248
 
 // two (successful) deposits of n1 and n2 units of T (performed by the same sender) are equivalent to a single deposit of n1+n2 units of T

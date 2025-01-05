@@ -3,7 +3,7 @@ module vault_addr::vault {
     use aptos_framework::signer;
     use aptos_framework::timestamp;
     
-    // the coin type stored is parameteric
+    // the coin type stored is parametric
     // seems slightly different from the valut requirements 
     // which requires the native currency 
     // the phantom modifier for the generic
@@ -24,8 +24,7 @@ module vault_addr::vault {
         // from Solidity 
         // 0 -> IDLE
         // 1 -> REQ
-        request_timestamp: u64, // in seconds, when the withdraw request has 
-        // made
+        request_timestamp: u64, // in seconds, when the withdraw request has been made
         amount: u64, // amount to withdraw
         receiver: address, // receiver of the amount withdraw
     }
@@ -39,9 +38,11 @@ module vault_addr::vault {
     // the initialization of all fields
     // while Solidity does not
     public fun init<CoinType>(owner: &signer, recovery: address, wait_time: u64) {
+        assert!(wait_time>0, 0);
+        assert!(signer::address_of(owner) != recovery, 0);
+
         let vault = Vault {
             // TODO: must require that owner key and recovery key are distinct
-            
             owner: signer::address_of(owner),
             recovery: recovery,
             wait_time: wait_time,
@@ -54,10 +55,7 @@ module vault_addr::vault {
         move_to(owner, vault);
     }
 
-    // this is the "receive" function 
-    // from the Vault specification
-    // function defined here follows 
-    // the Move naming conventions 
+    // ~Solidity: receive() function 
     public fun deposit<CoinType>(owner: address, deposit_amount: Coin<CoinType>) acquires Vault {
         let vault = borrow_global_mut<Vault<CoinType>>(owner);
         coin::merge(&mut vault.coins, deposit_amount);
@@ -65,11 +63,12 @@ module vault_addr::vault {
 
     public fun withdraw<CoinType>(owner: &signer, amount: u64, receiver: address) acquires Vault {
         let vault = borrow_global_mut<Vault<CoinType>>(signer::address_of(owner));
-        // like msg.sender == owner in Solidity
+
+        // ~Solidity: msg.sender == owner
         assert!(vault.owner == signer::address_of(owner), 0);
-        // like amount <= address(this).balance in Solidity
+        // ~Solidity: amount <= address(this).balance
         assert!(coin::value(&vault.coins) >= amount, 1);
-        // like state == States.IDLE in Solidity
+        // ~Solidity: state == States.IDLE
         assert!(vault.state == 0, 2);
 
         // Solidity uses block, here timestamps

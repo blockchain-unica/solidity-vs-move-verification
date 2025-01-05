@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// certoraRun Vault.sol --verify Vault:wd-wd-revert.spec
+// certoraRun Vault.sol --verify Vault:withdraw-withdraw-revert.spec
 // https://prover.certora.com/output/454304/426650a41fed42d4945cbb415b1b3b57?anonymousKey=b676642949bacd61422f3cfeab75d54159d49f5b
 
 // a transaction withdraw() aborts if performed immediately after another withdraw()
 
-rule wd_wd_revert {
+rule withdraw_withdraw_revert {
     env e1;
     address addr1;
     uint amt1;

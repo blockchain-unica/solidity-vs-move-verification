@@ -1,5 +1,4 @@
-// [test_only] function is available only under tests 
-// like when we call `aptos move test`
+// [test_only] function is available only under tests (e.g. when we call `aptos move test`)
 #[test_only]
 module bank_addr::bank_tests {
     #[test_only]
@@ -11,7 +10,7 @@ module bank_addr::bank_tests {
     #[test_only]
     use aptos_framework::aptos_coin::{Self,AptosCoin};
     #[test_only]
-    use aptos_framework::coin::{Self, MintCapability};
+    // use aptos_framework::coin::{Self, MintCapability};
     // Mint capability: capability to mint coins 
     // without it it is not possible to create new coins
     // this capability is used in the function give_coins below

@@ -1,7 +1,7 @@
+// after a successful deposit(amount), the assets controlled by any user but the sender are preserved.
+
 spec bank_addr::bank {
     spec deposit {
-        // deposit-assets-transfer-others: after a successful deposit(amount), the assets controlled by any user but the sender are preserved.
-
         let addr_sender = signer::address_of(sender);
 
         let bank_credits = global<Bank>(bank).credits;

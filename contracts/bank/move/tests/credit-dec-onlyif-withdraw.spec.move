@@ -1,5 +1,5 @@
-//  if the credit of a user A is decreased after a transaction [of the Bank contract], then that transaction must be a withdraw where A is the sender
-//  contrapositive: for every transaction that is not a withdraw, or for which A is not the sender, then credit of A is not decreased
+// if the credit of a user A is decreased after a transaction [of the Bank contract], then that transaction must be a withdraw where A is the sender
+// contrapositive: for every transaction that is not a withdraw, or for which A is not the sender, then credit of A is not decreased
 
 spec bank_addr::bank {
     spec deposit {

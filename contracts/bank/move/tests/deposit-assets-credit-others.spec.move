@@ -1,9 +1,8 @@
+// after a successful deposit(amount), the credits of any user but the sender are preserved.
+
 spec bank_addr::bank {
     spec deposit {
-// deposit-assets-credit-others: after a successful deposit(amount), the credits of any user but the sender are preserved.
-
-  // the "after a successful deposit" is represented by covering all possible abort condition 
-
+        // the "after a successful deposit" is represented by covering all possible abort condition 
         let bank_credits = global<Bank>(bank).credits;
         let post bank_credits_post = global<Bank>(bank).credits;
 

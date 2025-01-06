@@ -1,7 +1,7 @@
+// after a successful withdraw(amount), the assets controlled by any user but the sender are preserved.
+
 spec bank_addr::bank {
     spec withdraw {
-        // withdraw-assets-transfer-others: after a successful withdraw(amount), the assets controlled by any user but the sender are preserved.
-
         let addr_sender = signer::address_of(sender);
 
         let bank_credits = global<Bank>(bank).credits;

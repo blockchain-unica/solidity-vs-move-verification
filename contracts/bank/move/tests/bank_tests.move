@@ -41,7 +41,7 @@ module bank_addr::bank_tests {
     }
 
     // signer a performs two deposits of 1 AptosCoin each
-    // check that the balances of a and of the bank are correct
+    // check that the balances of the signer a and of the bank are correct
     #[test(a = @0x03, bank = @0xB, aptos_framework = @aptos_framework)]
     fun test_deposit(a : &signer, bank : &signer, aptos_framework: &signer) {
         bank::test_init_module(bank);
@@ -117,7 +117,7 @@ module bank_addr::bank_tests {
     }
 
     // signer a performs one deposits of 1000 AptosCoin and two withdraws
-    // check that the balances of a and of the bank are correct
+    // check that the balances of the signer a and of the bank are correct
     #[test(a = @0xA, bank = @0xB, aptos_framework = @aptos_framework)]
     fun test_withdraw(a : &signer, bank : &signer, aptos_framework : &signer) {
         bank::test_init_module(bank);
@@ -147,9 +147,9 @@ module bank_addr::bank_tests {
         coin::destroy_burn_cap(burn_cap);
     }
 
+    // withdrawing more tokens than the sender's credit should fail
     #[test(a = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
     #[expected_failure]
-    // withdraw more money than what the client has in the bank account
     fun test_withdraw_too_much(a : &signer, bank : &signer, aptos_framework:&signer){
         bank::test_init_module(bank);
         let addr_bank = signer::address_of(bank);
@@ -158,59 +158,57 @@ module bank_addr::bank_tests {
         give_coins(&mint_cap, a, 1000);
 
         let dep_amount : u64= 500;
-        let wd_amount : u64 = 600;
+        let wd_amount : u64 = 501;
 
         bank::deposit(a,addr_bank, dep_amount); 
 
-        // must fails here since the amount to withdraw is too big 
+        // must fail here, since the amount to withdraw is too much 
         bank::withdraw(a, addr_bank, wd_amount);
 
         coin::destroy_mint_cap(mint_cap);
         coin::destroy_burn_cap(burn_cap);
     }
 
-    // counterexample to the prover claim that code does not fail on overflow?
-    // the idea of this test is the following:
+    // Check that overflows on users' accounts are handled correctly:
     // 1) give the user the max amount of AptosCoin 
     // 2) deposit some more AptosCoin in the client bank account
     // 3) restore the max amount of AptosCoin in their account
     // 4) withdraw some AptosCoin -> this should overflow
     #[test(a = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
     #[expected_failure]
-    fun test_overflow_account(a : &signer, bank : &signer, aptos_framework:&signer){
+    fun test_overflow_account(a : &signer, bank : &signer, aptos_framework:&signer) {
         bank::test_init_module(bank);
-        let (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos_framework);
-        let max_u64 = ((1u128 << 64) - 1) as u64;
-        // as the name says, it is max_u64 is the maximum value for u64
-        // I did not see a library function which gives 
-        // the u64 max value, that's why it is done manually 
-        give_coins(&mint_cap, a, max_u64);
-        // just give some money to withdraw from the 
-        // client personal account
-        bank::deposit(a, signer::address_of(bank), 200);
+        let addr_bank = signer::address_of(bank);
+        let addr_a = signer::address_of(a);
 
-        give_coins(&mint_cap, a, 200);
-        // the amount of money inside the personal account 
-        // of the user is now again the max_u64
-        // the 200 AptosCoin are just a random amount
-        // the previous instructions are needed to 
-        // make the next one fail 
-        bank::withdraw(a, signer::address_of(bank), 200);
+        let (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos_framework);
+    
+        // let max_u64 = ((1u128 << 64) - 1) as u64;
+        let max_u64 : u64 = 0xFFFFFFFFFFFFFFFF;
+        let dep_amount : u64 = 1;
+
+        give_coins(&mint_cap, a, max_u64);
+        assert!(bank::balance_of(addr_a, addr_bank) == max_u64, 0);
+
+        bank::deposit(a, addr_bank, dep_amount);
+
+        give_coins(&mint_cap, a, dep_amount);
+        assert!(bank::balance_of(addr_a, addr_bank) == max_u64, 0);
+
+        // the withdraw should fail 
+        bank::withdraw(a, addr_bank, dep_amount);
 
         coin::destroy_mint_cap(mint_cap);
         coin::destroy_burn_cap(burn_cap);
     }
 
-    #[test(a = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
-    // this test represent the counterexample that the move prover 
-    // found while proving the properties 
-    // ensures (bank_credits_sender_coin_value_post == 
-    //    (bank_credits_sender_coin_value + amount));
-    // unfortunately, this test passes since I do not understand 
+    #[test(a = @0xA, bank = @0xB, aptos_framework = @aptos_framework)]
+    // counterexample that the Move Prover found while proving the property: 
+    // ensures (bank_credits_sender_coin_value_post == (bank_credits_sender_coin_value + amount));
+    // Unfortunately, this test passes since I do not understand 
     // why the prover tells me that the property is not satisfied 
     // maybe something related to the status of the account?
-    // genuinly confused by the prover output
-    fun test_deposit_assets_credits_ensure_failure(a : &signer, bank : &signer, aptos_framework:&signer){
+    fun test_deposit_assets_credits_ensure_failure(a : &signer, bank : &signer, aptos_framework : &signer) {
         bank::test_init_module(bank);
         let (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos_framework); // only for testing purposes, allow to burn and mint  aptos coin
         give_coins(&mint_cap, a, 18446744073709545282);
@@ -229,7 +227,7 @@ module bank_addr::bank_tests {
         coin::destroy_burn_cap(burn_cap);
     }
 
-    #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    #[test(a = @0xA, bank = @0xB, aptos_framework = @aptos_framework)]
     // this test represent the counterexample that the move prover 
     // found while proving the properties 
     // ensures (bank_credits_sender_coin_value_post == 
@@ -238,27 +236,25 @@ module bank_addr::bank_tests {
     // why the prover tells me that the property is not satisfied 
     // maybe something related to the status of the account?
     // genuinly confused by the prover output
-    fun test_deposit_assets_transfer_ensure_failure(client : &signer, bank : &signer, aptos_framework:&signer){
+    fun test_deposit_assets_transfer_ensure_failure(a : &signer, bank : &signer, aptos_framework:&signer) {
         bank::test_init_module(bank);
-        let (burn_capability, mint_capability) = aptos_coin::initialize_for_test(aptos_framework); // only for testing purposes, allow to burn and mint  aptos coin
-        give_coins(&mint_capability,client,2);
+        let (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos_framework);
+        give_coins(&mint_cap, a, 2);
 
-        bank::deposit(client,signer::address_of(bank),1);
-        assert!(bank::balance_of(signer::address_of(client),signer::address_of(bank)) == 1,1);
-        assert!(coin::balance<AptosCoin>(signer::address_of(client)) == 1,2);
+        bank::deposit(a, signer::address_of(bank),1);
+        assert!(bank::balance_of(signer::address_of(a),signer::address_of(bank)) == 1,1);
+        assert!(coin::balance<AptosCoin>(signer::address_of(a)) == 1, 2);
         // after the deposit two things: 
         // * the amount of money into the balance of the Bank client 
         // account is 1 
         // * the amount of money into the client personal account is 
-        // 1 since 
-        // we gave him 2 AptosCoin
+        // 1 since we gave him 2 AptosCoin
 
-        coin::destroy_mint_cap(mint_capability);
-        coin::destroy_burn_cap(burn_capability);
+        coin::destroy_mint_cap(mint_cap);
+        coin::destroy_burn_cap(burn_cap);
     }
 
-
-    #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    #[test(a = @0xA, bank = @0xB, aptos_framework = @aptos_framework)]
     #[expected_failure]
     // deposit an amount of money which the user does not has 
     // this test fails correctly while the prover seems to state 
@@ -270,19 +266,19 @@ module bank_addr::bank_tests {
     // prover: seems unrelated to what I want to state 
     // in any case the following test fails correctly
     // showing what i want
-    fun test_deposit_revert_abort_failure(client : &signer, bank : &signer, aptos_framework:&signer){
+    fun test_deposit_revert_abort_failure(a : &signer, bank : &signer, aptos_framework:&signer) {
         bank::test_init_module(bank);
-        let (burn_capability, mint_capability) = aptos_coin::initialize_for_test(aptos_framework);
-        give_coins(&mint_capability,client,1000);
+        let (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos_framework);
+        give_coins(&mint_cap, a, 1000);
 
-        // fails at the next instructions since 
-        // the user does not own 1001 AptosCoin
-        bank::deposit(client,signer::address_of(bank),1001); 
-        coin::destroy_mint_cap(mint_capability);
-        coin::destroy_burn_cap(burn_capability);
+        // fails at the next instructions since a does not own 1001 AptosCoin
+        bank::deposit(a, signer::address_of(bank), 1001); 
+
+        coin::destroy_mint_cap(mint_cap);
+        coin::destroy_burn_cap(burn_cap);
     }
 
-    #[test(a = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    #[test(a = @0xA, bank = @0xB, aptos_framework = @aptos_framework)]
     // this test represent the counterexample that the move prover 
     // found while proving the properties 
     // ensures (bank_credits_sender_coin_value_post == 
@@ -292,20 +288,17 @@ module bank_addr::bank_tests {
     // why the prover tells me that the property is not satisfied 
     // maybe something related to the status of the account?
     // genuinly confused by the prover output
-    fun test_withdraw_assets_transfer_ensures_failure(a : &signer, bank : &signer, aptos_framework:&signer){
+    fun test_withdraw_assets_transfer_ensures_failure(a : &signer, bank : &signer, aptos_framework : &signer) {
         bank::test_init_module(bank);
         let (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos_framework); // only for testing purposes, allow to burn and mint  aptos coin
         give_coins(&mint_cap, a, 5706);
-        bank::deposit(a,signer::address_of(bank),5706); 
-        bank::withdraw(a,signer::address_of(bank),1);
-        assert!(bank::balance_of(signer::address_of(a),signer::address_of(bank)) == 5705 ,1);
+        bank::deposit(a, signer::address_of(bank),5706); 
+        bank::withdraw(a, signer::address_of(bank),1);
+        assert!(bank::balance_of(signer::address_of(a), signer::address_of(bank)) == 5705 ,1);
         assert!(coin::balance<AptosCoin>(signer::address_of(a)) == 1,2);
         // after the withdraw two things: 
-        // * the amount of money into the balance of a 
-        // account is 5705 
-        // * the amount of money into the client personal account is 
-        // 1 since 
-        // we gave him 5706 AptosCoin
+        // * the amount of money into the balance of a's account is 5705 
+        // * the amount of money into a' personal account is 1, since we gave him 5706 AptosCoin
 
         coin::destroy_mint_cap(mint_cap);
         coin::destroy_burn_cap(burn_cap);
@@ -314,11 +307,9 @@ module bank_addr::bank_tests {
     // regarding the last: withdraw-revert 
     // the prover tells me that the function aborts if 
     // Coin is not published error (ECOIN_STORE_NOT_PUBLISHED)
-    // which requires, according 
-    // to the documentation on errors to register the coin for the address.
-    // adding the spec function that _should_ catch this error 
-    // aborts_if !coin::spec_is_account_registered (...) does not work and 
-    // the prover says that the function does not abort under 
+    // This requires, according to the documentation on errors to register the coin for the address.
+    // Adding the spec function that _should_ catch this error 
+    // aborts_if !coin::spec_is_account_registered (...) does not work and the prover says that the function does not abort under 
     // that condition.
     // coin::spec_is_account_registered(...)
     // contains a check for the existence of a 

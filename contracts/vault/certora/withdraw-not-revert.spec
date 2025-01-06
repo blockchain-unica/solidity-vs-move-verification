@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // certoraRun Vault.sol --verify Vault:withdraw-not-revert.spec
-// https://prover.certora.com/output/454304/0f228553d93e470ca69c9395dfeb5400?anonymousKey=32a9435e15b69c632ed6b1d26006fca4b2927885
+// https://prover.certora.com/output/454304/fb870ca938f04ff3904e862aa0572318?anonymousKey=25152ef1ba866da32a6d68028a43b06d7d3bedc3
 
 // withdraw-not-revert: a transaction withdraw(amount) does not abort if:
 // 1) amount is less than or equal to the contract balance, and 

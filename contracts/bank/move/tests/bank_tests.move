@@ -1,19 +1,11 @@
 // [test_only] function is available only under tests (e.g. when we call `aptos move test`)
 #[test_only]
 module bank_addr::bank_tests {
-    #[test_only]
-    use std::signer; // to call signer related functions
-    #[test_only]
     use bank_addr::bank::{Self}; 
-    #[test_only]
+    use std::signer;
     use aptos_framework::account::{Self};
-    #[test_only]
     use aptos_framework::aptos_coin::{Self,AptosCoin};
-    #[test_only]
-    // use aptos_framework::coin::{Self, MintCapability};
-    // Mint capability: capability to mint coins 
-    // without it it is not possible to create new coins
-    // this capability is used in the function give_coins below
+    use aptos_framework::coin::{Self, MintCapability}; // (used in give_coins)
 
     // helper function to allow to give coins to a user
     #[test_only]
@@ -30,53 +22,70 @@ module bank_addr::bank_tests {
         let coins = coin::mint(amount, mint_capability);
         coin::deposit(to_addr, coins);
     }
-    // #[test] still required since
-    // even if module is declared 
-    // for test only
 
-    // client and bank will have the address 0x1 and 0x2
-    // for this test, observe that they match the name of 
-    // function parameters
-   #[test(client = @0x1,bank = @0xB)]
-    // no amount of money provided
-    // expected_failure <-> the test is successful if it fails with the
-    // abort with code 0, location is the module name where the error will be raised
-    #[expected_failure(abort_code = 0,location=bank)]
-    fun deposit_amount_is_zero_fail(client : &signer, bank : &signer){
-        bank::test_init_module(bank); // initialize the Bank resource
-        // and give it to the executor of the test_init_module module
-        bank::deposit(client,signer::address_of(bank),0);
-    }
-    
-    #[test(client = @0x1,bank = @0xB)]
-    // no amount of money provided
-    // note that there is no need to mint/burn money like in the following 
-    // tests
-    #[expected_failure(abort_code = 0,location=bank)]
-    fun amount_is_zero_fail(client : &signer, bank : address){
-        bank::withdraw(client,bank,0);
-    }
-
+    // bank should exists after its initialization with init_module
     #[test(bank = @0xB)]
-    // bank should exists after its initialization
-    fun test_bank_existence(bank : &signer){
+    fun test_bank_exists(bank : &signer){
         bank::test_init_module(bank);
         assert!(bank::bank_exists(bank),0);
     }
 
+    // deposit of zero tokens should fail
+    #[test(sender = @0x1, bank = @0xB)]
+    // expected_failure <-> the test is successful if it fails with abort code EAmountIsZero 
+    #[expected_failure(abort_code = bank::EAmountIsZero)]
+    fun deposit_amount_zero(sender : &signer, bank : &signer) {
+        bank::test_init_module(bank); // initialize the Bank resource and pass it to bank::test_init_module
+        bank::deposit(sender, signer::address_of(bank), 0);
+    }
+
+    // withdraw of zero tokens should fail
+    #[test(sender = @0x1, bank = @0xB)]
+    #[expected_failure(abort_code = bank::EAmountIsZero)]
+    fun withdraw_amount_zero(sender : &signer, bank : &signer) {
+        bank::test_init_module(bank);
+        bank::withdraw(sender,signer::address_of(bank),0);
+    }
+
+    #[test(bank = @0xB, sender = @0x03, aptos_framework = @0x01)]
+    public fun test_deposit(bank : &signer, aptos_framework: &signer) {
+        bank::test_init_module(bank);
+        let addr_bank = signer::address_of(bank);
+
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
+
+        let a = account::create_account_for_test(@0x3);
+        let addr_a = signer::address_of(&a);
+
+        coin::register<AptosCoin>(&a);
+        0x1::aptos_coin::mint(aptos_framework, @0x3, 10);
+
+        let init_balance = coin::balance<AptosCoin>(addr_a);
+        assert!(init_balance == 10, 0);
+
+        bank::deposit(&a, addr_bank, 1);
+        assert!(coin::balance<AptosCoin>(addr_a) == init_balance - 1, 0);
+        bank::deposit(&a, addr_bank, 1);
+        assert!(coin::balance<AptosCoin>(addr_a) == init_balance - 2, 0);
+    
+        assert!(bank::balance_of(addr_a, addr_bank) == 2, 0);
+
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
+
     // aptos_framework required for allowing to get the mint and burn 
     // capability for AptosCoin 
-    #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
-    // simple test, just to check if the deposit work 
-    // in a simple case
-    fun test_bank_deposit(client : &signer, bank : &signer, aptos_framework:&signer){
+    #[test(sender = @0xA, bank = @0xB, aptos_framework = @aptos_framework)]
+    // simple test, just to check if the deposit work in a simple case
+    fun test_bank_deposit(sender : &signer, bank : &signer, aptos_framework:&signer){
         bank::test_init_module(bank);
         let (burn_capability, mint_capability) = aptos_coin::initialize_for_test(aptos_framework); // only for testing purposes, allow to burn and mint  aptos coin
-        give_coins(&mint_capability,client,1000);
+        give_coins(&mint_capability,sender,1000);
 
-        bank::deposit(client,signer::address_of(bank),500);
-        assert!(bank::account_balance(client,signer::address_of(bank)) == 500,1);
-        assert!(coin::balance<AptosCoin>(signer::address_of(client)) == 500,2);
+        bank::deposit(sender,signer::address_of(bank),500);
+        assert!(bank::balance_of(signer::address_of(sender),signer::address_of(bank)) == 500,1);
+        assert!(coin::balance<AptosCoin>(signer::address_of(sender)) == 500,2);
         // after the deposit two things: 
         // * the amount of money into the balance of the Bank client account is 500 
         // * the amount of money into the client personal account is 500 since 
@@ -89,7 +98,7 @@ module bank_addr::bank_tests {
         coin::destroy_burn_cap(burn_capability);
     }
 
-#[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
     // test if the deposit updates the amount of money
     fun test_bank_update_deposit(client : &signer, bank : &signer, aptos_framework:&signer){
         bank::test_init_module(bank);
@@ -100,14 +109,14 @@ module bank_addr::bank_tests {
         // should have 700 instead of 200, the last deposit)
         bank::deposit(client,signer::address_of(bank),500);
         bank::deposit(client,signer::address_of(bank),200);
-        assert!(bank::account_balance(client,signer::address_of(bank)) == 700,1);
+        assert!(bank::balance_of(signer::address_of(client),signer::address_of(bank)) == 700,1);
         assert!(coin::balance<AptosCoin>(signer::address_of(client)) == 300,2);
 
         coin::destroy_mint_cap(mint_capability);
         coin::destroy_burn_cap(burn_capability);
     }
 
-#[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
     #[expected_failure(abort_code=0, location=bank)]
     // test that withdraw 0 is not allowed
     fun test_bank_withdraw_zero(client : &signer, bank : &signer, aptos_framework:&signer){
@@ -128,8 +137,7 @@ module bank_addr::bank_tests {
         coin::destroy_burn_cap(burn_capability);
     }
 
-
-#[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    #[test(client = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
     // simple test to check that the withdraw does indeed what it 
     // is supposed to do
     fun test_bank_withdraw(client : &signer, bank : &signer, aptos_framework:&signer){
@@ -143,7 +151,7 @@ module bank_addr::bank_tests {
         bank::withdraw(client,signer::address_of(bank),200);
         // check if after a deposit 500 and withdraw 200 of deposit,
         // 300 AptosCoin are inside the bank 
-        assert!(bank::account_balance(client,signer::address_of(bank)) == 300,1);
+        assert!(bank::balance_of(signer::address_of(client),signer::address_of(bank)) == 300,1);
         // and the user account owns 500 (remaining after deposit) 
         // + 200 (what has been withdrawn) 
         assert!(coin::balance<AptosCoin>(signer::address_of(client)) == 700,2);
@@ -239,7 +247,7 @@ module bank_addr::bank_tests {
         give_coins(&mint_capability,client,18446744073709545282);
 
         bank::deposit(client,signer::address_of(bank),2);
-        assert!(bank::account_balance(client,signer::address_of(bank)) == 2,1);
+        assert!(bank::balance_of(signer::address_of(client),signer::address_of(bank)) == 2,1);
         assert!(coin::balance<AptosCoin>(signer::address_of(client)) == 18446744073709545280,2);
         // after the deposit two things: 
         // * the amount of money into the balance of the Bank client 
@@ -270,7 +278,7 @@ module bank_addr::bank_tests {
         give_coins(&mint_capability,client,2);
 
         bank::deposit(client,signer::address_of(bank),1);
-        assert!(bank::account_balance(client,signer::address_of(bank)) == 1,1);
+        assert!(bank::balance_of(signer::address_of(client),signer::address_of(bank)) == 1,1);
         assert!(coin::balance<AptosCoin>(signer::address_of(client)) == 1,2);
         // after the deposit two things: 
         // * the amount of money into the balance of the Bank client 
@@ -327,7 +335,7 @@ module bank_addr::bank_tests {
         give_coins(&mint_capability,client,5706);
         bank::deposit(client,signer::address_of(bank),5706); 
         bank::withdraw(client,signer::address_of(bank),1);
-        assert!(bank::account_balance(client,signer::address_of(bank)) == 5705 ,1);
+        assert!(bank::balance_of(signer::address_of(client),signer::address_of(bank)) == 5705 ,1);
         assert!(coin::balance<AptosCoin>(signer::address_of(client)) == 1,2);
         // after the withdraw two things: 
         // * the amount of money into the balance of the Bank client 

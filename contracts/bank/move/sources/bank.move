@@ -13,19 +13,19 @@ module bank_addr::bank {
     const ENoAccount : u64 = 1;
 
     // guaranteed to be called once only by Move on Aptos
-    fun init_module(owner : &signer) {
+    fun init_module(account : &signer) {
         let bank = Bank{
             credits : simple_map::new()
         };
-        move_to(owner, bank);
+        move_to(account, bank);
     }
 
     // ~Solidity: deposit is allowed only to msg.sender (the transaction signer)
-    public entry fun deposit(sender : &signer, owner : address, amount : u64) acquires Bank  {
+    public entry fun deposit(sender : &signer, bank : address, amount : u64) acquires Bank  {
         // ~Solidity: require(amount > 0);
         assert!(amount > 0, EAmountIsZero);
         let deposit : Coin<AptosCoin> = coin::withdraw(sender, amount);
-        let bank = borrow_global_mut<Bank>(owner); 
+        let bank = borrow_global_mut<Bank>(bank); 
 
         // the sender has already credits in the bank
         if (simple_map::contains_key(&bank.credits, &signer::address_of(sender))){
@@ -40,10 +40,10 @@ module bank_addr::bank {
         }
     }
 
-    public entry fun withdraw(sender : &signer, owner : address, amount : u64) acquires Bank {
+    public entry fun withdraw(sender : &signer, bank : address, amount : u64) acquires Bank {
         // ~Solidity: require(amount > 0);
         assert!(amount != 0, EAmountIsZero);
-        let bank = borrow_global_mut<Bank>(owner);
+        let bank = borrow_global_mut<Bank>(bank);
         let sender_balance = simple_map::borrow_mut(&mut bank.credits, &signer::address_of(sender));
     
         let withdrawn = coin::extract(sender_balance, amount);

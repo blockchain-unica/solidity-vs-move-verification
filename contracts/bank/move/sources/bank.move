@@ -41,6 +41,7 @@ module bank_addr::bank {
     }
 
     public entry fun withdraw(sender : &signer, owner : address, amount : u64) acquires Bank {
+        // ~Solidity: require(amount > 0);
         assert!(amount != 0, EAmountIsZero);
         let bank = borrow_global_mut<Bank>(owner);
         let sender_balance = simple_map::borrow_mut(&mut bank.credits, &signer::address_of(sender));

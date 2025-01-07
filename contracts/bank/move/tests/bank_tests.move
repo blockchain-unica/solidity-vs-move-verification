@@ -35,7 +35,7 @@ module bank_addr::bank_tests {
     #[test(sender = @0x1, bank = @0xB)]
     // expected_failure <-> the test is successful if it fails with abort code EAmountIsZero 
     #[expected_failure(abort_code = bank::EAmountIsZero)]
-    fun deposit_amount_zero(sender : &signer, bank : &signer) {
+    fun test_deposit_amount_zero(sender : &signer, bank : &signer) {
         bank::test_init_module(bank); // initialize the Bank resource and pass it to bank::test_init_module
         bank::deposit(sender, signer::address_of(bank), 0);
     }
@@ -314,5 +314,4 @@ module bank_addr::bank_tests {
     // coin::spec_is_account_registered(...)
     // contains a check for the existence of a 
     // (primary) store so I don't understand what is going on here
-
 }

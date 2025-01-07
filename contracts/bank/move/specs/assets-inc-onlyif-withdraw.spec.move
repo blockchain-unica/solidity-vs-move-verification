@@ -1,5 +1,5 @@
-//  if the assets of a user A are increased after a transaction [of the Bank contract], then that transaction must be a withdraw where A is the sender
-//  contrapositive: for every transaction that is not a withdraw, or for which A is not the sender, then assets of A are not increased
+// if the assets of a user A are increased after a transaction [of the Bank contract], then that transaction must be a withdraw where A is the sender
+// contrapositive: for every transaction that is not a withdraw, or for which A is not the sender, then assets of A are not increased
 
 spec bank_addr::bank {    
     spec deposit {

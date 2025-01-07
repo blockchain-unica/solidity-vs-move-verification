@@ -2,7 +2,7 @@
 
 # ERROR_LOG_FILE="prover_error.txt"
 
-for spec in tests/*.spec.move; do 
+for spec in specs/*.spec.move; do 
     echo "checking spec: $spec"
     cp "$spec" sources/
     aptos move prove --dev

@@ -55,10 +55,16 @@ module vault_addr::vault {
         move_to(owner, vault);
     }
 
-    // ~Solidity: receive() function 
     public fun deposit<CoinType>(owner: address, deposit_amount: Coin<CoinType>) acquires Vault {
         let vault = borrow_global_mut<Vault<CoinType>>(owner);
         coin::merge(&mut vault.coins, deposit_amount);
+    }
+
+    // ~Solidity: receive() function 
+    public entry fun receive<CoinType>(owner : &signer, vault : address, amount : u64) acquires Vault  {
+        let coins : Coin<CoinType> = coin::withdraw(owner, amount);
+        let vault = borrow_global_mut<Vault<CoinType>>(vault);
+        coin::merge(&mut vault.coins, coins);
     }
 
     public fun withdraw<CoinType>(owner: &signer, amount: u64, receiver: address) acquires Vault {
@@ -102,5 +108,17 @@ module vault_addr::vault {
         assert!(vault.state == 1, 2);
 
         vault.state = 0;
+    }
+
+    #[test_only]
+    public fun vault_balance<CoinType>(owner : address) : u64 acquires Vault {
+        let vault = borrow_global<Vault<CoinType>>(owner);
+        let balance = &vault.coins;
+        coin::value(balance)
+    }
+
+    #[test_only]
+    public fun vault_exists<CoinType>(owner : &signer) : bool {
+        exists<Vault<CoinType>>(signer::address_of(owner))
     }
 }

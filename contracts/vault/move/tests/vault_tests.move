@@ -2,10 +2,14 @@
 module vault_addr::vault_tests {
     use vault_addr::vault::{Self};
     use std::signer;
+    use std::timestamp; 
 
     use aptos_framework::account::{Self};
     use aptos_framework::aptos_coin::{AptosCoin};
     use aptos_framework::coin::{Self, MintCapability};
+
+    const IDLE : u8 = 0;
+    const REQ : u8 = 1;
 
     // helper function to create an account with freshly minted coins
     #[test_only]
@@ -49,7 +53,7 @@ module vault_addr::vault_tests {
     }
 
     // signer a performs two deposits of 1 AptosCoin each
-    // check that the balances of the signer a and of the bank are correct
+    // check that the balances of the signer and of the vault are correct
     #[test(a = @0x01, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
     fun test_receive(a : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
         vault::init<AptosCoin>(owner, recovery, 100);
@@ -77,6 +81,110 @@ module vault_addr::vault_tests {
         assert!(vault::vault_balance<AptosCoin>(addr_owner) == 2, 0);
 
         // mint and burn capabilities must be destroyed at the end of the function
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
+
+    // signers a and b perform two deposits of 1 AptosCoin each
+    // check that the balances of the signer and of the vault are correct
+    #[test(a = @0x01, b = @0x02, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
+    fun test_receive_two_addr(a : &signer, b : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
+        vault::init<AptosCoin>(owner, recovery, 100);
+        let addr_owner = signer::address_of(owner);
+        let addr_a = signer::address_of(a);
+        let addr_b = signer::address_of(b);
+
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
+ 
+        give_coins(&mint_cap, a, 10);
+        give_coins(&mint_cap, b, 10);
+
+        vault::receive<AptosCoin>(a, addr_owner, 2);
+        vault::receive<AptosCoin>(b, addr_owner, 3);
+
+        assert!(coin::balance<AptosCoin>(addr_a) == 8, 0);
+        assert!(coin::balance<AptosCoin>(addr_b) == 7, 0);
+        assert!(vault::vault_balance<AptosCoin>(addr_owner) == 5, 0);
+
+        // mint and burn capabilities must be destroyed at the end of the function
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
+
+    // a performs a deposit of 10 AptosCoin 
+    // then the owner issues a withdraw request of 2 AptosCoin to b
+    #[test(a = @0x01, b = @0x02, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
+    fun test_withdraw(a : &signer, b : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
+        timestamp::set_time_has_started_for_testing(aptos_framework);
+
+        vault::init<AptosCoin>(owner, recovery, 100);
+        let addr_owner = signer::address_of(owner);
+        let addr_a = signer::address_of(a);
+        let addr_b = signer::address_of(b);
+
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
+ 
+        give_coins(&mint_cap, a, 10);
+        give_coins(&mint_cap, b, 0);
+
+        vault::receive<AptosCoin>(a, addr_owner, 10);
+        vault::withdraw<AptosCoin>(owner, 2, addr_b);
+
+        assert!(coin::balance<AptosCoin>(addr_a) == 0, 0);
+        assert!(coin::balance<AptosCoin>(addr_b) == 0, 0);
+        assert!(vault::vault_balance<AptosCoin>(addr_owner) == 10, 0);
+
+        assert!(vault::vault_state<AptosCoin>(addr_owner) == REQ, 0);
+
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
+
+    // a performs a deposit of 10 AptosCoin
+    // then the owner issues a withdraw request of 11 AptosCoin to b
+    #[test(a = @0x01, b = @0x02, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
+    #[expected_failure]
+    fun test_withdraw_toomuch(a : &signer, b : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
+        timestamp::set_time_has_started_for_testing(aptos_framework);
+
+        vault::init<AptosCoin>(owner, recovery, 100);
+        let addr_owner = signer::address_of(owner);
+        let addr_b = signer::address_of(b);
+
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
+ 
+        give_coins(&mint_cap, a, 10);
+        give_coins(&mint_cap, b, 0);
+
+        vault::receive<AptosCoin>(a, addr_owner, 10);
+        // should fail, because the owner tries to withdraw more than the balance
+        vault::withdraw<AptosCoin>(owner, 11, addr_b);
+
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
+
+    // a performs a deposit of 10 AptosCoin
+    // then the owner issues a two withdraw requests 
+    #[test(a = @0x01, b = @0x02, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
+    #[expected_failure]
+    fun test_withdraw_withdraw(a : &signer, b : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
+        timestamp::set_time_has_started_for_testing(aptos_framework);
+
+        vault::init<AptosCoin>(owner, recovery, 100);
+        let addr_owner = signer::address_of(owner);
+        let addr_b = signer::address_of(b);
+
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
+ 
+        give_coins(&mint_cap, a, 10);
+        give_coins(&mint_cap, b, 0);
+
+        vault::receive<AptosCoin>(a, addr_owner, 10);
+        vault::withdraw<AptosCoin>(owner, 1, addr_b);
+        // should fail, because withdraw is not allowed in REQ state
+        vault::withdraw<AptosCoin>(owner, 1, addr_b);
+
         coin::destroy_burn_cap(burn_cap);
         coin::destroy_mint_cap(mint_cap);
     }

@@ -165,7 +165,7 @@ module vault_addr::vault_tests {
     }
 
     // a performs a deposit of 10 AptosCoin
-    // then the owner issues a two withdraw requests 
+    // then the owner issues two consecutive withdraw requests 
     #[test(a = @0x01, b = @0x02, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
     #[expected_failure]
     fun test_withdraw_withdraw(a : &signer, b : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
@@ -184,6 +184,72 @@ module vault_addr::vault_tests {
         vault::withdraw<AptosCoin>(owner, 1, addr_b);
         // should fail, because withdraw is not allowed in REQ state
         vault::withdraw<AptosCoin>(owner, 1, addr_b);
+
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
+
+    // a performs a deposit of 10 AptosCoin
+    // then the owner issues a withdraw request of 2 AptosCoin to b
+    // then before the deadline, the owner issues a finalize request 
+    #[test(a = @0x01, b = @0x02, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
+    #[expected_failure]
+    fun test_finalize_before_deadline(a : &signer, b : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
+        timestamp::set_time_has_started_for_testing(aptos_framework);
+
+        let wait_time = 100;
+
+        vault::init<AptosCoin>(owner, recovery, wait_time);
+        let addr_owner = signer::address_of(owner);
+        let addr_b = signer::address_of(b);
+
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
+ 
+        give_coins(&mint_cap, a, 10);
+        give_coins(&mint_cap, b, 0);
+
+        vault::receive<AptosCoin>(a, addr_owner, 10);
+        vault::withdraw<AptosCoin>(owner, 1, addr_b);
+        
+        timestamp::fast_forward_seconds(wait_time-1); 
+
+        // should fail, because finalize can only be performed after the deadline
+        vault::finalize<AptosCoin>(owner);
+
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
+
+    // a performs a deposit of 10 AptosCoin
+    // then the owner issues a withdraw request of 2 AptosCoin to b
+    // then after the deadline, the owner issues a finalize request 
+    #[test(a = @0x01, b = @0x02, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
+    fun test_finalize_after_deadline(a : &signer, b : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
+        timestamp::set_time_has_started_for_testing(aptos_framework);
+
+        let wait_time = 100;
+
+        vault::init<AptosCoin>(owner, recovery, wait_time);
+        let addr_owner = signer::address_of(owner);
+        let addr_b = signer::address_of(b);
+
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
+ 
+        give_coins(&mint_cap, a, 10);
+        give_coins(&mint_cap, b, 0);
+
+        let dep_amount = 10;
+        let wd_amount = 1;
+
+        vault::receive<AptosCoin>(a, addr_owner, dep_amount);
+        vault::withdraw<AptosCoin>(owner, wd_amount, addr_b);
+        
+        timestamp::fast_forward_seconds(wait_time+1); 
+
+        vault::finalize<AptosCoin>(owner);
+
+        assert!(coin::balance<AptosCoin>(addr_b) == wd_amount, 0);
+        assert!(vault::vault_balance<AptosCoin>(addr_owner) == dep_amount - wd_amount, 0);
 
         coin::destroy_burn_cap(burn_cap);
         coin::destroy_mint_cap(mint_cap);

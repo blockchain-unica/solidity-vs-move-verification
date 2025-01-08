@@ -1,3 +1,4 @@
+// a transaction finalize() aborts if the sender is not the owner, or if the state is not REQ
 
 spec vault_addr::vault {
 
@@ -9,6 +10,6 @@ spec vault_addr::vault {
 
       let vault = global<Vault<CoinType>>(addr_owner);
 
-      aborts_if addr_owner != vault.owner;
+      aborts_if addr_owner != vault.owner || vault.state != REQ;
  }
 }

@@ -1,4 +1,4 @@
-// a transaction finalize() aborts if the sender is not the owner, or if the state is not REQ
+//  a transaction finalize() aborts if the sender is not the owner, or if the state is not REQ, or wait_time has not passed after request_timestamp.
 
 spec vault_addr::vault {
 
@@ -10,6 +10,9 @@ spec vault_addr::vault {
 
       let vault = global<Vault<CoinType>>(addr_owner);
 
-      aborts_if addr_owner != vault.owner || vault.state != REQ;
+      aborts_if 
+         addr_owner != vault.owner 
+         || vault.state != REQ
+         || timestamp::now_seconds() < vault.request_timestamp + vault.wait_time;
  }
 }

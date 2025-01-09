@@ -54,9 +54,9 @@ module vault_addr::vault {
     }
 
     // ~Solidity: receive() function 
-    public entry fun receive<CoinType>(owner : &signer, vault : address, amount : u64) acquires Vault  {
-        let coins : Coin<CoinType> = coin::withdraw(owner, amount);
-        let vault = borrow_global_mut<Vault<CoinType>>(vault);
+    public entry fun receive<CoinType>(sender : &signer, vault_addr : address, amount : u64) acquires Vault  {
+        let coins : Coin<CoinType> = coin::withdraw(sender, amount);
+        let vault = borrow_global_mut<Vault<CoinType>>(vault_addr);
         coin::merge(&mut vault.coins, coins);
     }
 

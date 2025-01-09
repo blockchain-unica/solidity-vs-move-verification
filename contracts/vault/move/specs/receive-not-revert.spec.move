@@ -5,7 +5,7 @@ spec vault_addr::vault {
    spec receive {     
       requires exists<Vault<CoinType>>(vault);
 
-      let addr_sender = signer::address_of(owner);
+      let addr_sender = signer::address_of(sender);
       requires exists<coin::CoinStore<CoinType>>(addr_sender);
       let coin_store = global<coin::CoinStore<CoinType>>(addr_sender);
 

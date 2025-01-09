@@ -224,7 +224,7 @@ module vault_addr::vault_tests {
     // then the owner issues a withdraw request of 2 AptosCoin to b
     // then after the deadline, the owner issues a finalize request 
     #[test(a = @0x01, b = @0x02, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
-    fun test_finalize_after_deadline(a : &signer, b : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
+    fun test_finalize_after_withdraw(a : &signer, b : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
         timestamp::set_time_has_started_for_testing(aptos_framework);
 
         let wait_time = 100;

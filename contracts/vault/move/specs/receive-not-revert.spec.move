@@ -3,7 +3,7 @@ spec vault_addr::vault {
    //use std::features;
 
    spec receive {     
-      requires exists<Vault<CoinType>>(vault);
+      requires exists<Vault<CoinType>>(vault_addr);
 
       let addr_sender = signer::address_of(sender);
       requires exists<coin::CoinStore<CoinType>>(addr_sender);

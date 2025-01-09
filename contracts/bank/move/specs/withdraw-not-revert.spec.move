@@ -6,6 +6,11 @@ spec bank_addr::bank {
      
     spec withdraw {
         let addr_sender = signer::address_of(sender);
+	
+     	requires exists<coin::CoinStore<AptosCoin>>(addr_sender);
+	let coin_store = global<coin::CoinStore<AptosCoin>>(addr_sender);
+	requires !coin_store.frozen;
+
 		//let sender_balance = global<coin::CoinStore<AptosCoin>>(addr_sender).coin.value;
 
 	  	requires global<aptos_account::DirectTransferConfig>(addr_sender).allow_arbitrary_coin_transfers;

@@ -1,14 +1,12 @@
 [package]
-name = "pricebet"
+name = "Oracle"
 version = "1.0.0"
 authors = []
 
 [addresses]
-pricebet_addr = "_"
 oracle_addr = "_"
 
 [dev-addresses]
-pricebet_addr="0xCAFE"
 oracle_addr = "0xABBA"
 
 [dependencies.AptosFramework]
@@ -16,5 +14,3 @@ git = "https://github.com/aptos-labs/aptos-core.git"
 rev = "mainnet"
 subdir = "aptos-move/framework/aptos-framework"
 
-[dependencies.Oracle]
-local = "./oracle/"

@@ -1,4 +1,4 @@
-module pricebet_addr::oracle {
+module oracle_addr::oracle {
     struct Oracle has key {
         exchange_rate: u64,
     }

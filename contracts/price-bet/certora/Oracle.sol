@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.1;
+//SPDX-License-Identifier: GPL-3.0-only
+pragma solidity >= 0.8.2;
 
-contract Oracle{
+contract Oracle {
     address owner;
     uint exchange_rate;
 
@@ -10,7 +10,7 @@ contract Oracle{
         exchange_rate = init_rate;
     }
 
-    function get_exchange_rate() public view returns(uint){
+    function get_exchange_rate() public view returns(uint) {
         return exchange_rate;
     }
 

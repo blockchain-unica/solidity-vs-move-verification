@@ -2,7 +2,7 @@ module pricebet_addr::pricebet {
     use aptos_framework::coin::{Self, Coin};
     use aptos_framework::signer;
     use aptos_framework::block;
-    use pricebet_addr::oracle;
+    use oracle_addr::oracle;
      
     struct PriceBet<phantom CoinType> has key {
         deadline_block: u64,
@@ -15,6 +15,7 @@ module pricebet_addr::pricebet {
     }
 
     public fun init<CoinType>(owner: &signer, initial_pot: u64, oracle: address, deadline_block: u64, exchange_rate: u64) {
+        assert!(initial_pot > 0, 0);
         let price_bet = PriceBet<CoinType> {
             deadline_block: deadline_block,
             exchange_rate: exchange_rate,

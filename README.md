@@ -4,6 +4,7 @@
 
 - [Bank](contracts/bank/README.md)
 - [Vault](contracts/vault/README.md)
+- [Price bet](contracts/price-bet/README.md)
 
 ## References
 

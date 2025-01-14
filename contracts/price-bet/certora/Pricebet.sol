@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.1;
+//SPDX-License-Identifier: GPL-3.0-only
+pragma solidity >= 0.8.2;
 
-import "./oracle.sol";
+import "./Oracle.sol";
 
 contract PriceBet{
     uint256 initial_pot;
@@ -10,7 +10,6 @@ contract PriceBet{
     address oracle;
     address payable owner;
     address payable player;
-
 
     constructor(address _oracle, uint256 _deadline, uint256 _exchange_rate) payable {
         initial_pot = msg.value;
@@ -28,17 +27,17 @@ contract PriceBet{
 
     function win() public {
         Oracle TheOracle = Oracle(oracle);
-        require(block.number < deadline_block, "deadline expired");
-        require(msg.sender == player, "invalid sender");
-        require(TheOracle.get_exchange_rate() >= exchange_rate, "you lost the bet");
+        require(block.number < deadline_block);
+        require(msg.sender == player);
+        require(TheOracle.get_exchange_rate() >= exchange_rate);
         (bool success, ) = player.call{value: address(this).balance}("");
-        require(success, "Transfer failed.");
+        require(success);
     }
 
     function timeout() public {
-        require(block.number >= deadline_block, "deadline not expired");
+        require(block.number >= deadline_block);
         (bool success, ) = owner.call{value: address(this).balance}("");
-        require(success, "Transfer failed.");
+        require(success);
     }
 
 }

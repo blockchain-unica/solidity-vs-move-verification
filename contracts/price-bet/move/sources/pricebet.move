@@ -1,11 +1,12 @@
 module pricebet_addr::pricebet {
     use aptos_framework::coin::{Self, Coin};
     use aptos_framework::signer;
-    use aptos_framework::block;
-    use pricebet_addr::oracle;
+    // use aptos_framework::block;
+    use std::timestamp;
+    use oracle_addr::oracle;
      
     struct PriceBet<phantom CoinType> has key {
-        deadline_block: u64,
+        deadline: u64,
         exchange_rate: u64,
         initial_pot: u64,
         pot: Coin<CoinType>,
@@ -14,9 +15,10 @@ module pricebet_addr::pricebet {
         oracle: address,
     }
 
-    public fun init<CoinType>(owner: &signer, initial_pot: u64, oracle: address, deadline_block: u64, exchange_rate: u64) {
+    public fun init<CoinType>(owner: &signer, initial_pot: u64, oracle: address, timeout: u64, exchange_rate: u64) {
+        assert!(initial_pot > 0, 0);
         let price_bet = PriceBet<CoinType> {
-            deadline_block: deadline_block,
+            deadline: timestamp::now_seconds() + timeout,
             exchange_rate: exchange_rate,
             initial_pot: initial_pot,
             pot: coin::withdraw<CoinType>(owner, initial_pot),
@@ -38,7 +40,10 @@ module pricebet_addr::pricebet {
     public fun win<CoinType>(player: &signer, owner: address) acquires PriceBet {
         let price_bet = borrow_global_mut<PriceBet<CoinType>>(owner);
         assert!(price_bet.player == signer::address_of(player), 2);
-        assert!(price_bet.deadline_block < block::get_current_block_height(), 3);
+
+        // assert!(price_bet.deadline_block < block::get_current_block_height(), 3);
+        assert!(timestamp::now_seconds() < price_bet.deadline , 5);
+
         let exchange_rate = oracle::get_exchange_rate(price_bet.oracle);
         assert!(exchange_rate >= price_bet.exchange_rate, 4);
         let value = coin::value(&price_bet.pot);
@@ -48,9 +53,24 @@ module pricebet_addr::pricebet {
 
     public fun timeout<CoinType>(owner: address) acquires PriceBet {
         let price_bet = borrow_global_mut<PriceBet<CoinType>>(owner);
-        assert!(price_bet.deadline_block >= block::get_current_block_height(), 5);
+
+        // assert!(price_bet.deadline_block >= block::get_current_block_height(), 5);
+        assert!(timestamp::now_seconds() >= price_bet.deadline, 5);
+
         let value = coin::value(&price_bet.pot);
         let amount = coin::extract(&mut price_bet.pot, value);
         coin::deposit(owner, amount);
+    }
+
+    #[test_only]
+    public fun pricebet_exists<CoinType>(owner : &signer) : bool {
+        exists<PriceBet<CoinType>>(signer::address_of(owner))
+    }
+
+    #[test_only]
+    public fun get_balance<CoinType>(owner : address) : u64 acquires PriceBet {
+        let vault = borrow_global<PriceBet<CoinType>>(owner);
+        let balance = &vault.pot;
+        coin::value(balance)
     }
 }

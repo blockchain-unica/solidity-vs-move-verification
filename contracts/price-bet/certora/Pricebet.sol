@@ -12,6 +12,7 @@ contract PriceBet{
     address payable player;
 
     constructor(address _oracle, uint256 _deadline, uint256 _exchange_rate) payable {
+        require (msg.value > 0);
         initial_pot = msg.value;
         owner = payable(msg.sender);
         oracle = _oracle;

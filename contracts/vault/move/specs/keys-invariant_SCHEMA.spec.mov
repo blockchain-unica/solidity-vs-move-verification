@@ -12,12 +12,12 @@ spec vault_addr::vault {
         let post owner_key_post = global<Vault<CoinType>>(owner).owner;
         let post recovery_key_post = global<Vault<CoinType>>(owner).recovery;
 
-        ensures owner_key == owner_key_post;
+        ensures owner_key == owner_key_post;    // TODO possiamo usare invariant?
         ensures recovery_key == recovery_key_post;
     }
     
     spec receive {
-        include Unchanged<CoinType>{owner : signer::address_of(sender)};
+        include Unchanged<CoinType>{owner : signer::address_of(sender)}; // TODO check
     }
     spec withdraw {
         include Unchanged<CoinType>{owner : signer::address_of(owner)};

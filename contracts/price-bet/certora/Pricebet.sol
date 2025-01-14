@@ -3,20 +3,20 @@ pragma solidity >= 0.8.2;
 
 import "./Oracle.sol";
 
-contract PriceBet{
+contract Pricebet {
     uint256 initial_pot;
-    uint256 deadline_block;
+    uint256 deadline;
     uint256 exchange_rate;
     address oracle;
     address payable owner;
     address payable player;
 
-    constructor(address _oracle, uint256 _deadline, uint256 _exchange_rate) payable {
+    constructor(address _oracle, uint256 timeout, uint256 _exchange_rate) payable {
         require (msg.value > 0);
         initial_pot = msg.value;
         owner = payable(msg.sender);
         oracle = _oracle;
-        deadline_block = block.number + _deadline;
+        deadline = block.number + timeout;
         exchange_rate = _exchange_rate;
     }
 
@@ -27,16 +27,19 @@ contract PriceBet{
     }
 
     function win() public {
-        Oracle TheOracle = Oracle(oracle);
-        require(block.number < deadline_block);
+        require(block.number < deadline);
         require(msg.sender == player);
-        require(TheOracle.get_exchange_rate() >= exchange_rate);
+
+        Oracle oracle_instance = Oracle(oracle);
+        require(oracle_instance.get_exchange_rate() >= exchange_rate);
+
         (bool success, ) = player.call{value: address(this).balance}("");
         require(success);
     }
 
     function timeout() public {
-        require(block.number >= deadline_block);
+        require(block.number >= deadline);
+
         (bool success, ) = owner.call{value: address(this).balance}("");
         require(success);
     }

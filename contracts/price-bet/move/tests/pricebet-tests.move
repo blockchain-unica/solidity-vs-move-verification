@@ -3,7 +3,7 @@ module pricebet_addr::pricebet_tests {
     use pricebet_addr::pricebet::{Self};
     use oracle_addr::oracle::{Self};
     use std::signer;
-    // use std::timestamp; 
+    use std::timestamp; 
 
     use aptos_framework::account::{Self};
     use aptos_framework::aptos_coin::{AptosCoin};
@@ -24,161 +24,210 @@ module pricebet_addr::pricebet_tests {
         coin::deposit(to_addr, coins);
     }
 
-    // // vault should exists after its initialization with init_module
-    // #[test(owner = @0x01, recovery = @0x02)]
-    // fun test_vault_exists(owner : &signer, recovery : address){
-    //     pricebet::init<AptosCoin>(owner, recovery, 100);
-    //     assert!(pricebet::pricebet_exists(pricebet),0);
-    // }
+    // pricebet should exists after its initialization with init_module
+    #[test(owner = @0x01, oracle = @0x02, aptos_framework = @aptos_framework)]
+    fun test_pricebet_exists(owner : &signer, oracle : address, aptos_framework: &signer) {
+        timestamp::set_time_has_started_for_testing(aptos_framework);
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
+        give_coins(&mint_cap, owner, 10);
 
-    #[test(owner = @0x01, oracle = @0x02)]
+        pricebet::init<AptosCoin>(owner, 1, oracle, 200, 3);
+        assert!(pricebet::pricebet_exists<AptosCoin>(owner),0);
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
+
+    #[test(owner = @0x01, oracle = @0x02, aptos_framework = @aptos_framework)]
     #[expected_failure]
-    fun test_init_zero_initial_pot(owner : &signer, oracle: address) {
+    fun test_init_zero_initial_pot(owner : &signer, oracle: address, aptos_framework: &signer) {
+        timestamp::set_time_has_started_for_testing(aptos_framework);
         pricebet::init<AptosCoin>(owner, 0, oracle, 200, 3);
     }
 
-    #[test(owner = @0x01, oracle = @0x02)]
+    #[test(owner = @0x01, oracle = @0x02, aptos_framework = @aptos_framework)]
     #[expected_failure]
-    fun test_init_twice(owner : &signer, oracle: address) {
+    fun test_init_twice(owner : &signer, oracle: address, aptos_framework: &signer) {
+        timestamp::set_time_has_started_for_testing(aptos_framework);
         pricebet::init<AptosCoin>(owner, 100, oracle, 200, 3);
         pricebet::init<AptosCoin>(owner, 100, oracle, 200, 3);
     }
 
-    // // signer a performs two deposits of 1 AptosCoin each
-    // // check that the balances of the signer and of the vault are correct
-    // #[test(a = @0x01, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
-    // fun test_receive(a : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
-    //     vault::init<AptosCoin>(owner, recovery, 100);
-    //     let addr_owner = signer::address_of(owner);
-    //     let addr_a = signer::address_of(a);
+    #[test(player = @0x02, owner = @0x03, oracle = @0x04, aptos_framework = @aptos_framework)]
+    fun test_join(player : &signer, owner : &signer, oracle : address, aptos_framework: &signer) {
 
-    //     let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
- 
-    //     // creates a new account for test, and mints for it 10 AptosCoin
-    //     give_coins(&mint_cap, a, 10);
+        timestamp::set_time_has_started_for_testing(aptos_framework);
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
 
-    //     // checks if the initial balance of a is 10
-    //     let init_balance = coin::balance<AptosCoin>(addr_a);
-    //     assert!(init_balance == 10, 0);
+        give_coins(&mint_cap, owner, 10);
+        give_coins(&mint_cap, player, 10);
 
-    //     // checks the balance of owner after the first deposit
-    //     vault::receive<AptosCoin>(a, addr_owner, 1);
-    //     assert!(coin::balance<AptosCoin>(addr_a) == init_balance - 1, 0);
+        let addr_owner = signer::address_of(owner);
+        let addr_player = signer::address_of(player);
 
-    //     // checks the balance of owner after the second deposit
-    //     vault::receive<AptosCoin>(a, addr_owner, 1);
-    //     assert!(coin::balance<AptosCoin>(addr_a) == init_balance - 2, 0);
+        pricebet::init<AptosCoin>(owner, 1, oracle, 200, 3);
+
+        assert!(coin::balance<AptosCoin>(addr_owner) == 9, 0);
+
+        pricebet::join<AptosCoin>(player, addr_owner, 1);
     
-    //     // checks the balance of the vault after the two deposits
-    //     assert!(vault::vault_balance<AptosCoin>(addr_owner) == 2, 0);
+        // checks the player and contract' balance after the join
+        assert!(coin::balance<AptosCoin>(addr_player) == 9, 0);
+        assert!(pricebet::get_balance<AptosCoin>(addr_owner) == 2, 0);
 
-    //     // mint and burn capabilities must be destroyed at the end of the function
-    //     coin::destroy_burn_cap(burn_cap);
-    //     coin::destroy_mint_cap(mint_cap);
-    // }
+        // mint and burn capabilities must be destroyed at the end of the function
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
 
-    // // signers a and b perform two deposits of 1 AptosCoin each
-    // // check that the balances of the signer and of the vault are correct
-    // #[test(a = @0x01, b = @0x02, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
-    // fun test_receive_two_addr(a : &signer, b : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
-    //     vault::init<AptosCoin>(owner, recovery, 100);
-    //     let addr_owner = signer::address_of(owner);
-    //     let addr_a = signer::address_of(a);
-    //     let addr_b = signer::address_of(b);
+    #[test(player = @0x02, owner = @0x03, oracle = @0x04, aptos_framework = @aptos_framework)]
+    #[expected_failure]
+    fun test_join_twice(player : &signer, owner : &signer, oracle : address, aptos_framework: &signer) {
 
-    //     let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
- 
-    //     give_coins(&mint_cap, a, 10);
-    //     give_coins(&mint_cap, b, 10);
+        timestamp::set_time_has_started_for_testing(aptos_framework);
 
-    //     vault::receive<AptosCoin>(a, addr_owner, 2);
-    //     vault::receive<AptosCoin>(b, addr_owner, 3);
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
 
-    //     assert!(coin::balance<AptosCoin>(addr_a) == 8, 0);
-    //     assert!(coin::balance<AptosCoin>(addr_b) == 7, 0);
-    //     assert!(vault::vault_balance<AptosCoin>(addr_owner) == 5, 0);
+        give_coins(&mint_cap, owner, 10);
+        give_coins(&mint_cap, player, 10);
 
-    //     // mint and burn capabilities must be destroyed at the end of the function
-    //     coin::destroy_burn_cap(burn_cap);
-    //     coin::destroy_mint_cap(mint_cap);
-    // }
+        let addr_owner = signer::address_of(owner);
 
-    // // a performs a deposit of 10 AptosCoin 
-    // // then the owner issues a withdraw request of 2 AptosCoin to b
-    // #[test(a = @0x01, b = @0x02, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
-    // fun test_withdraw(a : &signer, b : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
-    //     timestamp::set_time_has_started_for_testing(aptos_framework);
+        pricebet::init<AptosCoin>(owner, 1, oracle, 200, 3);
 
-    //     vault::init<AptosCoin>(owner, recovery, 100);
-    //     let addr_owner = signer::address_of(owner);
-    //     let addr_a = signer::address_of(a);
-    //     let addr_b = signer::address_of(b);
+        pricebet::join<AptosCoin>(player, addr_owner, 1);
+        pricebet::join<AptosCoin>(player, addr_owner, 1);
+    
+        // mint and burn capabilities must be destroyed at the end of the function
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
 
-    //     let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
- 
-    //     give_coins(&mint_cap, a, 10);
-    //     give_coins(&mint_cap, b, 0);
+    #[test(player = @0x02, owner = @0x03, oracle = @0x04, aptos_framework = @aptos_framework)]
+    fun test_player_wins(player : &signer, owner : &signer, oracle : &signer, aptos_framework: &signer) {
+        // block::initialize_for_test(aptos_framework, 1000);
+        timestamp::set_time_has_started_for_testing(aptos_framework);
 
-    //     vault::receive<AptosCoin>(a, addr_owner, 10);
-    //     vault::withdraw<AptosCoin>(owner, 2, addr_b);
+        oracle::test_init_module(oracle);
+        let addr_oracle = signer::address_of(oracle);
 
-    //     assert!(coin::balance<AptosCoin>(addr_a) == 0, 0);
-    //     assert!(coin::balance<AptosCoin>(addr_b) == 0, 0);
-    //     assert!(vault::vault_balance<AptosCoin>(addr_owner) == 10, 0);
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
 
-    //     assert!(vault::vault_state<AptosCoin>(addr_owner) == REQ, 0);
+        give_coins(&mint_cap, owner, 10);
+        give_coins(&mint_cap, player, 10);
 
-    //     coin::destroy_burn_cap(burn_cap);
-    //     coin::destroy_mint_cap(mint_cap);
-    // }
+        let addr_owner = signer::address_of(owner);
+        let addr_player = signer::address_of(player);
 
-    // // a performs a deposit of 10 AptosCoin
-    // // then the owner issues a withdraw request of 11 AptosCoin to b
-    // #[test(a = @0x01, b = @0x02, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
-    // #[expected_failure]
-    // fun test_withdraw_toomuch(a : &signer, b : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
-    //     timestamp::set_time_has_started_for_testing(aptos_framework);
+        // target exchange rate is 3
+        pricebet::init<AptosCoin>(owner, 1, addr_oracle, 200, 3);
 
-    //     vault::init<AptosCoin>(owner, recovery, 100);
-    //     let addr_owner = signer::address_of(owner);
-    //     let addr_b = signer::address_of(b);
+        assert!(coin::balance<AptosCoin>(addr_owner) == 9, 0);
 
-    //     let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
- 
-    //     give_coins(&mint_cap, a, 10);
-    //     give_coins(&mint_cap, b, 0);
+        pricebet::join<AptosCoin>(player, addr_owner, 1);
+    
+        // checks the player and contract' balance after the join
+        assert!(coin::balance<AptosCoin>(addr_player) == 9, 0);
+        assert!(pricebet::get_balance<AptosCoin>(addr_owner) == 2, 0);
 
-    //     vault::receive<AptosCoin>(a, addr_owner, 10);
-    //     // should fail, because the owner tries to withdraw more than the balance
-    //     vault::withdraw<AptosCoin>(owner, 11, addr_b);
+        // actual exchange rate is 5
+        oracle::set_exchange_rate(oracle, 5);
 
-    //     coin::destroy_burn_cap(burn_cap);
-    //     coin::destroy_mint_cap(mint_cap);
-    // }
+        pricebet::win<AptosCoin>(player, addr_owner);
 
-    // // a performs a deposit of 10 AptosCoin
-    // // then the owner issues two consecutive withdraw requests 
-    // #[test(a = @0x01, b = @0x02, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
-    // #[expected_failure]
-    // fun test_withdraw_withdraw(a : &signer, b : &signer, owner : &signer, recovery : address, aptos_framework: &signer) {
-    //     timestamp::set_time_has_started_for_testing(aptos_framework);
+        // checks the player and contract' balance after the win
+        assert!(coin::balance<AptosCoin>(addr_player) == 11, 0);
+        assert!(pricebet::get_balance<AptosCoin>(addr_owner) == 0, 0);
 
-    //     vault::init<AptosCoin>(owner, recovery, 100);
-    //     let addr_owner = signer::address_of(owner);
-    //     let addr_b = signer::address_of(b);
+        // mint and burn capabilities must be destroyed at the end of the function
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
 
-    //     let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
- 
-    //     give_coins(&mint_cap, a, 10);
-    //     give_coins(&mint_cap, b, 0);
+    #[test(player = @0x02, owner = @0x03, oracle = @0x04, aptos_framework = @aptos_framework)]
+    #[expected_failure]
+    fun test_player_loses(player : &signer, owner : &signer, oracle : &signer, aptos_framework: &signer) {
+        // block::initialize_for_test(aptos_framework, 1000);
+        timestamp::set_time_has_started_for_testing(aptos_framework);
 
-    //     vault::receive<AptosCoin>(a, addr_owner, 10);
-    //     vault::withdraw<AptosCoin>(owner, 1, addr_b);
-    //     // should fail, because withdraw is not allowed in REQ state
-    //     vault::withdraw<AptosCoin>(owner, 1, addr_b);
+        oracle::test_init_module(oracle);
+        let addr_oracle = signer::address_of(oracle);
 
-    //     coin::destroy_burn_cap(burn_cap);
-    //     coin::destroy_mint_cap(mint_cap);
-    // }
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
 
+        give_coins(&mint_cap, owner, 10);
+        give_coins(&mint_cap, player, 10);
+
+        let addr_owner = signer::address_of(owner);
+        let addr_player = signer::address_of(player);
+
+        // target exchange rate is 3
+        pricebet::init<AptosCoin>(owner, 1, addr_oracle, 200, 3);
+
+        assert!(coin::balance<AptosCoin>(addr_owner) == 9, 0);
+
+        pricebet::join<AptosCoin>(player, addr_owner, 1);
+    
+        // checks the player and contract' balance after the join
+        assert!(coin::balance<AptosCoin>(addr_player) == 9, 0);
+        assert!(pricebet::get_balance<AptosCoin>(addr_owner) == 2, 0);
+
+        // actual exchange rate is 2 (player does not win)
+        oracle::set_exchange_rate(oracle, 2);
+
+        pricebet::win<AptosCoin>(player, addr_owner);
+
+        // checks the player and contract' balance after the win
+        assert!(coin::balance<AptosCoin>(addr_player) == 11, 0);
+        assert!(pricebet::get_balance<AptosCoin>(addr_owner) == 0, 0);
+
+        // mint and burn capabilities must be destroyed at the end of the function
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
+
+    #[test(player = @0x02, owner = @0x03, oracle = @0x04, aptos_framework = @aptos_framework)]
+    fun test_owner_wins(player : &signer, owner : &signer, oracle : &signer, aptos_framework: &signer) {
+        // block::initialize_for_test(aptos_framework, 1000);
+        timestamp::set_time_has_started_for_testing(aptos_framework);
+
+        oracle::test_init_module(oracle);
+        let addr_oracle = signer::address_of(oracle);
+
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
+
+        give_coins(&mint_cap, owner, 10);
+        give_coins(&mint_cap, player, 10);
+
+        let addr_owner = signer::address_of(owner);
+        let addr_player = signer::address_of(player);
+
+        // target exchange rate is 3
+        // deadline is 200 seconds
+        pricebet::init<AptosCoin>(owner, 1, addr_oracle, 200, 3);
+
+        assert!(coin::balance<AptosCoin>(addr_owner) == 9, 0);
+
+        pricebet::join<AptosCoin>(player, addr_owner, 1);
+    
+        // checks the player and contract' balance after the join
+        assert!(coin::balance<AptosCoin>(addr_player) == 9, 0);
+        assert!(pricebet::get_balance<AptosCoin>(addr_owner) == 2, 0);
+
+        // actual exchange rate is 2
+        oracle::set_exchange_rate(oracle, 2);
+
+        // deadline expired
+        timestamp::fast_forward_seconds(200); 
+
+        pricebet::timeout<AptosCoin>(addr_owner);
+
+        // checks the player, owner and contract' balance after the timeout
+        assert!(coin::balance<AptosCoin>(addr_player) == 9, 0);
+        assert!(coin::balance<AptosCoin>(addr_owner) == 11, 0);
+        assert!(pricebet::get_balance<AptosCoin>(addr_owner) == 0, 0);
+
+        // mint and burn capabilities must be destroyed at the end of the function
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
 }

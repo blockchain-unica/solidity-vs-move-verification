@@ -7,7 +7,8 @@ spec pricebet_addr::pricebet {
         let exchange_rate = oracle::get_exchange_rate(price_bet.oracle);
 
 		requires exists<block::BlockResource>(@aptos_framework);
-	
+        requires exists<oracle::Oracle>(price_bet.oracle);
+
         requires price_bet.deadline_block < block::get_current_block_height();
         requires price_bet.player == signer::address_of(player);
         requires exchange_rate >= price_bet.exchange_rate;

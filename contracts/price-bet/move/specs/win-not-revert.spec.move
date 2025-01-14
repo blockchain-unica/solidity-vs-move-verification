@@ -4,7 +4,7 @@ spec pricebet_addr::pricebet {
 	spec win {     
 		requires exists<PriceBet<CoinType>>(owner);
         let price_bet = global<PriceBet<CoinType>>(owner);
-        let exchange_rate = oracle::get_exchange_rate();
+        let exchange_rate = oracle::get_exchange_rate(price_bet.oracle);
 
 		requires exists<block::BlockResource>(@aptos_framework);
 	

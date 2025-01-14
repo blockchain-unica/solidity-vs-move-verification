@@ -7,7 +7,7 @@ spec pricebet_addr::pricebet {
         pragma aborts_if_is_partial = true;
 
         let price_bet = global<PriceBet<CoinType>>(owner);
-        let exchange_rate = oracle::get_exchange_rate();
+        let exchange_rate = oracle::get_exchange_rate(price_bet.oracle);
 
         aborts_if 
           price_bet.deadline_block < block::get_current_block_height();

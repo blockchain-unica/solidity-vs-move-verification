@@ -11,12 +11,12 @@ contract Pricebet {
     address payable owner;
     address payable player;
 
-    constructor(address _oracle, uint256 timeout, uint256 _exchange_rate) payable {
+    constructor(address _oracle, uint256 _timeout, uint256 _exchange_rate) payable {
         require (msg.value > 0);
         initial_pot = msg.value;
         owner = payable(msg.sender);
         oracle = _oracle;
-        deadline = block.number + timeout;
+        deadline = block.number + _timeout;
         exchange_rate = _exchange_rate;
     }
 

@@ -1,4 +1,7 @@
-//  a transaction win() does not revert if the deadline has not expired, the sender is the player, or the oracle exchange rate is greater or equal to the bet exchange rate.
+// a transaction win() does not revert if:
+// 1) the deadline has not expired, and
+// 2) the sender is the player, and 
+// 3) the oracle exchange rate is greater or equal to the bet exchange rate.
 
 spec pricebet_addr::pricebet {
 	spec win {     

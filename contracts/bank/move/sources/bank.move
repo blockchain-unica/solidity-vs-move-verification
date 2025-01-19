@@ -7,15 +7,20 @@ module bank_addr::bank {
 
     struct Bank has key, store {
         credits : SimpleMap<address, Coin<AptosCoin>>,
+        owner : address,
+        opLimit : u64,
     }
 
-    const EAmountIsZero : u64 = 0;
+    const EWrongAmount : u64 = 0;
     const ENoAccount : u64 = 1;
 
-    // guaranteed to be called once only by Move on Aptos
-    fun init_module(account : &signer) {
+    public fun init(account : &signer, opLimit : u64) {
+        assert!(opLimit>0, EWrongAmount);
+
         let bank = Bank{
-            credits : simple_map::new()
+            credits : simple_map::new(),
+            owner : signer::address_of(account),
+            opLimit : opLimit,
         };
         move_to(account, bank);
     }
@@ -23,9 +28,14 @@ module bank_addr::bank {
     // ~Solidity: deposit is allowed only to msg.sender (the transaction signer)
     public entry fun deposit(sender : &signer, bank : address, amount : u64) acquires Bank  {
         // ~Solidity: require(amount > 0);
-        assert!(amount > 0, EAmountIsZero);
-        let deposit : Coin<AptosCoin> = coin::withdraw(sender, amount);
+        assert!(amount > 0, EWrongAmount);
+
         let bank = borrow_global_mut<Bank>(bank); 
+
+        if (signer::address_of(sender) != bank.owner)
+            assert!(amount <= bank.opLimit, EWrongAmount);
+
+        let deposit : Coin<AptosCoin> = coin::withdraw(sender, amount);
 
         // the sender has already credits in the bank
         if (simple_map::contains_key(&bank.credits, &signer::address_of(sender))){
@@ -42,25 +52,17 @@ module bank_addr::bank {
 
     public entry fun withdraw(sender : &signer, bank : address, amount : u64) acquires Bank {
         // ~Solidity: require(amount > 0);
-        assert!(amount != 0, EAmountIsZero);
+        assert!(amount != 0, EWrongAmount);
+
         let bank = borrow_global_mut<Bank>(bank);
+
+        if (signer::address_of(sender) != bank.owner)
+            assert!(amount <= bank.opLimit, EWrongAmount);
+
         let sender_balance = simple_map::borrow_mut(&mut bank.credits, &signer::address_of(sender));
     
         let withdrawn = coin::extract(sender_balance, amount);
         coin::deposit<AptosCoin>(signer::address_of(sender), withdrawn);
-    }
-
-    #[test_only]
-    public fun test_init_module(initiator : &signer){
-        init_module(initiator);
-    }
-
-    // init_module cannot be called twice
-    #[test(initiator = @0x01)]
-    #[expected_failure]
-    public fun test_init_module_twice(initiator : &signer){
-        init_module(initiator);
-        init_module(initiator);
     }
 
     #[test_only]

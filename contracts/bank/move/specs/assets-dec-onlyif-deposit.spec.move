@@ -2,6 +2,8 @@
 // contrapositive: for every transaction that is not a deposit, or for which A is not the sender, then assets of A are not decreased
 
 spec bank_addr::bank {
+    use std::features;
+    
     spec withdraw {
         let sender_coins_value = global<coin::CoinStore<AptosCoin>>(signer::address_of(sender)).coin.value;
         let post sender_coins_value_post = global<coin::CoinStore<AptosCoin>>(signer::address_of(sender)).coin.value;

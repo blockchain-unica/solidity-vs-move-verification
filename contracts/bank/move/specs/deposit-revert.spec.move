@@ -1,4 +1,4 @@
-// a transaction deposit(amount) aborts if amount is more than the T balance of the transaction sender	
+// a transaction deposit(amount) aborts if amount is greater than the transaction sender's T balance or operation limit. 
 
 spec bank_addr::bank {
      use std::features;
@@ -9,6 +9,10 @@ spec bank_addr::bank {
 	
         let sender_coins_value = global<coin::CoinStore<AptosCoin>>(signer::address_of(sender)).coin.value;
 
-	aborts_if sender_coins_value < amount && !features::spec_is_enabled(features::COIN_TO_FUNGIBLE_ASSET_MIGRATION);
+	let bank = global<Bank>(bank);
+	
+	aborts_if
+		(sender_coins_value < amount && !features::spec_is_enabled(features::COIN_TO_FUNGIBLE_ASSET_MIGRATION)) ||
+		(signer::address_of(sender)!=bank.owner && amount > bank.opLimit);
    }
 }

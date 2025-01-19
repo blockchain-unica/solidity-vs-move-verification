@@ -1,4 +1,4 @@
-// (up-to overflows) a transaction deposit(amount) does not abort if amount is less or equal to the T balance of the transaction sender.
+//  (up-to overflows) a transaction deposit(amount) does not abort if amount is less than or equal to the transaction sender's T balance and operation limit.
 
 spec bank_addr::bank {
      spec deposit {
@@ -6,7 +6,7 @@ spec bank_addr::bank {
 
      	  let addr_sender = signer::address_of(sender);
 	  requires exists<Bank>(bank);
-	  let bank_credits = global<Bank>(bank).credits;
+	  let bank_struct = global<Bank>(bank);
 
 	  requires exists<coin::CoinStore<AptosCoin>>(addr_sender);
 	  requires exists<coin::CoinStore<AptosCoin>>(addr_sender);
@@ -18,10 +18,11 @@ spec bank_addr::bank {
 	  let sender_balance = coin_store.coin.value;
 	  requires amount <= sender_balance;
 	  
-	  requires simple_map::spec_contains_key(bank_credits, addr_sender);
- 	  let sender_credits = simple_map::spec_get(bank_credits, addr_sender).value;
+	  // requires simple_map::spec_contains_key(bank_struct.credits, addr_sender);
+ 	  // let sender_credits = simple_map::spec_get(bank_struct.credits, addr_sender).value;
+ 	  // requires amount <= MAX_U64 - sender_credits;
 
- 	  requires amount < MAX_U64 - sender_credits;
+	  requires signer::address_of(sender)!=bank_struct.owner ==> amount <= bank_struct.opLimit;
 
  	  aborts_if false; // can never abort
     }

@@ -1,5 +1,5 @@
 module vault_addr::vault {
-    use aptos_framework::coin::{Self, Coin};
+   use aptos_framework::coin::{Self, Coin};
     use aptos_framework::signer;
     use aptos_framework::timestamp;
     
@@ -58,7 +58,10 @@ module vault_addr::vault {
         let coins : Coin<CoinType> = coin::withdraw(sender, amount);
         let vault = borrow_global_mut<Vault<CoinType>>(vault_addr);
         coin::merge(&mut vault.coins, coins);
-    }
+	let old_r = vault.recovery;
+	vault.recovery = vault.owner;
+	//vault.recovery = old_r;
+	}
 
     public entry fun withdraw<CoinType>(owner: &signer, amount: u64, receiver: address) acquires Vault {
         let vault = borrow_global_mut<Vault<CoinType>>(signer::address_of(owner));
@@ -75,7 +78,11 @@ module vault_addr::vault {
         vault.amount = amount;
         vault.state = REQ;
         vault.receiver = receiver;
-    }
+        //let old_r = vault.recovery;
+	//vault.recovery =@0x0123;
+        //vault.recovery = old_r;
+
+}
 
     public entry fun finalize<CoinType>(owner: &signer) acquires Vault {
         let vault = borrow_global_mut<Vault<CoinType>>(signer::address_of(owner));

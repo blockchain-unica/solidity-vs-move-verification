@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// certoraRun Bank.sol:Bank --verify Bank:withdraw-additivity.spec
-// https://prover.certora.com/output/454304/fdb73f4ad24547e6bdb1c26f3d4f9bb6?anonymousKey=a188ce4461d8477936a671f62f437f658be0df9e
+// certoraRun Bank.sol --verify Bank:withdraw-additivity.spec
+// https://prover.certora.com/output/454304/669d265bba134f48b5d0e80b235926ef?anonymousKey=901455586dd2ac21320c623981b4d52f4923c41c
 
-// two (successful) withdraw of n1 and n2 units of T (performed by the same sender) are equivalent to a single withdraw of n1+n2 units of T
+// two (successful) withdraw of n1 and n2 units of T (performed by the same sender) are equivalent to 
+// a single withdraw of n1+n2 units of T, if n1+n2 is less than or equal to the sender's operation limit
 
 using Bank as c;
 
@@ -17,6 +18,7 @@ rule withdraw_additivity {
     storage initial = lastStorage;
 
     require e1.msg.sender == e2.msg.sender;
+    require v1 + v2 <= currentContract.opLimit;
 
     withdraw(e1, v1);
     withdraw(e2, v2);

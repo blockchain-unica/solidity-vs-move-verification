@@ -1,7 +1,5 @@
 # Vault
 
-## Specification
-
 Vaults are a security mechanism to prevent cryptocurrency from being immediately withdrawn by an adversary who has stolen the owner's private key.
 
 To create the vault, the owner specifies:

@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// certoraRun Bank.sol:Bank --verify Bank:deposit-additivity.spec
-// https://prover.certora.com/output/454304/e5a556bd2240469a8e147849a742e201?anonymousKey=b575018567387bf92a9db0e3abbd0068dca74248
+// certoraRun Bank.sol --verify Bank:deposit-additivity.spec
+// https://prover.certora.com/output/454304/46d1126c576246f1b37e86111d28b6a8?anonymousKey=94662de276e859a8eb1fcd9b0f32f8cb42c554af
 
-// two (successful) deposits of n1 and n2 units of T (performed by the same sender) are equivalent to a single deposit of n1+n2 units of T
+// two successful deposits of n1 and n2 units of T performed by the same sender are equivalent 
+// to a single deposit of n1+n2 units of T, if n1+n2 is less than or equal to the sender's operation limit
 
+  
 rule deposit_additivity {
     env e1;
     env e2;
@@ -12,6 +14,7 @@ rule deposit_additivity {
     storage initial = lastStorage;
 
     require e1.msg.sender == e2.msg.sender;
+    require e1.msg.value + e2.msg.value <= currentContract.opLimit;
 
     deposit(e1);
     deposit(e2);

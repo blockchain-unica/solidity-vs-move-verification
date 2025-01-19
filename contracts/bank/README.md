@@ -1,8 +1,10 @@
 # Bank
 
-## Specification
 The Bank contract stores assets (native crypto-currency) deposited by users, and pays them out when required.
-To keep track of the amount of assets available for each user, the contract uses a key-value map that associates each user with its credit.
+The contract state consists of:
+- **credits**, a key-value map that associates each user with the amount of assets available for that user;
+- **owner**, the address that deploys the contract;
+- **opLimit**, a limit set during contract deployment that restricts the maximum amount that can be deposited or withdrawn in a single transaction. This limit applies to all users except the owner.
 
 The contract has the following methods:
 - `deposit`, which allows anyone to deposit assets. When a deposit is made, the corresponding amount is added to the credit of the transaction sender. 
@@ -45,3 +47,9 @@ The contract has the following methods:
 - **withdraw-assets-credit-others**: after a successful `withdraw(amount)`, the credits of any user but the sender are preserved.
 
 - **withdraw-additivity**: two (successful) `withdraw` of n1 and n2 units of T (performed by the same sender) are equivalent to a single `withdraw` of n1+n2 units of T.
+
+- **credits-eq-balance**: the assets controlled by the contract are (at least) equal to the sum of all the credits 
+
+- **no-frozen-credits**: if the credits are strictly positive, it is possible to reduce them
+
+- **no-frozen-assets**: if the contract controls some assets, then someone can transfer them from the contract to some user

@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// certoraRun Bank_v1.sol:Bank --verify Bank:assets-dec-onlyif-deposit.spec
-// https://prover.certora.com/output/454304/16e0ffa422404ea09796151571a98a58?anonymousKey=60145f660db2c51a73121caa0cef095413208fbb
+// certoraRun Bank.sol --verify Bank:assets-dec-onlyif-deposit.spec
+// https://prover.certora.com/output/454304/344a4e7b20d84b41b8323c25ac8992e7?anonymousKey=e22b2c88bf5697a204e895a4b88045a85c6c871d
 
-// if the assets of a user A are decreased after a transaction [of the Bank contract], then that transaction must be a deposit() where A is the sender
+// if the assets of a user A are decreased after a transaction, 
+// then that transaction must be a deposit() where A is the sender
 
 rule assets_dec_onlyif_deposit {
     env e; 

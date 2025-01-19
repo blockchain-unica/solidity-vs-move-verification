@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // certoraRun Bank.sol:Bank --verify Bank:deposit-assets-transfer-others.spec
-// https://prover.certora.com/output/454304/c8c931defaa149639cd5ac58fbd24398?anonymousKey=184780f96f0c97e82fdc37f4f599ef9af02a4c2f
+// https://prover.certora.com/output/454304/5994f171fecf4082bdeebee84b1d75fa?anonymousKey=862fc740a171f642c532a1103efef87ee2c01ecd
 
 // after a successful deposit(amount), the assets controlled by any user but the sender are preserved.
 

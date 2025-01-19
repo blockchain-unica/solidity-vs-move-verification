@@ -33,7 +33,7 @@ module bank_addr::bank {
             // new coin balance = current balance + old balance
             coin::merge(coin_available, deposit); 
         } 
-        // otherwise, if sender has not credits yet
+        // otherwise, if sender has no credits yet
         else {
             // initialize the sender credits with the deposit
             simple_map::add(&mut bank.credits, signer::address_of(sender), deposit);

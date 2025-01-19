@@ -18,3 +18,4 @@
 - [User guide](https://aptos.dev/en/build/smart-contracts/prover/prover-guide)
 - [Move specification language](https://aptos.dev/en/build/smart-contracts/prover/spec-lang)
 - [Move Prover Supporting Resources](https://aptos.dev/en/build/smart-contracts/prover/supporting-resources)
+- [Move Prover examples](https://github.com/Zellic/move-prover-examples)

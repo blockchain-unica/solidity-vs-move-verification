@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// certoraRun Bank.sol:Bank --verify Bank:deposit-assets-credit-others.spec
-// https://prover.certora.com/output/454304/c115d45e058b40efa196a52e11560930?anonymousKey=a727d89ed47d890254b291126975c74af8c6e4f5
+// certoraRun Bank.sol --verify Bank:deposit-assets-credit-others.spec
+// https://prover.certora.com/output/454304/265b861c53494e74b626e016358c2c45?anonymousKey=3686e8955db7ecdc76558823c9e8818a63e39405
 
 // after a successful deposit(amount), the credits of any user but the sender are preserved.
 

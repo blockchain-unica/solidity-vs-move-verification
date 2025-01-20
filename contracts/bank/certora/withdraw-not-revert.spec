@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// certoraRun Bank.sol:Bank --verify Bank:withdraw-not-revert.spec
-// https://prover.certora.com/output/454304/9682187fb0fa454cb493a3f0e9ad0419?anonymousKey=d5cae82fb42dff6d383c04f6cf5f700425b36d20
+// certoraRun Bank.sol --verify Bank:withdraw-not-revert.spec
+// https://prover.certora.com/output/454304/7d3339b03a9a4ad8a87c954912528715?anonymousKey=6f9f74a444504532ad9e9739c04c3bc08268af43
 
-// a transaction withdraw(amount) does not abort if amount is less or equal to the credit of the transaction sender.
+// a transaction withdraw(amount) does not abort if amount is less or equal to 
+// the transaction sender's credit and operation limit .
 
 rule withdraw_not_revert {
     env e;
@@ -11,6 +12,7 @@ rule withdraw_not_revert {
     require 0 <= amount;
     require amount <= currentContract.credits[e.msg.sender];
     require e.msg.sender != currentContract;
+    require e.msg.sender==currentContract.owner || amount <= currentContract.opLimit;
 
     withdraw@withrevert(e, amount);
 

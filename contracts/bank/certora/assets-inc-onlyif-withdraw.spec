@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// certoraRun Bank_v1.sol:Bank --verify Bank:assets-inc-onlyif-withdraw.spec
-// https://prover.certora.com/output/454304/9b7463b4f0b243d988afad90d3d1a0ed?anonymousKey=1a10fbe046b5a25475f233f3872166099c063268
+// certoraRun Bank.sol --verify Bank:assets-inc-onlyif-withdraw.spec
+// https://prover.certora.com/output/454304/b817317f85ab462584b4ac7494c0ef1d?anonymousKey=771f7d57fcddd622920438e0f462c073bd78971e
 
 // if the assets of a user A are increased after a transaction [of the Bank contract], then that transaction must be a withdraw() where A is the sender
 

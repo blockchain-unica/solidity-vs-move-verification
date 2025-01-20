@@ -1,9 +1,0 @@
-[INFO] preparing module 0xba::bank
-[INFO] transforming bytecode
-[INFO] generating verification conditions
-[INFO] 3 verification conditions
-[INFO] running solver
-[INFO] 3.450s build, 1.040s trafo, 0.064s gen, 3.391s verify, total 7.945s
-{
-  "Result": "Success"
-}

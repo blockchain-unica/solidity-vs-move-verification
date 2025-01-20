@@ -1,25 +1,18 @@
 # Price Bet
 
-## Specification
+The PriceBet contract allows a single player to place a bet against the contract owner. The bet is based on a future exchange rate between two tokens. 
 
-The PriceBet contract allows anyone to bet on a future exchange rate between two tokens. 
-Its specification is adapted from the [Clockwork Finance](https://arxiv.org/abs/2109.04347) paper.
+To create the contract, the owner specifies:
+- itself as the contract owner;
+- the initial pot, which is transferred from the owner to the contract;
+- an oracle, i.e a contract that is queried for the exchange rate between two given tokens;
+- a deadline, i.e. a time limit after which the player loses the bet;
+- a target exchange rate, which must be reached in order for the player to win the bet.
 
-The contract has the following parameters, defined at deployment time: 
-- an **owner**, who deposits the initial pot (in the native cryptocurrency);
-- an **oracle**, a contract that is queried for the exchange rate between two given tokens;
-- a **deadline**, a time limit after which the player loses the bet (e.g. the current block height plus a fixed constant); 
-- an **exchange rate**, that must be reached in order for the player to win the bet.  
- 
-After creation, the following actions are possible: 
-- **join**: a player joins the contract by depositing an amount of native cryptocurrency equal to the initial pot;
-- **win**: after the join and before the deadline, the player can withdraw the whole pot if the oracle exchange rate is greater than the bet rate;
-- **timeout**: after the deadline, the owner can redeem the whole pot.
+The contract has the following entry points:
+- **join()**, which allows a player to join the bet. This requires the player to deposit an amount of native cryptocurrency equal to the initial pot;
+- **win()**, which allows the joined player to withdraw the whole contract balance if the oracle exchange rate is greater than the bet rate. The player can call win() multiple times before the deadline. This action is disabled after the deadline;
+- **timeout()**, which can be called by anyone after the deadline, and transfers the whole contract balance to the owner
 
-## Required functionalities
-
-- Native tokens
-- Time constraints
-- Transaction revert
-- Contract-to-contract calls
+## Properties
 

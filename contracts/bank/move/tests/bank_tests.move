@@ -97,7 +97,7 @@ module bank_addr::bank_tests {
         coin::destroy_burn_cap(burn_cap);
     }
 
-    // deposit of more coints than opLimit should fail (if the sender is not the bank owner)
+    // deposit of more coins than opLimit should fail (if the sender is not the bank owner)
     #[test(a = @0xA, bank = @0xB, aptos_framework = @aptos_framework)]
     #[expected_failure]
     fun test_deposit_more_than_oplimit(a : &signer, bank : &signer, aptos_framework : &signer) {
@@ -113,7 +113,7 @@ module bank_addr::bank_tests {
         coin::destroy_burn_cap(burn_cap);
     }
 
-    // deposit of more coints than opLimit should not fail (if the sender is the bank owner)
+    // deposit of more coins than opLimit should not fail (if the sender is the bank owner)
     #[test(owner = @0xB, aptos_framework = @aptos_framework)]
     fun test_deposit_more_than_oplimit_owner(owner : &signer, aptos_framework : &signer) {
         bank::init(owner, 10);
@@ -126,6 +126,27 @@ module bank_addr::bank_tests {
         bank::deposit(owner,addr_owner, 11);
 
         assert!(coin::balance<AptosCoin>(addr_owner) == 1000-11, 0);
+
+        coin::destroy_mint_cap(mint_cap);
+        coin::destroy_burn_cap(burn_cap);
+    }
+
+    // bank owner deposits coins (owner's address == bank's address)
+    #[test(owner = @0xB, aptos_framework = @aptos_framework)]
+    fun test_deposit_owner(owner : &signer, aptos_framework : &signer) {
+        bank::init(owner, 10);
+
+        let addr_owner = signer::address_of(owner);
+        let addr_bank = addr_owner;
+
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
+
+        give_coins(&mint_cap, owner, 100);
+
+        bank::deposit(owner,addr_bank, 20);
+
+        assert!(coin::balance<AptosCoin>(addr_owner) == 80, 0);
+        assert!(bank::balance_of(addr_owner, addr_bank) == 20, 0);
 
         coin::destroy_mint_cap(mint_cap);
         coin::destroy_burn_cap(burn_cap);

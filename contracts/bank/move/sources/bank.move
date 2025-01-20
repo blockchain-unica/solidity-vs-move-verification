@@ -60,7 +60,7 @@ module bank_addr::bank {
             assert!(amount <= bank.opLimit, EWrongAmount);
 
         let sender_balance = simple_map::borrow_mut(&mut bank.credits, &signer::address_of(sender));
-    
+	
         let withdrawn = coin::extract(sender_balance, amount);
         coin::deposit<AptosCoin>(signer::address_of(sender), withdrawn);
     }

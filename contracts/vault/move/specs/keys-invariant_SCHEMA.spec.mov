@@ -17,7 +17,7 @@ spec vault_addr::vault {
     }
     
     spec receive {
-        include Unchanged<CoinType>{owner : signer::address_of(sender)}; // TODO check
+        include Unchanged<CoinType>{owner : vault_addr}; // TODO check
     }
     spec withdraw {
         include Unchanged<CoinType>{owner : signer::address_of(owner)};

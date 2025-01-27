@@ -40,20 +40,20 @@ module bank_addr::bank_tests {
     }
 
     // deposit of zero tokens should fail
-    #[test(sender = @0x1, bank = @0xB)]
+    #[test(sender = @0x1, owner = @0xB)]
     // expected_failure <-> the test is successful if it fails with abort code EWrongAmount 
     #[expected_failure(abort_code = bank::EWrongAmount)]
-    fun test_deposit_amount_zero(sender : &signer, bank : &signer) {
-        bank::init(bank, 1000); // initialize the Bank resource and pass it to bank::test_init_module
-        bank::deposit(sender, signer::address_of(bank), 0);
+    fun test_deposit_amount_zero(sender : &signer, owner : &signer) {
+        bank::init(owner, 1000); // initialize the Bank resource and pass it to bank::test_init_module
+        bank::deposit(sender, signer::address_of(owner), 0);
     }
 
     // signer a performs two deposits of 1 AptosCoin each
     // check that the balances of the signer a and of the bank are correct
-    #[test(a = @0x03, bank = @0xB, aptos_framework = @aptos_framework)]
-    fun test_deposit(a : &signer, bank : &signer, aptos_framework: &signer) {
-        bank::init(bank, 1000);
-        let addr_bank = signer::address_of(bank);
+    #[test(a = @0x03, owner = @0xB, aptos_framework = @aptos_framework)]
+    fun test_deposit(a : &signer, owner : &signer, aptos_framework: &signer) {
+        bank::init(owner, 1000);
+        let addr_bank = signer::address_of(owner);
         let addr_a = signer::address_of(a);
 
         let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
@@ -82,32 +82,32 @@ module bank_addr::bank_tests {
     }
 
     // deposit of more coins than what the signer owns should fail
-    #[test(a = @0xA, bank = @0xB, aptos_framework = @aptos_framework)]
+    #[test(a = @0xA, owner = @0xB, aptos_framework = @aptos_framework)]
     #[expected_failure]
-    fun test_deposit_more_than_balance(a : &signer, bank : &signer, aptos_framework : &signer) {
-        bank::init(bank, 2000);
+    fun test_deposit_more_than_balance(a : &signer, owner : &signer, aptos_framework : &signer) {
+        bank::init(owner, 2000);
 
         let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
 
         give_coins(&mint_cap, a, 1000);
 
-        bank::deposit(a,signer::address_of(bank), 1001);
+        bank::deposit(a,signer::address_of(owner), 1001);
 
         coin::destroy_mint_cap(mint_cap);
         coin::destroy_burn_cap(burn_cap);
     }
 
     // deposit of more coins than opLimit should fail (if the sender is not the bank owner)
-    #[test(a = @0xA, bank = @0xB, aptos_framework = @aptos_framework)]
+    #[test(a = @0xA, owner = @0xB, aptos_framework = @aptos_framework)]
     #[expected_failure]
-    fun test_deposit_more_than_oplimit(a : &signer, bank : &signer, aptos_framework : &signer) {
-        bank::init(bank, 10);
+    fun test_deposit_more_than_oplimit(a : &signer, owner : &signer, aptos_framework : &signer) {
+        bank::init(owner, 10);
 
         let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
 
         give_coins(&mint_cap, a, 1000);
 
-        bank::deposit(a,signer::address_of(bank), 11);
+        bank::deposit(a,signer::address_of(owner), 11);
 
         coin::destroy_mint_cap(mint_cap);
         coin::destroy_burn_cap(burn_cap);
@@ -153,19 +153,19 @@ module bank_addr::bank_tests {
     }
 
     // withdraw without a previous deposit should fail
-    #[test(a = @0xA, bank = @0xB)]
+    #[test(a = @0xA, owner = @0xB)]
     #[expected_failure(abort_code = bank::EWrongAmount)]
-    fun test_withdraw_without_deposit(a : &signer, bank : &signer) {
-        bank::init(bank, 1000);
-        bank::withdraw(a,signer::address_of(bank),0);
+    fun test_withdraw_without_deposit(a : &signer, owner : &signer) {
+        bank::init(owner, 1000);
+        bank::withdraw(a,signer::address_of(owner),0);
     }
 
     // withdraw zero amount should fail
-    #[test(a = @0xA, bank = @0xB, aptos_framework = @aptos_framework)]
+    #[test(a = @0xA, owner = @0xB, aptos_framework = @aptos_framework)]
     #[expected_failure(abort_code=bank::EWrongAmount)]
-    fun test_withdraw_zero(a : &signer, bank : &signer, aptos_framework : &signer){
-        bank::init(bank, 1000);
-        let addr_bank = signer::address_of(bank);
+    fun test_withdraw_zero(a : &signer, owner : &signer, aptos_framework : &signer){
+        bank::init(owner, 1000);
+        let addr_bank = signer::address_of(owner);
         let addr_a = signer::address_of(a);
         let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
 
@@ -181,10 +181,10 @@ module bank_addr::bank_tests {
 
     // signer a performs one deposits of 1000 AptosCoin and two withdraws
     // check that the balances of the signer a and of the bank are correct
-    #[test(a = @0xA, bank = @0xB, aptos_framework = @aptos_framework)]
-    fun test_withdraw(a : &signer, bank : &signer, aptos_framework : &signer) {
-        bank::init(bank, 1000);
-        let addr_bank = signer::address_of(bank);
+    #[test(a = @0xA, owner = @0xB, aptos_framework = @aptos_framework)]
+    fun test_withdraw(a : &signer, owner : &signer, aptos_framework : &signer) {
+        bank::init(owner, 1000);
+        let addr_bank = signer::address_of(owner);
         let addr_a = signer::address_of(a);
         let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
 
@@ -211,11 +211,11 @@ module bank_addr::bank_tests {
     }
 
     // withdrawing more tokens than the sender's credit should fail
-    #[test(a = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    #[test(a = @0xA, owner = @0xB, aptos_framework = @aptos_framework)]
     #[expected_failure]
-    fun test_withdraw_too_much(a : &signer, bank : &signer, aptos_framework:&signer){
-        bank::init(bank, 1000);
-        let addr_bank = signer::address_of(bank);
+    fun test_withdraw_too_much(a : &signer, owner : &signer, aptos_framework:&signer){
+        bank::init(owner, 1000);
+        let addr_bank = signer::address_of(owner);
         let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
 
         give_coins(&mint_cap, a, 1000);
@@ -237,11 +237,11 @@ module bank_addr::bank_tests {
     // 2) deposit some more AptosCoin in the client bank account
     // 3) restore the max amount of AptosCoin in their account
     // 4) withdraw some AptosCoin -> this should overflow
-    #[test(a = @0xA,bank = @0xB, aptos_framework = @aptos_framework)]
+    #[test(a = @0xA, owner = @0xB, aptos_framework = @aptos_framework)]
     #[expected_failure]
-    fun test_overflow_account(a : &signer, bank : &signer, aptos_framework:&signer) {
-        bank::init(bank, 1000);
-        let addr_bank = signer::address_of(bank);
+    fun test_overflow_account(a : &signer, owner : &signer, aptos_framework:&signer) {
+        bank::init(owner, 1000);
+        let addr_bank = signer::address_of(owner);
         let addr_a = signer::address_of(a);
 
         let (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos_framework);

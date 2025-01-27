@@ -7,7 +7,6 @@ module bank_addr::bank {
 
     struct Bank has key, store {
         credits : SimpleMap<address, Coin<AptosCoin>>,
-        owner : address,
         opLimit : u64,
     }
 
@@ -19,20 +18,19 @@ module bank_addr::bank {
 
         let bank = Bank{
             credits : simple_map::new(),
-            owner : signer::address_of(account),
             opLimit : opLimit,
         };
         move_to(account, bank);
     }
 
     // ~Solidity: deposit is allowed only to msg.sender (the transaction signer)
-    public entry fun deposit(sender : &signer, bank : address, amount : u64) acquires Bank  {
+    public entry fun deposit(sender : &signer, owner : address, amount : u64) acquires Bank  {
         // ~Solidity: require(amount > 0);
         assert!(amount > 0, EWrongAmount);
 
-        let bank = borrow_global_mut<Bank>(bank); 
+        let bank = borrow_global_mut<Bank>(owner); 
 
-        if (signer::address_of(sender) != bank.owner)
+        if (signer::address_of(sender) != owner)
             assert!(amount <= bank.opLimit, EWrongAmount);
 
         let deposit : Coin<AptosCoin> = coin::withdraw(sender, amount);
@@ -50,13 +48,13 @@ module bank_addr::bank {
         }
     }
 
-    public entry fun withdraw(sender : &signer, bank : address, amount : u64) acquires Bank {
+    public entry fun withdraw(sender : &signer, owner : address, amount : u64) acquires Bank {
         // ~Solidity: require(amount > 0);
         assert!(amount != 0, EWrongAmount);
 
-        let bank = borrow_global_mut<Bank>(bank);
+        let bank = borrow_global_mut<Bank>(owner);
 
-        if (signer::address_of(sender) != bank.owner)
+        if (signer::address_of(sender) != owner)
             assert!(amount <= bank.opLimit, EWrongAmount);
 
         let sender_balance = simple_map::borrow_mut(&mut bank.credits, &signer::address_of(sender));

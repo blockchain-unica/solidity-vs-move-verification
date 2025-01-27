@@ -15,8 +15,8 @@ spec bank_addr::bank {
     spec deposit {
         let addr_sender = signer::address_of(sender);
 
-        let bank_credits = global<Bank>(bank).credits;
-        let post bank_credits_post = global<Bank>(bank).credits;
+        let bank_credits = global<Bank>(owner).credits;
+        let post bank_credits_post = global<Bank>(owner).credits;
 
         ensures forall a: address where a!=addr_sender : global<coin::CoinStore<AptosCoin>>(a).coin.value >= old(global<coin::CoinStore<AptosCoin>>(a).coin.value);
     }

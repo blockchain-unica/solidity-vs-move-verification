@@ -5,8 +5,8 @@ spec bank_addr::bank {
      spec deposit {
         let addr_sender = signer::address_of(sender);
 
-        let bank_credits = global<Bank>(bank).credits;
-        let post bank_credits_post = global<Bank>(bank).credits;
+        let bank_credits = global<Bank>(owner).credits;
+        let post bank_credits_post = global<Bank>(owner).credits;
 
 	    let bank_credits_sender_coin_value =
 	        if (simple_map::spec_contains_key(bank_credits, addr_sender))

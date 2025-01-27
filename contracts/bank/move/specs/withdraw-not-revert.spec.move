@@ -16,9 +16,9 @@ spec bank_addr::bank {
 	  	requires global<aptos_account::DirectTransferConfig>(addr_sender).allow_arbitrary_coin_transfers;
 
 	  	//requires can_receive_paired_fungible_asset(addr_sender);
-	  	requires exists<Bank>(bank);
+	  	requires exists<Bank>(owner);
 
-	  	let bank_struct = global<Bank>(bank);
+	  	let bank_struct = global<Bank>(owner);
 
 	  	requires simple_map::spec_contains_key(bank_struct.credits, addr_sender);
 	  
@@ -29,7 +29,7 @@ spec bank_addr::bank {
      		requires amount <= sender_credits;
 	  	//requires amount < MAX_U64 - sender_credits;
 
-		requires signer::address_of(sender)!=bank_struct.owner ==> amount <= bank_struct.opLimit;
+		requires signer::address_of(sender)!=owner ==> amount <= bank_struct.opLimit;
 
 		aborts_if false; // can never abort
     }

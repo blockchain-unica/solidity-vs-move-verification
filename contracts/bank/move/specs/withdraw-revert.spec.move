@@ -5,12 +5,12 @@ spec bank_addr::bank {
     spec withdraw {
         pragma aborts_if_is_partial;
 
-        let bank = global<Bank>(bank);
+        let bank = global<Bank>(owner);
 
         let sender_credits = simple_map::spec_get(bank.credits,signer::address_of(sender)).value;
 
         aborts_if
 		sender_credits < amount ||
-		(signer::address_of(sender)!=bank.owner && amount > bank.opLimit);
+		(signer::address_of(sender)!=owner && amount > bank.opLimit);
     }
 }

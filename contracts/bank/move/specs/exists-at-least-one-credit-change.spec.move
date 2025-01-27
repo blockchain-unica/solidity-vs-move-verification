@@ -6,23 +6,22 @@ spec bank_addr::bank {
      use std::features;
      // use aptos_framework::aptos_coin::{Self, AptosCoin};
          
-     invariant update [global] forall bank: address where old(exists<Bank>(bank)): 
+     invariant update [global] forall owner: address where old(exists<Bank>(owner)): 
         (
       !features::spec_is_enabled(features::COIN_TO_FUNGIBLE_ASSET_MIGRATION) &&
-           global<Bank>(bank) != old(global<Bank>(bank)) && exists<Bank>(bank)
+           global<Bank>(owner) != old(global<Bank>(owner)) && exists<Bank>(owner)
       ==>
            (
            exists addr_a: address:
          (
-         // global<Bank>(bank).owner == old(global<Bank>(bank).owner)
-         simple_map::spec_contains_key(global<Bank>(bank).credits,addr_a)
+         simple_map::spec_contains_key(global<Bank>(owner).credits,addr_a)
          &&
          (
-            !old(simple_map::spec_contains_key(global<Bank>(bank).credits,addr_a)) // bart: questo serve
+            !old(simple_map::spec_contains_key(global<Bank>(owner).credits,addr_a)) // bart: questo serve
               ||
        (
-        simple_map::spec_get(global<Bank>(bank).credits,addr_a).value !=
-                 old(simple_map::spec_get(global<Bank>(bank).credits,addr_a).value)	 // bart: questo serve
+        simple_map::spec_get(global<Bank>(owner).credits,addr_a).value !=
+                 old(simple_map::spec_get(global<Bank>(owner).credits,addr_a).value)	 // bart: questo serve
        )
          )
               // global<coin::CoinStore<AptosCoin>>(addr_a).coin.value != old(global<coin::CoinStore<AptosCoin>>(addr_a).coin.value)
@@ -31,14 +30,3 @@ spec bank_addr::bank {
         );
    }
 }
-
-// in the antecedent of implication?
-           /*
-           !(exists addr_a: address : 
-              exists addr_b: address where addr_a != addr_b: 
-              old(simple_map::spec_contains_key(global<Bank>(bank).credits, addr_a))
-              &&
-              old(simple_map::spec_contains_key(global<Bank>(bank).credits, addr_b))
-           )
-           ||
-           */

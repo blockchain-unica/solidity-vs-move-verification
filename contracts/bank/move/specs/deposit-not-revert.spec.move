@@ -5,8 +5,8 @@ spec bank_addr::bank {
      	  requires amount > 0;
 
      	  let addr_sender = signer::address_of(sender);
-	  requires exists<Bank>(bank);
-	  let bank_struct = global<Bank>(bank);
+	  requires exists<Bank>(owner);
+	  let bank_struct = global<Bank>(owner);
 
 	  requires exists<coin::CoinStore<AptosCoin>>(addr_sender);
 	  requires exists<coin::CoinStore<AptosCoin>>(addr_sender);
@@ -22,7 +22,7 @@ spec bank_addr::bank {
  	  // let sender_credits = simple_map::spec_get(bank_struct.credits, addr_sender).value;
  	  // requires amount <= MAX_U64 - sender_credits;
 
-	  requires signer::address_of(sender)!=bank_struct.owner ==> amount <= bank_struct.opLimit;
+	  requires signer::address_of(sender)!=owner ==> amount <= bank_struct.opLimit;
 
  	  aborts_if false; // can never abort
     }

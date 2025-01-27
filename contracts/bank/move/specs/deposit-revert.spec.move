@@ -9,10 +9,10 @@ spec bank_addr::bank {
 	
         let sender_coins_value = global<coin::CoinStore<AptosCoin>>(signer::address_of(sender)).coin.value;
 
-	let bank = global<Bank>(bank);
+	let bank = global<Bank>(owner);
 	
 	aborts_if
 		(sender_coins_value < amount && !features::spec_is_enabled(features::COIN_TO_FUNGIBLE_ASSET_MIGRATION)) ||
-		(signer::address_of(sender)!=bank.owner && amount > bank.opLimit);
+		(signer::address_of(sender)!=owner && amount > bank.opLimit);
    }
 }

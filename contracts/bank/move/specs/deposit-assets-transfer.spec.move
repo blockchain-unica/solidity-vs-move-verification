@@ -8,8 +8,8 @@ spec bank_addr::bank {
         let sender_coins_value = global<coin::CoinStore<AptosCoin>>(addr_sender).coin.value;
         let post sender_coins_value_post = global<coin::CoinStore<AptosCoin>>(addr_sender).coin.value;
 
-        let bank_credits = global<Bank>(bank).credits;
-        let post bank_credits_post = global<Bank>(bank).credits;
+        let bank_credits = global<Bank>(owner).credits;
+        let post bank_credits_post = global<Bank>(owner).credits;
 
 	    let bank_credits_sender_coin_value =
 	        if (simple_map::spec_contains_key(bank_credits, addr_sender))
@@ -21,7 +21,7 @@ spec bank_addr::bank {
         // implies deposit-assets-credit
         ensures bank_credits_sender_coin_value_post == bank_credits_sender_coin_value + amount;
 
-	    requires !features::spec_is_enabled(features::COIN_TO_FUNGIBLE_ASSET_MIGRATION);
+	requires !features::spec_is_enabled(features::COIN_TO_FUNGIBLE_ASSET_MIGRATION);
         ensures sender_coins_value_post == (sender_coins_value - amount);
     }
 }

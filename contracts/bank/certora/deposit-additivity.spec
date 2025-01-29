@@ -27,5 +27,12 @@ rule deposit_additivity {
     deposit(e3) at initial;
     storage s3 = lastStorage;
 
+    // checks equality of the following:
+    // - the values in storage for all contracts,
+    // - the balances of all contracts,
+    // - the state of all ghost variables and functions
+    // https://docs.certora.com/en/latest/docs/cvl/expr.html#comparing-storage
+    // however, the experiments show that also the account balances are checked
+
     assert s12 == s3;
 }

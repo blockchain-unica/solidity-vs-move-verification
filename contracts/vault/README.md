@@ -8,7 +8,7 @@ To create the vault, the owner specifies:
 - a **wait time**, which has to elapse between a withdraw request and the actual finalization of the cryptocurrency transfer.
 
 The contract has the following entry points:
-- **receive(amount)**, which allows anyone to deposit tokens (native cryptocurrency) into the contract;
+- **receive(amount)**, which allows anyone to deposit tokens into the contract;
 - **withdraw(receiver, amount)**, which allows the owner to issue a withdraw request, specifying the receiver and the desired amount;
 - **finalize()**, which allows the owner to finalize the pending withdraw after the wait time has passed since the request;
 - **cancel()**, which allows the owner of the recovery key to cancel the withdraw request during the wait time.

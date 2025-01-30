@@ -11,7 +11,6 @@ spec vault_addr::vault {
 
       requires addr_recovery == vault.recovery;
       requires vault.state == REQ;
-      requires vault.owner == owner;
 
       aborts_if false;
  }

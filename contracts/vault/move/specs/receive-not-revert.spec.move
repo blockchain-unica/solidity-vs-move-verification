@@ -15,9 +15,6 @@ spec vault_addr::vault {
       let sender_balance = coin_store.coin.value;
       requires amount <= sender_balance;
  
-      //requires amount < MAX_U64 - sender_balance;
-      //requires !features::spec_is_enabled(features::COIN_TO_FUNGIBLE_ASSET_MIGRATION);
-
       aborts_if false;
  }
 }

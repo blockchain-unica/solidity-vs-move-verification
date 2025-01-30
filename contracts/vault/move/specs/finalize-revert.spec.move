@@ -11,8 +11,7 @@ spec vault_addr::vault {
       let vault = global<Vault<CoinType>>(addr_owner);
 
       aborts_if 
-         addr_owner != vault.owner 
-         || vault.state != REQ
+         vault.state != REQ
          || timestamp::now_seconds() < vault.request_timestamp + vault.wait_time;
  }
 }

@@ -10,7 +10,6 @@ spec vault_addr::vault {
       requires exists<Vault<CoinType>>(addr_owner);
 
       requires amount <= vault.coins.value;
-      requires addr_owner == vault.owner;
       requires vault.state == IDLE;
 
       aborts_if false;

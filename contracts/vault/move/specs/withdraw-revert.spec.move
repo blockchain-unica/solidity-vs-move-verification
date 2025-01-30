@@ -15,7 +15,6 @@ spec vault_addr::vault {
 
       aborts_if 
          amount > vault.coins.value ||
-         addr_owner != vault.owner || 
          vault.state != IDLE;
  }
 }

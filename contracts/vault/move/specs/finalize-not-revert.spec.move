@@ -9,7 +9,6 @@ spec vault_addr::vault {
    spec finalize {
       let addr_owner = signer::address_of(owner);
 
-
       requires exists<Vault<CoinType>>(addr_owner);
 
       let vault = global<Vault<CoinType>>(addr_owner);
@@ -20,7 +19,6 @@ spec vault_addr::vault {
 
       requires exists<timestamp::CurrentTimeMicroseconds>(@aptos_framework);
       
-      requires addr_owner == vault.owner; 
       requires vault.state == REQ;
       requires timestamp::now_seconds() >= vault.request_timestamp + vault.wait_time;
 

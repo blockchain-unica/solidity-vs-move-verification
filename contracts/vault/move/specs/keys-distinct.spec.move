@@ -2,49 +2,18 @@
 
 spec vault_addr::vault {
 
-  spec init {
-       ensures signer::address_of(owner) != recovery;
-  }
-  
-  spec receive {
-    let vault_pre = borrow_global_mut<Vault<CoinType>>(vault_addr);
-    requires vault_addr != vault_pre.recovery;
-    
-    let post vault_post = borrow_global_mut<Vault<CoinType>>(vault_addr);
-    ensures vault_addr != vault_post.recovery;
-  }
+  spec module { 
 
-  spec withdraw {
-    let owner_addr = signer::address_of(owner);
-    let vault_pre = borrow_global_mut<Vault<CoinType>>(owner_addr);
-    requires owner_addr != vault_pre.recovery;
-    
-    let post vault_post = borrow_global_mut<Vault<CoinType>>(owner_addr);
-    ensures owner_addr != vault_post.recovery;
-  }
+      use aptos_framework::aptos_coin::{AptosCoin};
+ 
+      invariant forall a : address where exists<Vault<AptosCoin>>(a):
+      		global<Vault<AptosCoin>>(a).recovery != a;
 
-  spec finalize {
-    let owner_addr = signer::address_of(owner);
-    let vault_pre = borrow_global_mut<Vault<CoinType>>(owner_addr);
-    requires owner_addr != vault_pre.recovery;
-    
-    let post vault_post = borrow_global_mut<Vault<CoinType>>(owner_addr);
-    ensures owner_addr != vault_post.recovery;
+      // the transition invariant below is not strictly needed,
+      // but it is interesting to note that it cannot be verified
+      // without the help of the global state invariant above
+      
+      invariant update forall a : address where old(exists<Vault<AptosCoin>>(a)):
+      		global<Vault<AptosCoin>>(a).recovery != a;
   }
-
-  spec cancel {
-    let vault_pre = borrow_global_mut<Vault<CoinType>>(owner);
-    requires owner != vault_pre.recovery;
-    
-    let post vault_post = borrow_global_mut<Vault<CoinType>>(owner);
-    ensures owner != vault_post.recovery;
-  }
-
 }
-
-// Note that the following spec does not work, because owner is not recorded in the struct
-// spec vault_addr::vault {
-//   spec Vault {
-//      invariant !(owner == recovery);
-// }
-

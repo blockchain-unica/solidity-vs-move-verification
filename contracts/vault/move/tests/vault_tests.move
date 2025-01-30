@@ -26,13 +26,6 @@ module vault_addr::vault_tests {
         coin::deposit(to_addr, coins);
     }
 
-    // // vault should exists after its initialization with init_module
-    // #[test(owner = @0x01, recovery = @0x02)]
-    // fun test_vault_exists(owner : &signer, recovery : address){
-    //     vault::init<AptosCoin>(owner, recovery, 100);
-    //     assert!(vault::vault_exists(vault),0);
-    // }
-
     #[test(owner = @0x01, recovery = @0x02)]
     #[expected_failure]
     fun test_init_owner_eq_recovery(owner : &signer, recovery: address) {
@@ -255,4 +248,73 @@ module vault_addr::vault_tests {
         coin::destroy_mint_cap(mint_cap);
     }
 
+    // a performs a deposit of 10 AptosCoin
+    // then the owner issues a withdraw request of 2 AptosCoin to b
+    // then before the deadline, the recovery address issues a cancel request 
+    #[test(a = @0x01, b = @0x02, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
+    fun test_cancel_before_withdraw(a : &signer, b : &signer, owner : &signer, recovery : &signer, aptos_framework: &signer) {
+        timestamp::set_time_has_started_for_testing(aptos_framework);
+
+        let wait_time = 100;
+
+        vault::init<AptosCoin>(owner, signer::address_of(recovery), wait_time);
+        let addr_owner = signer::address_of(owner);
+        let addr_b = signer::address_of(b);
+
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
+ 
+        give_coins(&mint_cap, a, 10);
+        give_coins(&mint_cap, b, 0);
+
+        let dep_amount = 10;
+        let wd_amount = 1;
+
+        vault::receive<AptosCoin>(a, addr_owner, dep_amount);
+        vault::withdraw<AptosCoin>(owner, wd_amount, addr_b);
+        
+        timestamp::fast_forward_seconds(wait_time-1); 
+
+        vault::cancel<AptosCoin>(recovery, addr_owner);
+
+        assert!(coin::balance<AptosCoin>(addr_b) == 0, 0);
+        assert!(vault::vault_balance<AptosCoin>(addr_owner) == dep_amount , 0);
+
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
+
+    // a performs a deposit of 10 AptosCoin
+    // then the owner issues a withdraw request of 2 AptosCoin to b
+    // then before the deadline, the recovery address issues a cancel request 
+    #[test(a = @0x01, b = @0x02, owner = @0x03, recovery = @0x04, aptos_framework = @aptos_framework)]
+    #[expected_failure]
+    fun test_cancel_then_finalize(a : &signer, b : &signer, owner : &signer, recovery : &signer, aptos_framework: &signer) {
+        timestamp::set_time_has_started_for_testing(aptos_framework);
+
+        let wait_time = 100;
+
+        vault::init<AptosCoin>(owner, signer::address_of(recovery), wait_time);
+        let addr_owner = signer::address_of(owner);
+        let addr_b = signer::address_of(b);
+
+        let (burn_cap,mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
+ 
+        give_coins(&mint_cap, a, 10);
+        give_coins(&mint_cap, b, 0);
+
+        let dep_amount = 10;
+        let wd_amount = 1;
+
+        vault::receive<AptosCoin>(a, addr_owner, dep_amount);
+        vault::withdraw<AptosCoin>(owner, wd_amount, addr_b);
+        
+        timestamp::fast_forward_seconds(wait_time-1); 
+        vault::cancel<AptosCoin>(recovery, addr_owner);
+
+        timestamp::fast_forward_seconds(2); 
+        vault::finalize<AptosCoin>(owner);
+
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+    }
 }

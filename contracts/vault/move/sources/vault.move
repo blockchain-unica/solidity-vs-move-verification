@@ -14,17 +14,7 @@ module vault_addr::vault {
     const IDLE : u8 = 0;
     const REQ : u8 = 1;
 
-    // the coin type stored is parametric
-    // seems slightly different from the valut requirements 
-    // which requires the native currency 
-    // the phantom modifier for the generic
-    // acts as an "hidden" type parameter
-    // in general the behaviour should be the same 
-    // since this hidden parameter does not change the 
-    // behaviour of the coin functions 
-    // but acts only as marker
     struct Vault<phantom CoinType> has key {
-        owner: address, // vault owner 
         recovery: address, // vault recovery address
         wait_time: u64, //in seconds  (i.e. wait_time = 1 <-> 1 second to wait etc)
         coins: coin::Coin<CoinType>, // any coin type can be stored
@@ -40,7 +30,6 @@ module vault_addr::vault {
         assert!(signer::address_of(owner) != recovery, ENoDistinctKeys);
 
         let vault = Vault {
-            owner: signer::address_of(owner),
             recovery: recovery,
             wait_time: wait_time,
             coins: coin::zero<CoinType>(),
@@ -58,36 +47,26 @@ module vault_addr::vault {
         let coins : Coin<CoinType> = coin::withdraw(sender, amount);
         let vault = borrow_global_mut<Vault<CoinType>>(vault_addr);
         coin::merge(&mut vault.coins, coins);
-	let old_r = vault.recovery;
-	vault.recovery = vault.owner;
-	//vault.recovery = old_r;
 	}
 
     public entry fun withdraw<CoinType>(owner: &signer, amount: u64, receiver: address) acquires Vault {
         let vault = borrow_global_mut<Vault<CoinType>>(signer::address_of(owner));
 
-        // ~Solidity: msg.sender == owner
-        assert!(vault.owner == signer::address_of(owner), ESignerNotAuth);
         // ~Solidity: amount <= address(this).balance
         assert!(coin::value(&vault.coins) >= amount, EInsufficientBalance);
         // ~Solidity: state == States.IDLE
         assert!(vault.state == IDLE, EWrongState);
 
-        // Solidity uses block, here timestamps
+        // in Solidity we use block, here timestamps
         vault.request_timestamp = timestamp::now_seconds();
         vault.amount = amount;
         vault.state = REQ;
         vault.receiver = receiver;
-        //let old_r = vault.recovery;
-	//vault.recovery =@0x0123;
-        //vault.recovery = old_r;
-
-}
+    }
 
     public entry fun finalize<CoinType>(owner: &signer) acquires Vault {
         let vault = borrow_global_mut<Vault<CoinType>>(signer::address_of(owner));
-        // ~Solidity: msg.sender == owner
-        assert!(vault.owner == signer::address_of(owner), ESignerNotAuth);
+
         // ~Solidity: state == States.REQ
         assert!(vault.state == REQ, EWrongState);
         // vault.request_timestamp is in seconds, vault.wait_time is interpreted as seconds
@@ -100,8 +79,6 @@ module vault_addr::vault {
     public entry fun cancel<CoinType>(recovery: &signer, owner:address) acquires Vault {
         let vault = borrow_global_mut<Vault<CoinType>>(owner);
        
-        // extra check (not in Solidity) 
-        assert!(vault.owner == owner, ESignerNotAuth);
         // ~Solidity: msg.sender == recovery
         assert!(vault.recovery == signer::address_of(recovery), ESignerNotAuth);
         // ~Solidity: state == States.REQ

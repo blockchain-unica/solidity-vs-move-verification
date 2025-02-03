@@ -12,7 +12,7 @@ The contract has the following methods:
 
 ## Properties
 
-- **deposit-revert**: a transaction `deposit(amount)` aborts if the amount is higher than the T balance of the transaction sender.  
+- <a name="deposit-revert">**deposit-revert**</a>: a transaction `deposit(amount)` aborts if the amount is higher than the T balance of the transaction sender.
 
 - **deposit-not-revert**: (up-to overflows) a transaction `deposit(amount)` does not abort if amount is less or equal to the T balance of the transaction sender.
 

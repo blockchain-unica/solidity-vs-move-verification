@@ -16,17 +16,17 @@ The contract has the following methods:
 
 - **deposit-not-revert**: (up-to overflows) a transaction `deposit(amount)` does not abort if amount is less or equal to the T balance of the transaction sender.
 
-- **deposit-assets-transfer**: (if sender is not the contract) after a successful `deposit(amount)`, exactly amount units of T pass from the control of the sender to that of the contract.
+- <a name="deposit-assets-transfer">**deposit-assets-transfer**</a>: (if sender is not the contract) after a successful `deposit(amount)`, exactly amount units of T pass from the control of the sender to that of the contract.
 
 - **deposit-assets-transfer-others**: after a successful `deposit(amount)`, the assets controlled by any user but the sender are preserved.
 
-- **deposit-assets-credit**: after a successful `deposit(amount)`, the users' credit is increased by exactly amount units of T.
+- <a name="deposit-assets-credit">**deposit-assets-credit**</a>: after a successful `deposit(amount)`, the users' credit is increased by exactly amount units of T.
 
 - **deposit-assets-credit-others**: after a successful `deposit(amount)`, the credits of any user but the sender are preserved.
 
-- **deposit-additivity**: two (successful) `deposit` of n1 and n2 units of T (performed by the same sender) are equivalent to a single `deposit` of n1+n2 units of T.
+- <a name="deposit-additivity">**deposit-additivity**</a>: two (successful) `deposit` of n1 and n2 units of T (performed by the same sender) are equivalent to a single `deposit` of n1+n2 units of T.
 
-- **assets-dec-onlyif-deposit**: if the assets of a user A are decreased after a transaction (of the Bank contract), then that transaction must be a `deposit` where A is the sender.
+- <a name="assets-dec-onlyif-deposit">**assets-dec-onlyif-deposit**</a>: if the assets of a user A are decreased after a transaction (of the Bank contract), then that transaction must be a `deposit` where A is the sender.
 
 - **assets-inc-onlyif-withdraw**: if the assets of a user A are increased after a transaction (of the Bank contract), then that transaction must be a `withdraw` where A is the sender.
 
@@ -38,7 +38,7 @@ The contract has the following methods:
 
 - **withdraw-not-revert**: a transaction `withdraw(amount)` does not abort if amount is less or equal to the credit of the transaction sender.
 
-- **withdraw-assets-transfer**: after a successful `withdraw(amount)`, exactly amount units of T pass from the control of the contract to that of the sender.
+- <a name="withdraw-assets-transfer">**withdraw-assets-transfer**</a>: after a successful `withdraw(amount)`, exactly amount units of T pass from the control of the contract to that of the sender.
 
 - **withdraw-assets-transfer-others**: after a successful `withdraw(amount)`, the assets controlled by any user but the sender are preserved.
 
@@ -48,8 +48,8 @@ The contract has the following methods:
 
 - **withdraw-additivity**: two (successful) `withdraw` of n1 and n2 units of T (performed by the same sender) are equivalent to a single `withdraw` of n1+n2 units of T.
 
-- **credits-eq-balance**: the assets controlled by the contract are (at least) equal to the sum of all the credits 
+- <a name="credits-leq-balance">**credits-leq-balance**</a>: the assets controlled by the contract are (at least) equal to the sum of all the credits 
 
-- **no-frozen-credits**: if the credits are strictly positive, it is possible to reduce them
+- <a name="no-frozen-credits">**no-frozen-credits**</a>: if the credits are strictly positive, it is possible to reduce them
 
-- **no-frozen-assets**: if the contract controls some assets, then someone can transfer them from the contract to some user
+- <a name="no-frozen-assets">**no-frozen-assets**</a>: if the contract controls some assets, then someone can transfer them from the contract to some user

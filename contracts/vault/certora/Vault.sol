@@ -4,7 +4,7 @@ pragma solidity >= 0.8.2;
 contract Vault {
     enum States{IDLE, REQ}
 
-    address owner;
+    address immutable owner;
     address recovery;
     uint wait_time;
 

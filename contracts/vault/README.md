@@ -21,3 +21,43 @@ To this purpose, the vault contract implements a state transition system with st
 
 
 ## Properties
+
+- **cancel-not-revert**: a transaction `cancel()` does not abort if the signer uses the recovery key, and the state is REQ
+
+- **cancel-revert**: a transaction `cancel()` aborts if the signer uses a key different from the recovery key, or the state is not REQ
+
+- **finalize-not-revert**: a `finalize()` transaction does not abort if it is sent by the owner, in state REQ, and at least wait_time time units have elapsed after request_timestamp
+
+- **finalize-revert**: a transaction `finalize()` aborts if the sender is not the owner, or if the state is not REQ, or wait_time has not passed after request_timestamp
+
+- **receive-not-revert**: anyone can always send tokens to the contract
+
+- **withdraw-not-revert**: a transaction `withdraw(amount)` does not abort if amount is less than or equal to the contract balance, the sender is the owner, and the state is IDLE
+
+- **withdraw-revert**: a transaction `withdraw(amount)` aborts if amount is more than the contract balance, or if the sender is not the owner, or if the state is not IDLE
+
+- **keys-distinct**: the owner key and the recovery key are distinct
+
+- **state-idle-req-global**: in any blockchain state, the vault state is IDLE or REQ
+
+- **state-idle-req-local**: during the execution of a transaction, the vault state is always IDLE or REQ
+
+- **state-req-amount-consistent**: if the state is REQ, then the amount to be withdrawn is less or equal than the contract balance
+
+- **keys-invariant-global**: in any blockchain state, the owner key and the recovery key cannot be changed after the contract is deployed
+
+- **keys-invariant-local**: during the execution of a transaction, the owner key and the recovery key cannot be changed after the contract is deployed
+
+- **call-trace**: if a sequence of function calls is valid, then the sequence of called functions is a prefix of the language denoted by the regex `(receive* + (withdraw receive* (cancel + finalize)))*`
+
+- **finalize-after-withdraw-not-revert**: a `finalize()` transaction does not abort if it is sent by the owner, and after wait_time time units have elapsed after a successful `withdraw()` that has not been cancelled nor finalized
+
+- **finalize-before-deadline-revert**: a `finalize()` transaction called immediately after a successful `withdraw()` aborts if sent before wait_time units have elapsed since the `withdraw()`
+
+- **finalize-or-cancel-twice-revert**: a `finalize()` or `cancel()` transaction aborts if performed immediately after another `finalize()` or `cancel()`
+
+- **state-update**: the contract implements a state machine with transitions: s -> s upon a receive (for any s), IDLE -> REQ upon a withdraw, REQ -> IDLE upon a finalize or a cancel.
+
+- **withdraw-finalize-not-revert**: a `finalize()` transaction called immediately after a successful `withdraw()` does not abort if sent after wait_time units have elapsed
+
+- **withdraw-withdraw-revert**: a transaction `withdraw()` aborts if performed immediately after another `withdraw()`

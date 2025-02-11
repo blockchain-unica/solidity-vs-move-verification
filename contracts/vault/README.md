@@ -38,7 +38,7 @@ To this purpose, the vault contract implements a state transition system with st
 
 - **keys-distinct**: the owner key and the recovery key are distinct
 
-- **state-idle-req-global**: in any blockchain state, the vault state is IDLE or REQ
+- <a name="state-idle-req-global">**state-idle-req-global**</a>: in any blockchain state, the vault state is IDLE or REQ
 
 - **state-idle-req-local**: during the execution of a transaction, the vault state is always IDLE or REQ
 

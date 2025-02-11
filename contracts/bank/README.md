@@ -12,8 +12,8 @@ The contract has the following methods:
 
 ## Implementations
 
-- [Solidity](certora/Bank.sol)
-- [Move](move/sources/bank.move)
+- **Solidity**: [contract](certora/Bank.sol) | [properties](certora/)
+- **Move**: [contract](move/sources/bank.move) | [properties](move/specs)
   
 ## Properties
 

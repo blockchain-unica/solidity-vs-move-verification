@@ -43,7 +43,7 @@ To this purpose, the vault contract implements a state transition system with st
 
 - **state-req-amount-consistent**: if the state is REQ, then the amount to be withdrawn is less or equal than the contract balance
 
-- **keys-invariant-global**: in any blockchain state, the owner key and the recovery key cannot be changed after the contract is deployed
+- <a name="keys-invariant-global">**keys-invariant-global**</a>: in any blockchain state, the owner key and the recovery key cannot be changed after the contract is deployed
 
 - <a name="keys-invariant-local">**keys-invariant-local**</a>: during the execution of a transaction, the owner key and the recovery key cannot be changed after the contract is deployed
 

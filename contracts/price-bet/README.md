@@ -14,5 +14,10 @@ The contract has the following entry points:
 - **win()**, which allows the joined player to withdraw the whole contract balance if the oracle exchange rate is greater than the bet rate. The player can call win() multiple times before the deadline. This action is disabled after the deadline;
 - **timeout()**, which can be called by anyone after the deadline, and transfers the whole contract balance to the owner
 
+## Implementations
+
+- **Solidity**: [contract](certora/Pricebet.sol) | [properties](certora/)
+- **Move**: [contract](move/sources/pricebet.move) | [properties](move/specs)
+
 ## Properties
 

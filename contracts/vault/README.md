@@ -28,7 +28,7 @@ To this purpose, the vault contract implements a state transition system with st
 
 - **finalize-not-revert**: a `finalize()` transaction does not abort if it is sent by the owner, in state REQ, and at least wait_time time units have elapsed after request_timestamp
 
-- **finalize-revert**: a transaction `finalize()` aborts if the sender is not the owner, or if the state is not REQ, or wait_time has not passed after request_timestamp
+- <a name="finalize-revert">**finalize-revert**</a>: a transaction `finalize()` aborts if the sender is not the owner, or if the state is not REQ, or wait_time has not passed after request_timestamp
 
 - **receive-not-revert**: anyone can always send tokens to the contract
 

@@ -58,6 +58,6 @@ To this purpose, the vault contract implements a state transition system with st
 
 - **state-update**: the contract implements a state machine with transitions: s -> s upon a receive (for any s), IDLE -> REQ upon a withdraw, REQ -> IDLE upon a finalize or a cancel.
 
-- **withdraw-finalize-not-revert**: a `finalize()` transaction called immediately after a successful `withdraw()` does not abort if sent after wait_time units have elapsed
+- <a name="withdraw-finalize-not-revert">**withdraw-finalize-not-revert**</a>: a `finalize()` transaction called immediately after a successful `withdraw()` does not abort if sent after wait_time units have elapsed
 
 - **withdraw-withdraw-revert**: a transaction `withdraw()` aborts if performed immediately after another `withdraw()`

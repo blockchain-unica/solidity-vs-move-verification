@@ -1,6 +1,6 @@
 # Contract verification: Solidity vs Move
 
-## Contracts
+## Contracts and properties
 
 - [Bank](contracts/bank/README.md)
 - [Vault](contracts/vault/README.md)

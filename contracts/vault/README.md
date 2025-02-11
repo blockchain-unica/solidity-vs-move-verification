@@ -50,7 +50,7 @@ To this purpose, the vault contract implements a state transition system with st
 
 - **call-trace**: if a sequence of function calls is valid, then the sequence of called functions is a prefix of the language denoted by the regex `(receive* + (withdraw receive* (cancel + finalize)))*`
 
-- **finalize-after-withdraw-not-revert**: a `finalize()` transaction does not abort if it is sent by the owner, and after wait_time time units have elapsed after a successful `withdraw()` that has not been cancelled nor finalized
+- <a name="finalize-after-withdraw-not-revert">**finalize-after-withdraw-not-revert**</a>: a `finalize()` transaction does not abort if it is sent by the owner, and after wait_time time units have elapsed after a successful `withdraw()` that has not been cancelled nor finalized
 
 - **finalize-before-deadline-revert**: a `finalize()` transaction called immediately after a successful `withdraw()` aborts if sent before wait_time units have elapsed since the `withdraw()`
 

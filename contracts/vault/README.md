@@ -36,7 +36,7 @@ To this purpose, the vault contract implements a state transition system with st
 
 - **withdraw-revert**: a transaction `withdraw(amount)` aborts if amount is more than the contract balance, or if the sender is not the owner, or if the state is not IDLE
 
-- **keys-distinct**: the owner key and the recovery key are distinct
+- <a name="keys-distinct">**keys-distinct**</a>: the owner key and the recovery key are distinct
 
 - <a name="state-idle-req-global">**state-idle-req-global**</a>: in any blockchain state, the vault state is IDLE or REQ
 

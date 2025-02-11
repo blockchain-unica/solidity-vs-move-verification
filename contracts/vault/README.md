@@ -19,6 +19,11 @@ To this purpose, the vault contract implements a state transition system with st
 - REQ -> REQ upon a receive action
 - REQ -> IDLE upon a finalize or a cancel action
 
+## Implementations
+
+- **Solidity**: [contract](certora/Vault.sol) | [properties](certora/)
+- **Move**: [contract](move/sources/vault.move) | [properties](move/specs)
+
 ## Properties
 
 - **cancel-not-revert**: a transaction `cancel()` does not abort if the signer uses the recovery key, and the state is REQ

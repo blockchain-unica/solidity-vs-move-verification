@@ -19,7 +19,6 @@ To this purpose, the vault contract implements a state transition system with st
 - REQ -> REQ upon a receive action
 - REQ -> IDLE upon a finalize or a cancel action
 
-
 ## Properties
 
 - **cancel-not-revert**: a transaction `cancel()` does not abort if the signer uses the recovery key, and the state is REQ
@@ -46,7 +45,7 @@ To this purpose, the vault contract implements a state transition system with st
 
 - **keys-invariant-global**: in any blockchain state, the owner key and the recovery key cannot be changed after the contract is deployed
 
-- **keys-invariant-local**: during the execution of a transaction, the owner key and the recovery key cannot be changed after the contract is deployed
+- <a name="keys-invariant-local">**keys-invariant-local**</a>: during the execution of a transaction, the owner key and the recovery key cannot be changed after the contract is deployed
 
 - **call-trace**: if a sequence of function calls is valid, then the sequence of called functions is a prefix of the language denoted by the regex `(receive* + (withdraw receive* (cancel + finalize)))*`
 

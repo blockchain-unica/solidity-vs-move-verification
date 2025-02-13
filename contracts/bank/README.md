@@ -19,7 +19,7 @@ The contract has the following methods:
 
 - <a name="deposit-revert">**deposit-revert**</a>: a transaction `deposit(amount)` aborts if the amount is higher than the T balance of the transaction sender.
 
-- **deposit-not-revert**: (up-to overflows) a transaction `deposit(amount)` does not abort if amount is less or equal to the T balance of the transaction sender.
+- <a name="deposit-not-revert">**deposit-not-revert**</a>: (up-to overflows) a transaction `deposit(amount)` does not abort if amount is less or equal to the T balance of the transaction sender.
 
 - <a name="deposit-assets-transfer">**deposit-assets-transfer**</a>: (if sender is not the contract) after a successful `deposit(amount)`, exactly amount units of T pass from the control of the sender to that of the contract.
 

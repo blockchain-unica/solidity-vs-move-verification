@@ -1,16 +1,21 @@
-// after a successful finalize()), exactly amount units of T pass from the control of the contract to that of the sender.
+// after a successful finalize(), exactly amount units of T pass from the control of the contract to that of the receiver.
 
 spec vault_addr::vault {
     use std::features;
 
     spec finalize {
-        let sender_coins_value = global<coin::CoinStore<Coin>>(signer::address_of(sender)).coin.value;
-        let post sender_coins_value_post = global<coin::CoinStore<Coin>>(signer::address_of(sender)).coin.value;
+        let vault = global<Vault<CoinType>>(signer::address_of(owner));
+        let post vault_post = global<Vault<CoinType>>(signer::address_of(owner));
 
-        let vault_struct = global<Vault>(owner).vault;
-        let amount = vault_struct.amount;
-        
+        let receiver_coins_value = global<coin::CoinStore<CoinType>>(vault.receiver).coin.value;
+        let post receiver_coins_value_post = global<coin::CoinStore<CoinType>>(vault.receiver).coin.value;
+
+        let vault_coin_value = vault.coins.value;
+        let post vault_coin_value_post = vault_post.coins.value;
+
+        ensures (vault_coin_value_post == (vault_coin_value - vault.amount));
+
         requires !features::spec_is_enabled(features::COIN_TO_FUNGIBLE_ASSET_MIGRATION);
-	    ensures (sender_coins_value_post == (sender_coins_value + amount));
+	ensures (receiver_coins_value_post == (receiver_coins_value + vault.amount));
     }
 }

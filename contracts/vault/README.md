@@ -34,6 +34,8 @@ To this purpose, the vault contract implements a state transition system with st
 
 - <a name="finalize-revert">**finalize-revert**</a>: a transaction `finalize()` aborts if the sender is not the owner, or if the state is not REQ, or wait_time has not passed after request_timestamp
 
+- <a name="finalize-asset-transfer">**finalize-asset-transfer**</a>: after a successful `finalize()`, exactly amount units of T pass from the control of the contract to that of the receiver.
+
 - **receive-not-revert**: anyone can always send tokens to the contract
 
 - **withdraw-not-revert**: a transaction `withdraw(amount)` does not abort if amount is less than or equal to the contract balance, the sender is the owner, and the state is IDLE

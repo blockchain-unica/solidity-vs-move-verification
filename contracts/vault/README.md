@@ -34,7 +34,7 @@ To this purpose, the vault contract implements a state transition system with st
 
 - <a name="finalize-revert">**finalize-revert**</a>: a transaction `finalize()` aborts if the sender is not the owner, or if the state is not REQ, or wait_time has not passed after request_timestamp
 
-- <a name="finalize-asset-transfer">**finalize-asset-transfer**</a>: after a successful `finalize()`, exactly amount units of T pass from the control of the contract to that of the receiver.
+- <a name="finalize-assets-transfer">**finalize-assets-transfer**</a>: after a successful `finalize()`, exactly amount units of T pass from the control of the contract to that of the receiver.
 
 - **receive-not-revert**: anyone can always send tokens to the contract
 
@@ -46,15 +46,15 @@ To this purpose, the vault contract implements a state transition system with st
 
 - <a name="owner-immutable">**owner-immutable**</a>: the vault owner never changes
 
-- <a name="state-idle-req-global">**state-idle-req-global**</a>: in any blockchain state, the vault state is IDLE or REQ
+- <a name="state-idle-req-inter">**state-idle-req-inter**</a>: in any blockchain state, the vault state is IDLE or REQ
 
-- **state-idle-req-local**: during the execution of a transaction, the vault state is always IDLE or REQ
+- **state-idle-req-intra**: during the execution of a transaction, the vault state is always IDLE or REQ
 
 - **state-req-amount-consistent**: if the state is REQ, then the amount to be withdrawn is less or equal than the contract balance
 
-- <a name="keys-invariant-global">**keys-invariant-global**</a>: in any blockchain state, the owner key and the recovery key cannot be changed after the contract is deployed
+- <a name="keys-invariant-inter">**keys-invariant-inter**</a>: in any blockchain state, the owner key and the recovery key cannot be changed after the contract is deployed
 
-- <a name="keys-invariant-local">**keys-invariant-local**</a>: during the execution of a transaction, the owner key and the recovery key cannot be changed after the contract is deployed
+- <a name="keys-invariant-intra">**keys-invariant-intra**</a>: during the execution of a transaction, the owner key and the recovery key cannot be changed after the contract is deployed
 
 - **call-trace**: if a sequence of function calls is valid, then the sequence of called functions is a prefix of the language denoted by the regex `(receive* + (withdraw receive* (cancel + finalize)))*`
 
@@ -62,7 +62,7 @@ To this purpose, the vault contract implements a state transition system with st
 
 - **finalize-before-deadline-revert**: a `finalize()` transaction called immediately after a successful `withdraw()` aborts if sent before wait_time units have elapsed since the `withdraw()`
 
-- **finalize-or-cancel-twice-revert**: a `finalize()` or `cancel()` transaction aborts if performed immediately after another `finalize()` or `cancel()`
+- <a name="finalize-or-cancel-twice-revert">**finalize-or-cancel-twice-revert**</a>: a `finalize()` or `cancel()` transaction aborts if performed immediately after another `finalize()` or `cancel()`
 
 - **state-update**: the contract implements a state machine with transitions: s -> s upon a receive (for any s), IDLE -> REQ upon a withdraw, REQ -> IDLE upon a finalize or a cancel.
 

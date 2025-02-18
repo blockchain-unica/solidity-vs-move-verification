@@ -65,4 +65,4 @@ The contract has the following methods:
 
 - <a name="exists-unique-asset-change">**exists-unique-asset-change**</a>: after a successful transaction, the assets of exactly one account (except the contract’s) have changed
 
-- exists-unique-credit-change: after a successful transaction, the credits of exactly one account have changed
+- **exists-unique-credit-change**: after a successful transaction, the credits of exactly one account have changed

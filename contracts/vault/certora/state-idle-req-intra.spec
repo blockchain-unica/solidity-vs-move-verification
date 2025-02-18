@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// certoraRun Vault.sol --verify Vault:state-idle-req-local.spec
+// certoraRun Vault.sol --verify Vault:state-idle-req-intra.spec
 // https://prover.certora.com/output/454304/eb6c0eb0c3714d71898381be33d0fdd6?anonymousKey=26b85202bdaf19486ebaea6a0efa61fac6339855
 
 // during the execution of a transaction, the vault state is always IDLE or REQ

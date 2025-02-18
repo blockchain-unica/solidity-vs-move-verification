@@ -45,6 +45,8 @@ The contract has the following methods:
 
 - <a name="withdraw-assets-transfer">**withdraw-assets-transfer**</a>: after a successful `withdraw(amount)`, exactly amount units of T pass from the control of the contract to that of the sender.
 
+- <a name="withdraw-assets-transfer-eoa">**withdraw-assets-transfer-eoa**</a>: after a successful `withdraw(amount)` performed by an EOA, exactly amount units of T pass from the control of the contract to that of the sender.
+
 - **withdraw-assets-transfer-others**: after a successful `withdraw(amount)`, the assets controlled by any user but the sender are preserved.
 
 - **withdraw-assets-credit**: after a successful `withdraw(amount)`, the users' credit is decreased by exactly amount units of T.

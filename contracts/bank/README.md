@@ -60,3 +60,9 @@ The contract has the following methods:
 - <a name="no-frozen-credits">**no-frozen-credits**</a>: if the credits are strictly positive, it is possible to reduce them
 
 - <a name="no-frozen-assets">**no-frozen-assets**</a>: if the contract controls some assets, then someone can transfer them from the contract to some user
+
+- <a name="exists-at-least-one-credit-change">**exists-at-least-one-credit-change**</a>: after a successful transaction, the credits of at least one account have changed
+
+- <a name="exists-unique-asset-change">**exists-unique-asset-change**</a>: after a successful transaction, the assets of exactly one account (except the contract’s) have changed
+
+- exists-unique-credit-change: after a successful transaction, the credits of exactly one account have changed

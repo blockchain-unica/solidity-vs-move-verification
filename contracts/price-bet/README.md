@@ -25,13 +25,13 @@ The contract has the following entry points:
 
 - join-not-revert:	a transaction `join()` does not revert if the amount sent is equal to initial_pot, no player has joined yet, and the sender has enough token
 
-- win-revert:	a transaction `win()` reverts if the deadline has expired or the sender is not the player or the oracle exchange rate is smaller than the bet exchange rate
+- <a name="win-revert">**win-revert**</a>:	a transaction `win()` reverts if the deadline has expired or the sender is not the player or the oracle exchange rate is smaller than the bet exchange rate
 
 - win-not-revert:	a transaction `win()` does not revert if the deadline has not expired, the sender is the player, and the oracle exchange rate is greater or equal to the bet exchange rate. We assume that the oracle is reactive
 
 - timeout-revert:	a transaction `timeout()` reverts if the deadline has not passed yet
 
-- timeout-not-revert:	a transaction `timeout()` does not revert if the deadline has passed
+-<a name="timeout-not-revert">**timeout-not-revert**</a>:	a transaction `timeout()` does not revert if the deadline has passed
 
 - timeout-postcondition:	a successful `timeout()` transfers the whole contract balance to the owner
 
@@ -41,7 +41,7 @@ The contract has the following entry points:
 
 - no-frozen-funds:	after the deadline, any user can perform some transaction that transfers the contract pot to the owner
 
-- eventually-balance-zero:	eventually the contract balance goes to 0 (assuming the fairness condition that timeout() is called at least once after the deadline)
+- <a name="eventually-balance-zero">**eventually-balance-zero**</a>:	eventually the contract balance goes to 0 (assuming the fairness condition that timeout() is called at least once after the deadline)
 
 - owner-cannot-withdraw-before-deadline:	if the deadline has not passed yet, the owner cannot withdraw the pot
 

@@ -1,5 +1,10 @@
 # Contract verification: Solidity vs Move
 
+An open dataset for the comparison of formal verification in Solidity and Move.
+
+Details on the comparison are available in the following research paper:
+- M. Bartoletti, S. Crafa, E. Lipparini. [Formal verification in Solidity and Move: insights from a comparative analysis](https://arxiv.org/abs/2502.13929). ArXiV preprint, 2025
+
 ## Contracts and properties
 
 - [Bank](contracts/bank/README.md)

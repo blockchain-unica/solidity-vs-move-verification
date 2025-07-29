@@ -16,5 +16,5 @@ rule withdraw_assets_transfer_others {
     withdraw(e,amount);
     mathint new_user_balance = nativeBalances[a];
 
-    assert new_user_balance == old_user_balance + to_mathint(amount);
+    assert new_user_balance == old_user_balance;
 }

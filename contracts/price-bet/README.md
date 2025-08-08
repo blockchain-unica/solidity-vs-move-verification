@@ -53,4 +53,4 @@ The contract has the following entry points:
 
 - **price-above-player-win**:	if at some point before the deadline the price goes above the threshold, the player can withdraw
 
-- **winner-payout	the winner**: receives at least twice the initial pot (assume that the oracle is not paid)
+- **winner-payout**: the winner receives at least twice the initial pot (assume that the oracle is not paid)
